@@ -16,9 +16,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className="antialiased">
         <Theme appearance="dark">
-          <Provider>{children}</Provider>
+          <Provider>
+            <div vaul-drawer-wrapper="">{children}</div>
+          </Provider>
         </Theme>
       </body>
     </html>
