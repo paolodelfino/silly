@@ -56,6 +56,9 @@ dependencies:
   react-dom:
     specifier: 18.2.0
     version: 18.2.0(react@18.2.0)
+  sc-wrapper:
+    specifier: ^1.1.0
+    version: 1.1.0
   tailwind-merge:
     specifier: ^1.14.0
     version: 1.14.0
@@ -3488,6 +3491,10 @@ packages:
       call-bind: 1.0.2
       get-intrinsic: 1.2.1
       is-regex: 1.1.4
+    dev: false
+
+  /sc-wrapper@1.1.0:
+    resolution: {integrity: sha512-na0kxkVC47eDccjEtjLbvD+BxT3C9bYL+CuDAn0lJcX3lptnER0WSWTkaiQ5eR0I5dhbDdQVfzo9/mGnfVmp7Q==}
     dev: false
 
   /scheduler@0.23.0:
