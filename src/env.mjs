@@ -4,6 +4,7 @@ import { z } from "zod";
 export const env = createEnv({
   server: {
     NODE_ENV: z.union([z.literal("development"), z.literal("production")]),
+    TMDB_API_KEY: z.string().length(32),
   },
   client: {},
   // For Next.js >= 13.4.4, you only need to destructure client variables:
