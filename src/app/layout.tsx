@@ -11,15 +11,20 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  preview,
 }: {
   children: React.ReactNode;
+  preview: React.ReactNode;
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased">
         <Theme appearance="dark">
           <Provider>
-            <div vaul-drawer-wrapper="">{children}</div>
+            <div vaul-drawer-wrapper="">
+              {children}
+              {preview}
+            </div>
           </Provider>
         </Theme>
       </body>
