@@ -42,7 +42,7 @@ export default function MediaDisplay({
           height={720}
           src={`https://image.tmdb.org/t/p/w1280/${data.backdrop_path}`}
           alt={isMovie ? data.title : data.name}
-          className="object-fill"
+          className="w-full h-full"
         />
 
         <Flex
