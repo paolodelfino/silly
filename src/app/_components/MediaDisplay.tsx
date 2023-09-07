@@ -14,6 +14,7 @@ import {
   Box,
   Button,
   Flex,
+  Grid,
   Heading,
   IconButton,
   Select,
@@ -58,6 +59,8 @@ export default function MediaDisplay({
 
   const screen = useRef<HTMLDivElement>(null);
   const episodesContainer = useRef<HTMLDivElement>(null);
+
+  const actionCount = 2 + (trailer ? 1 : 0) + (isMovie ? 1 : 0);
 
   return (
     <Theme ref={screen} appearance="dark" className="">
@@ -158,8 +161,13 @@ export default function MediaDisplay({
           </Flex>
         </Flex>
 
-        <Flex mt={"5"} wrap={"wrap"} justify={"center"} gap={"2"}>
-          <Button className="!px-8" variant="ghost" color="teal" disabled>
+        <Grid
+          mt={"5"}
+          columns={Math.min(3, actionCount).toString()}
+          rows={Math.max(Math.floor(actionCount / 3), 1).toString()}
+          gap={"4"}
+        >
+          <Button variant="ghost" color="teal" disabled>
             {isBookmarked ? (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -195,7 +203,7 @@ export default function MediaDisplay({
           </Button>
 
           {trailer && (
-            <Button className="!px-8" variant="ghost" color="teal" asChild>
+            <Button variant="ghost" color="teal" asChild>
               <a
                 target="_blank"
                 href={`https://youtube.com/watch/${trailer.key}`}
@@ -220,7 +228,7 @@ export default function MediaDisplay({
           )}
 
           {isMovie && (
-            <Button className="!px-8" variant="ghost" color="teal" disabled>
+            <Button variant="ghost" color="teal" disabled>
               <svg
                 width="24"
                 height="24"
@@ -239,7 +247,7 @@ export default function MediaDisplay({
             </Button>
           )}
 
-          <Button className="!px-8" variant="ghost" color="teal" disabled>
+          <Button variant="ghost" color="teal" disabled>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -256,7 +264,7 @@ export default function MediaDisplay({
             </svg>
             Send
           </Button>
-        </Flex>
+        </Grid>
 
         <Separator className="!w-full" mt={"4"} mb={"4"} />
 
