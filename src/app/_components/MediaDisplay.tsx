@@ -16,7 +16,6 @@ import {
   Flex,
   Grid,
   Heading,
-  IconButton,
   Select,
   Separator,
   Tabs,
@@ -55,7 +54,8 @@ export default function MediaDisplay({
     getSeason(data.id, data.seasons[selectedSeason].season_number).then(
       (season) => setSeasonData(season)
     );
-  }, [selectedSeason]);
+    // @ts-expect-error
+  }, [selectedSeason, data.id, isMovie, data.seasons]);
 
   const screen = useRef<HTMLDivElement>(null);
   const episodesContainer = useRef<HTMLDivElement>(null);

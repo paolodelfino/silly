@@ -23,7 +23,7 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
         video.current.src = playlist;
       }
     }
-  }, [video.current, isMobile]);
+  }, [video, isMobile, playlist]);
 
   if (isMobile) {
     return <video ref={video} controls className="w-full h-full"></video>;

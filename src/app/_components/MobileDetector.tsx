@@ -11,7 +11,7 @@ export default function MobileDetector() {
         setIsMobile(matchMedia("not all and (min-width: 768px)").matches)
       );
     }
-  }, []);
+  }, [setIsMobile]);
 
   return null;
 }
