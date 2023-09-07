@@ -7,6 +7,18 @@ export async function getMovieDetails(type: "movie" | "tv", id: number) {
     : await trpcServer.tmdb.details.tvShow({ id });
 }
 
-export async function getMoviePlaylist(title: string) {
-  return await trpcServer.playlist.movie({ title });
+export async function getMoviePlaylist(
+  title: string,
+  seasonNumber?: number,
+  episodeNumber?: number
+) {
+  return await trpcServer.playlist.movie({
+    title,
+    seasonNumber,
+    episodeNumber,
+  });
+}
+
+export async function getSeason(id: number, season: number) {
+  return await trpcServer.tmdb.details.season({ id, season });
 }

@@ -2,6 +2,7 @@
 import MediaDisplay from "@/app/_components/MediaDisplay";
 import SimpleLoading from "@/app/_components/SimpleLoading";
 import { useMediaDrawer } from "@/app/_stores/media-drawer";
+import { useMobileDetector } from "@/app/_stores/mobile-detector";
 import { MovieDetailsOutput, TvShowDetailsOutput } from "@/app/_trpc/types";
 import { getMovieDetails } from "@/server/actions";
 import { Dialog, Flex, IconButton } from "@radix-ui/themes";
@@ -9,6 +10,7 @@ import { useEffect, useState } from "react";
 import { Drawer } from "vaul";
 
 export default function MediaDrawer() {
+  const isMobile = useMobileDetector((state) => state.isMobile);
   const { id, type, show, setShow } = useMediaDrawer();
 
   const [data, setData] = useState<
@@ -20,16 +22,6 @@ export default function MediaDrawer() {
       getMovieDetails(type, id).then((data) => setData(data));
     }
   }, [id, type]);
-
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setIsMobile(matchMedia("not all and (min-width: 768px)").matches);
-      window.addEventListener("resize", () =>
-        setIsMobile(matchMedia("not all and (min-width: 768px)").matches)
-      );
-    }
-  }, []);
 
   if (!show) return null;
 

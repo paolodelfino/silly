@@ -5,6 +5,7 @@ import "@radix-ui/themes/styles.css";
 import type { Metadata } from "next";
 import MediaWatch from "./_components/MediaWatch";
 import "./globals.css";
+import MobileDetector from "@/app/_components/MobileDetector";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,6 +27,7 @@ export default function RootLayout({
               <MediaDrawer />
             </div>
             <MediaWatch />
+            <MobileDetector />
           </Provider>
         </Theme>
       </body>

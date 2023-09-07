@@ -6,3 +6,4 @@ type RouterOutput = inferRouterOutputs<typeof appRouter>;
 
 export type MovieDetailsOutput = RouterOutput["tmdb"]["details"]["movie"];
 export type TvShowDetailsOutput = RouterOutput["tmdb"]["details"]["tvShow"];
+export type SeasonDetailsOutput = RouterOutput["tmdb"]["details"]["season"];

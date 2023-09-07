@@ -1,6 +1,11 @@
 "use client";
 import { useMediaWatch } from "@/app/_stores/media-watch";
-import { MovieDetailsOutput, TvShowDetailsOutput } from "@/app/_trpc/types";
+import {
+  MovieDetailsOutput,
+  SeasonDetailsOutput,
+  TvShowDetailsOutput,
+} from "@/app/_trpc/types";
+import { getSeason } from "@/server/actions";
 import {
   Avatar,
   Badge,
@@ -9,13 +14,15 @@ import {
   Flex,
   Grid,
   Heading,
+  ScrollArea,
+  Select,
   Separator,
   Tabs,
   Text,
   Theme,
 } from "@radix-ui/themes";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { FreeMode } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -24,7 +31,8 @@ export default function MediaDisplay({
 }: {
   data: MovieDetailsOutput | TvShowDetailsOutput;
 }) {
-  const { setTitle, setShow } = useMediaWatch();
+  const { setTitle, setSeasonNumber, setEpisodeNumber, setShow } =
+    useMediaWatch();
 
   const isMovie = "title" in data;
   const isBookmarked = false;
@@ -33,6 +41,18 @@ export default function MediaDisplay({
     (video) =>
       video.official && video.site == "YouTube" && video.type == "Trailer"
   );
+
+  const [selectedSeason, setSelectedSeason] = useState<number>(0);
+  const [seasonData, setSeasonData] = useState<
+    SeasonDetailsOutput | undefined
+  >();
+  useEffect(() => {
+    if (isMovie) return;
+
+    getSeason(data.id, data.seasons[selectedSeason].season_number).then(
+      (season) => setSeasonData(season)
+    );
+  }, [selectedSeason]);
 
   return (
     <Theme appearance="dark">
@@ -233,19 +253,122 @@ export default function MediaDisplay({
 
         <Separator className="!w-full" mt={"4"} mb={"4"} />
 
-        <Tabs.Root defaultValue="cast">
+        <Tabs.Root defaultValue={isMovie ? "cast" : "episodes"}>
           <Tabs.List className="!shadow-none">
+            {!isMovie && (
+              <Tabs.Trigger
+                value="episodes"
+                className="text-base before:rounded-sm before:!bg-red-500 [&[aria-selected='true']]:before:!w-[3px] before:!h-5 before:!left-0 before:!top-1/2 before:!-translate-y-1/2"
+              >
+                Episodes
+              </Tabs.Trigger>
+            )}
+
             <Tabs.Trigger
               value="cast"
               className="text-base before:rounded-sm before:!bg-red-500 [&[aria-selected='true']]:before:!w-[3px] before:!h-5 before:!left-0 before:!top-1/2 before:!-translate-y-1/2"
             >
               Cast
             </Tabs.Trigger>
+
             {/* <Tabs.Trigger value="collection">Collection</Tabs.Trigger> */}
-            {/* <Tabs.Trigger value="episodes">Episodes</Tabs.Trigger> */}
           </Tabs.List>
 
           <Box mt={"2"}>
+            {!isMovie && (
+              <Tabs.Content value="episodes">
+                <Select.Root
+                  defaultValue={selectedSeason.toString()}
+                  onValueChange={(selected) =>
+                    setSelectedSeason(Number(selected))
+                  }
+                >
+                  <Select.Trigger
+                    placeholder="Select a season"
+                    variant="ghost"
+                  />
+
+                  <Select.Content>
+                    {data.seasons.map((season, i) => (
+                      <Select.Item
+                        key={`${season.id}-${season.name}`}
+                        value={i.toString()}
+                      >
+                        {season.name}
+                      </Select.Item>
+                    ))}
+                  </Select.Content>
+                </Select.Root>
+
+                <ScrollArea mt={"4"} scrollbars="vertical" className="h-full">
+                  <Flex direction={"column"} gap={"3"}>
+                    {seasonData?.episodes.map((episode) => (
+                      <Flex
+                        gap={"4"}
+                        key={`${data.name}-${episode.season_number}-${episode.id}`}
+                      >
+                        <Flex
+                          onClick={() => {
+                            setTitle(data.name);
+                            setSeasonNumber(episode.season_number);
+                            setEpisodeNumber(episode.episode_number);
+                            setShow(true);
+                          }}
+                          className="w-[185px] h-[104px] shrink-0 relative hover:cursor-pointer bg-[--gray-3] rounded-lg"
+                        >
+                          {episode.still_path && (
+                            <Image
+                              width={185}
+                              height={104}
+                              src={`https://image.tmdb.org/t/p/w185/${episode.still_path}`}
+                              alt={episode.name}
+                              className="rounded-lg w-full h-full"
+                            />
+                          )}
+
+                          <Box
+                            position={"absolute"}
+                            top={"50%"}
+                            left={"50%"}
+                            className="-translate-y-1/2 -translate-x-1/2 bg-black/40 rounded-full p-1 border"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.5}
+                              stroke="currentColor"
+                              className="w-6 h-6 fill-current"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z"
+                              />
+                            </svg>
+                          </Box>
+                        </Flex>
+
+                        <Flex direction={"column"} gap={"2"}>
+                          <Heading size={"4"}>
+                            {episode.episode_number}. {episode.name}
+                          </Heading>
+
+                          <Text
+                            size={"1"}
+                            color="gray"
+                            className="line-clamp-3"
+                          >
+                            {episode.overview}
+                          </Text>
+                        </Flex>
+                      </Flex>
+                    ))}
+                  </Flex>
+                </ScrollArea>
+              </Tabs.Content>
+            )}
+
             <Tabs.Content value="cast">
               <Swiper
                 spaceBetween={8}

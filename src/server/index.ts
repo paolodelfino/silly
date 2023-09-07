@@ -45,12 +45,29 @@ export const appRouter = router({
               language: "It",
             })
         ),
+      season: publicProcedure
+        .input(
+          z.object({
+            id: z.number(),
+            season: z.number(),
+          })
+        )
+        .query(
+          async ({ input: { id, season } }) =>
+            await tmdb.v3.tvSeasons.getDetails(id, season, { language: "It" })
+        ),
     }),
   }),
   playlist: router({
     movie: publicProcedure
-      .input(z.object({ title: z.string() }))
-      .query(async ({ input: { title } }) => {
+      .input(
+        z.object({
+          title: z.string(),
+          seasonNumber: z.number().optional(),
+          episodeNumber: z.number().optional(),
+        })
+      )
+      .query(async ({ input: { title, seasonNumber, episodeNumber } }) => {
         const movie = (
           await search_movie(title, {
             match_estimate: true,
@@ -59,7 +76,16 @@ export const appRouter = router({
         )[0];
         if (!movie) return undefined;
 
-        return await get_playlist({ movie_id: movie.id });
+        let episodeId;
+        if (movie.is_series && seasonNumber && episodeNumber) {
+          episodeId =
+            movie.seasons[seasonNumber - 1].episodes[episodeNumber - 1].id;
+        }
+
+        return await get_playlist({
+          movie_id: movie.id,
+          episode_id: episodeId,
+        });
       }),
   }),
 });
