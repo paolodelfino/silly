@@ -1,5 +1,5 @@
 "use client";
-import { cn } from "@/app/_lib/utils";
+import { cn, domain } from "@/app/_lib/utils";
 import { useMediaWatch } from "@/app/_stores/media-watch";
 import { useMobileDetector } from "@/app/_stores/mobile-detector";
 import {
@@ -247,7 +247,20 @@ export default function MediaDisplay({
             </Button>
           )}
 
-          <Button variant="ghost" color="teal" disabled>
+          <Button
+            variant="ghost"
+            color="teal"
+            disabled={!navigator.canShare}
+            onClick={() => {
+              navigator.share({
+                title: `${
+                  isMovie ? data.title : data.name
+                } | Silly - Watch Movies and TV Shows`,
+                url: `${domain()}/search/${isMovie ? data.title : data.name}`,
+                text: data.overview,
+              });
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
