@@ -6,7 +6,7 @@ import "swiper/css";
 import { FreeMode } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-export default function <
+export default function MediaSlider<
   T extends {
     page: number;
     results: {

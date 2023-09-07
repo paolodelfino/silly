@@ -3,7 +3,7 @@ import { MediaCommunitySkin, MediaOutlet, MediaPlayer } from "@vidstack/react";
 import "vidstack/styles/community-skin/video.css";
 import "vidstack/styles/defaults.css";
 
-export default function ({ playlist }: { playlist: string }) {
+export default function VideoPlayer({ playlist }: { playlist: string }) {
   return (
     <MediaPlayer
       className="w-full h-full"

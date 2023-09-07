@@ -17,7 +17,7 @@ import Image from "next/image";
 import { FreeMode } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-export default function ({
+export default function MediaDisplay({
   data,
 }: {
   data: MovieDetailsOutput | TvShowDetailsOutput;

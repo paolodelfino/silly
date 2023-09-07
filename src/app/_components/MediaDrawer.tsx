@@ -7,7 +7,7 @@ import { getMovieDetails } from "@/server/actions";
 import { useEffect, useState } from "react";
 import { Drawer } from "vaul";
 
-export default function () {
+export default function MediaDrawer() {
   const { id, type, show, setShow } = useMediaDrawer();
 
   const [data, setData] = useState<

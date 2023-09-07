@@ -1,6 +1,6 @@
 import { Flex } from "@radix-ui/themes";
 
-export default function () {
+export default function SimpleLoading() {
   return (
     <Flex width={"100%"} justify={"center"}>
       <svg

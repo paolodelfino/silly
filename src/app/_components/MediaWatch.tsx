@@ -6,7 +6,7 @@ import { getMoviePlaylist } from "@/server/actions";
 import { Box, Button, Dialog, Flex, Text } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 
-export default function () {
+export default function MediaWatch() {
   const { title, show, setShow } = useMediaWatch();
 
   const [data, setData] = useState<string | undefined>();
@@ -32,7 +32,7 @@ export default function () {
               <SimpleLoading />
               <Text align={"center"}>
                 If it keeps loading for so much, it probably means that we
-                couldn't find the movie.
+                couldn&apos;t find the movie.
               </Text>
               <Dialog.Close>
                 <Button variant="soft" color="gray">
