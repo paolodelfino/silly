@@ -31,7 +31,7 @@ export default function MediaDrawer() {
         <Drawer.Overlay className="fixed inset-0 bg-black/40" />
         <Drawer.Portal className="bg-[var(--color-page-background)]">
           <Drawer.Content
-            className="flex bg-[var(--color-page-background)] flex-col outline-none overflow-hidden max-h-[98%] rounded-xl h-full fixed bottom-1 left-0 right-0"
+            className="flex bg-[var(--color-page-background)] flex-col outline-none overflow-hidden h-[98%] rounded-xl fixed bottom-1 left-0 right-0"
             onAnimationEnd={(open) => !open && setShow(false)}
           >
             {!data && <SimpleLoading />}

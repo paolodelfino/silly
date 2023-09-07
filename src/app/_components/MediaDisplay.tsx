@@ -1,5 +1,7 @@
 "use client";
+import { cn } from "@/app/_lib/utils";
 import { useMediaWatch } from "@/app/_stores/media-watch";
+import { useMobileDetector } from "@/app/_stores/mobile-detector";
 import {
   MovieDetailsOutput,
   SeasonDetailsOutput,
@@ -14,7 +16,6 @@ import {
   Flex,
   Grid,
   Heading,
-  ScrollArea,
   Select,
   Separator,
   Tabs,
@@ -22,7 +23,7 @@ import {
   Theme,
 } from "@radix-ui/themes";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FreeMode } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -31,6 +32,7 @@ export default function MediaDisplay({
 }: {
   data: MovieDetailsOutput | TvShowDetailsOutput;
 }) {
+  const isMobile = useMobileDetector((state) => state.isMobile);
   const { setTitle, setSeasonNumber, setEpisodeNumber, setShow } =
     useMediaWatch();
 
@@ -54,8 +56,21 @@ export default function MediaDisplay({
     );
   }, [selectedSeason]);
 
+  const screen = useRef<HTMLDivElement>(null);
+  const episodesContainer = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    console.log(
+      screen.current?.clientHeight,
+      episodesContainer.current?.clientHeight,
+      window.innerHeight,
+      window.innerHeight -
+        ((screen.current?.clientHeight ?? 0) -
+          (episodesContainer.current?.clientHeight ?? 0))
+    );
+  }, [screen.current]);
+
   return (
-    <Theme appearance="dark">
+    <Theme ref={screen} appearance="dark" className="">
       <div className="w-full aspect-video relative">
         <Image
           width={1280}
@@ -286,6 +301,7 @@ export default function MediaDisplay({
                   <Select.Trigger
                     placeholder="Select a season"
                     variant="ghost"
+                    mb={"4"}
                   />
 
                   <Select.Content>
@@ -300,72 +316,79 @@ export default function MediaDisplay({
                   </Select.Content>
                 </Select.Root>
 
-                <ScrollArea mt={"4"} scrollbars="vertical" className="h-full">
-                  <Flex direction={"column"} gap={"3"}>
-                    {seasonData?.episodes.map((episode) => (
+                <Flex
+                  ref={episodesContainer}
+                  direction={"column"}
+                  gap={"3"}
+                  pb={"3"}
+                  className={cn(isMobile && "overflow-y-auto")}
+                  style={{
+                    height: isMobile
+                      ? window.innerHeight -
+                        ((screen.current?.clientHeight ?? 0) -
+                          (episodesContainer.current?.clientHeight ?? 0))
+                      : undefined,
+                  }}
+                >
+                  {seasonData?.episodes.map((episode) => (
+                    <Flex
+                      gap={"4"}
+                      key={`${data.name}-${episode.season_number}-${episode.id}`}
+                    >
                       <Flex
-                        gap={"4"}
-                        key={`${data.name}-${episode.season_number}-${episode.id}`}
+                        onClick={() => {
+                          setTitle(data.name);
+                          setSeasonNumber(episode.season_number);
+                          setEpisodeNumber(episode.episode_number);
+                          setShow(true);
+                        }}
+                        className="w-[185px] h-[104px] shrink-0 relative hover:cursor-pointer bg-[--gray-3] rounded-lg"
                       >
-                        <Flex
-                          onClick={() => {
-                            setTitle(data.name);
-                            setSeasonNumber(episode.season_number);
-                            setEpisodeNumber(episode.episode_number);
-                            setShow(true);
-                          }}
-                          className="w-[185px] h-[104px] shrink-0 relative hover:cursor-pointer bg-[--gray-3] rounded-lg"
+                        {episode.still_path && (
+                          <Image
+                            width={185}
+                            height={104}
+                            src={`https://image.tmdb.org/t/p/w185/${episode.still_path}`}
+                            alt={episode.name}
+                            className="rounded-lg w-full h-full"
+                          />
+                        )}
+
+                        <Box
+                          position={"absolute"}
+                          top={"50%"}
+                          left={"50%"}
+                          className="-translate-y-1/2 -translate-x-1/2 bg-black/40 rounded-full p-1 border"
                         >
-                          {episode.still_path && (
-                            <Image
-                              width={185}
-                              height={104}
-                              src={`https://image.tmdb.org/t/p/w185/${episode.still_path}`}
-                              alt={episode.name}
-                              className="rounded-lg w-full h-full"
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6 fill-current"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z"
                             />
-                          )}
-
-                          <Box
-                            position={"absolute"}
-                            top={"50%"}
-                            left={"50%"}
-                            className="-translate-y-1/2 -translate-x-1/2 bg-black/40 rounded-full p-1 border"
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.5}
-                              stroke="currentColor"
-                              className="w-6 h-6 fill-current"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z"
-                              />
-                            </svg>
-                          </Box>
-                        </Flex>
-
-                        <Flex direction={"column"} gap={"2"}>
-                          <Heading size={"4"}>
-                            {episode.episode_number}. {episode.name}
-                          </Heading>
-
-                          <Text
-                            size={"1"}
-                            color="gray"
-                            className="line-clamp-3"
-                          >
-                            {episode.overview}
-                          </Text>
-                        </Flex>
+                          </svg>
+                        </Box>
                       </Flex>
-                    ))}
-                  </Flex>
-                </ScrollArea>
+
+                      <Flex direction={"column"} gap={"2"}>
+                        <Heading size={"4"}>
+                          {episode.episode_number}. {episode.name}
+                        </Heading>
+
+                        <Text size={"1"} color="gray" className="line-clamp-3">
+                          {episode.overview}
+                        </Text>
+                      </Flex>
+                    </Flex>
+                  ))}
+                </Flex>
               </Tabs.Content>
             )}
 
