@@ -58,16 +58,6 @@ export default function MediaDisplay({
 
   const screen = useRef<HTMLDivElement>(null);
   const episodesContainer = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    console.log(
-      screen.current?.clientHeight,
-      episodesContainer.current?.clientHeight,
-      window.innerHeight,
-      window.innerHeight -
-        ((screen.current?.clientHeight ?? 0) -
-          (episodesContainer.current?.clientHeight ?? 0))
-    );
-  }, [screen.current]);
 
   return (
     <Theme ref={screen} appearance="dark" className="">

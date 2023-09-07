@@ -23,7 +23,7 @@ export default function MediaWatch() {
 
   return (
     <Dialog.Root defaultOpen onOpenChange={(open) => !open && setShow(false)}>
-      <Dialog.Content className="!p-0 w-full h-full max-w-full max-h-full !rounded-none">
+      <Dialog.Content className="!p-0 w-full h-full max-w-full max-h-full !rounded-none z-50">
         {!data && (
           <Flex
             gap={"2"}
