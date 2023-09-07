@@ -1,7 +1,9 @@
+import MediaDrawer from "@/app/_components/MediaDrawer";
 import Provider from "@/app/_trpc/Provider";
 import { Theme } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 import type { Metadata } from "next";
+import MediaWatch from "./_components/MediaWatch";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -11,10 +13,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  preview,
 }: {
   children: React.ReactNode;
-  preview: React.ReactNode;
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -23,8 +23,9 @@ export default function RootLayout({
           <Provider>
             <div vaul-drawer-wrapper="">
               {children}
-              {preview}
+              <MediaDrawer />
             </div>
+            <MediaWatch />
           </Provider>
         </Theme>
       </body>

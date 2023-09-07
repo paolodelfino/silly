@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.rt-DialogOverlay {
+  @apply !pb-0;
+}
+
 @layer base {
   body {
     @apply select-none overscroll-none;
