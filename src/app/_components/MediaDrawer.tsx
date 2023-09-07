@@ -20,8 +20,24 @@ export default function MediaDrawer() {
     }
   }, [id, type]);
 
-  return (
-    show && (
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsMobile(matchMedia("not all and (min-width: 768px)").matches);
+      window.addEventListener("resize", () =>
+        setIsMobile(matchMedia("not all and (min-width: 768px)").matches)
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log(isMobile);
+  }, [isMobile]);
+
+  if (!show) return null;
+
+  if (isMobile) {
+    return (
       <Drawer.Root shouldScaleBackground defaultOpen>
         <Drawer.Overlay className="fixed inset-0 bg-black/40" />
         <Drawer.Portal className="bg-[var(--color-page-background)]">
@@ -34,6 +50,8 @@ export default function MediaDrawer() {
           </Drawer.Content>
         </Drawer.Portal>
       </Drawer.Root>
-    )
-  );
+    );
+  }
+
+  return null;
 }

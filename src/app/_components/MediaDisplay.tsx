@@ -1,3 +1,4 @@
+"use client";
 import { useMediaWatch } from "@/app/_stores/media-watch";
 import { MovieDetailsOutput, TvShowDetailsOutput } from "@/app/_trpc/types";
 import {
@@ -14,6 +15,7 @@ import {
   Theme,
 } from "@radix-ui/themes";
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 import { FreeMode } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
