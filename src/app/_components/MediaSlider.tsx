@@ -11,10 +11,10 @@ export default function MediaSlider<
     page: number;
     results: {
       id: number;
-      poster_path: string;
+      poster_path?: string | null;
       release_date?: string;
       title?: string;
-      vote_count: number;
+      vote_count?: number;
       popularity: number;
       first_air_date?: string;
       name?: string;
@@ -55,7 +55,7 @@ export default function MediaSlider<
               className="!w-max first:!ml-2 last:!mr-1"
             >
               <Card
-                className="w-[120px] h-[180px]"
+                className="w-[120px] h-[180px] !outline-none"
                 isPressable
                 isHoverable
                 onClick={() => router.push(`/display/${type}/${entry.id}`)}

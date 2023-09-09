@@ -95,6 +95,19 @@ export const appRouter = router({
         episode_id: episodeId,
       });
     }),
+  search: publicProcedure
+    .input(
+      z.object({
+        query: z.string(),
+      })
+    )
+    .query(async ({ input: { query } }) => {
+      return await tmdb.v3.search.searchMulti({
+        query,
+        include_adult: true,
+        language: "it",
+      });
+    }),
 });
 
 export type AppRouter = typeof appRouter;

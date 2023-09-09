@@ -6,6 +6,11 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Silly - Watch Movies and TV Shows",
   description: "Watch Movies and TV Shows",
+  viewport: {
+    initialScale: 1,
+    maximumScale: 1,
+    width: "device-width",
+  },
 };
 
 export default function RootLayout({
@@ -18,6 +23,7 @@ export default function RootLayout({
       <body className="antialiased">
         <Providers>
           {children}
+
           <BrowserInfo />
         </Providers>
       </body>
