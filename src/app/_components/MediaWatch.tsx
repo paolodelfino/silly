@@ -122,7 +122,7 @@ export default function MediaWatch({
   if (!playlist) return "Playlist not found";
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mb-4">
       <div className="flex p-3">
         <Button
           onPress={() => router.push(`/display/${type}/${movieId}`)}
@@ -152,7 +152,7 @@ export default function MediaWatch({
       </div>
 
       {type == "tv" && (
-        <div className="flex justify-center p-2 mb-4">
+        <div className="flex justify-center p-2">
           <ButtonGroup variant="flat">
             <Button
               onPress={() =>

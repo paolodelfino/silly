@@ -1,11 +1,7 @@
 "use client";
-import { useBrowserInfo } from "@/app/_stores/browser-info";
 import { useDocumentTitle } from "@mantine/hooks";
-import { MediaCommunitySkin, MediaOutlet, MediaPlayer } from "@vidstack/react";
 import Hls from "hls.js";
 import { useEffect, useRef } from "react";
-import "vidstack/styles/community-skin/video.css";
-import "vidstack/styles/defaults.css";
 
 export default function VideoPlayer({
   title,
@@ -25,11 +21,9 @@ export default function VideoPlayer({
       : "");
   useDocumentTitle(`${formattedTitle} | Silly`);
 
-  const { isMobile } = useBrowserInfo();
-
   const video = useRef<HTMLVideoElement>(null);
   useEffect(() => {
-    if (isMobile && video.current) {
+    if (video.current) {
       if (Hls.isSupported()) {
         const hls = new Hls();
         hls.loadSource(playlist);
@@ -38,33 +32,13 @@ export default function VideoPlayer({
         video.current.src = playlist;
       }
     }
-  }, [video, isMobile, playlist]);
-
-  if (isMobile == null) return null; // To avoid hydration problems
-
-  if (isMobile) {
-    return (
-      <video
-        ref={video}
-        controls
-        className="w-full aspect-video border-divider border rounded-medium"
-      ></video>
-    );
-  }
+  }, [video, playlist]);
 
   return (
-    <MediaPlayer
-      title={formattedTitle}
-      className="w-full aspect-video"
-      src={{
-        src: playlist,
-        type: "application/vnd.apple.mpegurl",
-      }}
-      aspectRatio={16 / 9}
-      crossorigin=""
-    >
-      <MediaOutlet></MediaOutlet>
-      <MediaCommunitySkin />
-    </MediaPlayer>
+    <video
+      ref={video}
+      controls
+      className="w-full aspect-video border-divider border rounded-medium"
+    ></video>
   );
 }
