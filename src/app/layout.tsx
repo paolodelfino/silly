@@ -1,4 +1,4 @@
-import MobileDetector from "@/app/_components/MobileDetector";
+import BrowserInfo from "@/app/_components/BrowserInfo";
 import { Providers } from "@/app/_components/Providers";
 import type { Metadata } from "next";
 import "./globals.css";
@@ -18,7 +18,7 @@ export default function RootLayout({
       <body className="antialiased">
         <Providers>
           {children}
-          <MobileDetector />
+          <BrowserInfo />
         </Providers>
       </body>
     </html>

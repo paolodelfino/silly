@@ -1,9 +1,9 @@
 "use client";
+import { useBrowserInfo } from "@/app/_stores/browser-info";
 import { useDocumentTitle } from "@mantine/hooks";
 import { MediaCommunitySkin, MediaOutlet, MediaPlayer } from "@vidstack/react";
 import Hls from "hls.js";
-import { useEffect, useRef, useState } from "react";
-import { UAParser } from "ua-parser-js";
+import { useEffect, useRef } from "react";
 import "vidstack/styles/community-skin/video.css";
 import "vidstack/styles/defaults.css";
 
@@ -25,10 +25,7 @@ export default function VideoPlayer({
       : "");
   useDocumentTitle(`${formattedTitle} | Silly`);
 
-  const [isMobile, setIsMobile] = useState<boolean | null>(null);
-  useEffect(() => {
-    setIsMobile(new UAParser().getResult().device.type == "mobile");
-  }, []);
+  const { isMobile } = useBrowserInfo();
 
   const video = useRef<HTMLVideoElement>(null);
   useEffect(() => {
