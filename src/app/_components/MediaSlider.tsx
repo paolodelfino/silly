@@ -1,7 +1,6 @@
 "use client";
-import { useMediaDrawer } from "@/app/_stores/media-drawer";
-import { Box, Flex, Heading, Text } from "@radix-ui/themes";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import "swiper/css";
 import { FreeMode } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -23,13 +22,11 @@ export default function MediaSlider<
     total_results: number;
   }
 >({ title, data }: { title: string; data: T }) {
-  const { setId, setType, setShow } = useMediaDrawer();
+  const router = useRouter();
 
   return (
-    <Box className="gap-2">
-      <Heading size={"4"} mb={"1"} ml={"1"} weight={"medium"}>
-        {title}
-      </Heading>
+    <div className="space-y-1">
+      <h1 className="text-lg font-medium mb-1 ml-1">{title}</h1>
       <Swiper
         spaceBetween={8}
         slidesPerView={"auto"}
@@ -38,9 +35,7 @@ export default function MediaSlider<
         freeMode
       >
         {data.total_results == 0 && (
-          <Text ml={"2"} color="gray" weight={"regular"}>
-            No results
-          </Text>
+          <span className="text-slate-400 ml-2">No results</span>
         )}
         {data.results.map((entry, i) => {
           const type = entry.release_date
@@ -58,15 +53,11 @@ export default function MediaSlider<
               key={`${title}-${i}-${entry.id}`}
               className="!w-max first:!ml-2 last:!mr-1"
             >
-              <Flex
+              <div
                 onClick={() => {
-                  setId(entry.id);
-                  setType(type);
-                  setShow(true);
+                  router.push(`/display/${entry.id}/${type}`);
                 }}
-                className="w-[120px] h-[180px] bg-gray-800 rounded overflow-hidden"
-                justify={"center"}
-                align={"center"}
+                className="w-[120px] h-[180px] flex justify-center items-center bg-gray-800 rounded overflow-hidden"
               >
                 {entry.poster_path && (
                   <Image
@@ -75,19 +66,19 @@ export default function MediaSlider<
                     height={180}
                     src={`https://image.tmdb.org/t/p/original/${entry.poster_path}`}
                     alt={entry.title ?? entry.name!}
-                    className="object-fill"
+                    className="object-cover"
                   />
                 )}
                 {!entry.poster_path && (
-                  <Text align={"center"} className="line-clamp-3">
+                  <span className="line-clamp-3 text-center">
                     {entry.title ?? entry.name}
-                  </Text>
+                  </span>
                 )}
-              </Flex>
+              </div>
             </SwiperSlide>
           );
         })}
       </Swiper>
-    </Box>
+    </div>
   );
 }

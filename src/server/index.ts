@@ -6,7 +6,7 @@ import { publicProcedure, router } from "./trpc";
 export const appRouter = router({
   tmdb: router({
     trending: publicProcedure.query(
-      async () => await tmdb.v3.trending.getTrending("all", "week")
+      async () => await tmdb.v3.trending.getTrending("all", "week", "it")
     ),
     popular: router({
       movie: publicProcedure.query(
@@ -29,7 +29,7 @@ export const appRouter = router({
           async ({ input: { id } }) =>
             await tmdb.v3.movies.getDetails(id, {
               append_to_response: ["credits", "videos"],
-              language: "It",
+              language: "it",
             })
         ),
       tvShow: publicProcedure
@@ -42,7 +42,7 @@ export const appRouter = router({
           async ({ input: { id } }) =>
             await tmdb.v3.tv.getDetails(id, {
               append_to_response: ["credits", "videos"],
-              language: "It",
+              language: "it",
             })
         ),
       season: publicProcedure
@@ -54,40 +54,38 @@ export const appRouter = router({
         )
         .query(
           async ({ input: { id, season } }) =>
-            await tmdb.v3.tvSeasons.getDetails(id, season, { language: "It" })
+            await tmdb.v3.tvSeasons.getDetails(id, season, { language: "it" })
         ),
     }),
   }),
-  playlist: router({
-    movie: publicProcedure
-      .input(
-        z.object({
-          title: z.string(),
-          seasonNumber: z.number().optional(),
-          episodeNumber: z.number().optional(),
+  playlist: publicProcedure
+    .input(
+      z.object({
+        title: z.string(),
+        seasonNumber: z.number().optional(),
+        episodeNumber: z.number().optional(),
+      })
+    )
+    .query(async ({ input: { title, seasonNumber, episodeNumber } }) => {
+      const movie = (
+        await search_movie(title, {
+          match_estimate: true,
+          match_exact: true,
         })
-      )
-      .query(async ({ input: { title, seasonNumber, episodeNumber } }) => {
-        const movie = (
-          await search_movie(title, {
-            match_estimate: true,
-            match_exact: true,
-          })
-        )[0];
-        if (!movie) return undefined;
+      )[0];
+      if (!movie) return undefined;
 
-        let episodeId;
-        if (movie.is_series && seasonNumber && episodeNumber) {
-          episodeId =
-            movie.seasons[seasonNumber - 1].episodes[episodeNumber - 1].id;
-        }
+      let episodeId;
+      if (movie.is_series && seasonNumber && episodeNumber) {
+        episodeId =
+          movie.seasons[seasonNumber - 1].episodes[episodeNumber - 1].id;
+      }
 
-        return await get_playlist({
-          movie_id: movie.id,
-          episode_id: episodeId,
-        });
-      }),
-  }),
+      return await get_playlist({
+        movie_id: movie.id,
+        episode_id: episodeId,
+      });
+    }),
 });
 
 export type AppRouter = typeof appRouter;

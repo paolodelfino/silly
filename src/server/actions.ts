@@ -12,7 +12,7 @@ export async function getMoviePlaylist(
   seasonNumber?: number,
   episodeNumber?: number
 ) {
-  return await trpcServer.playlist.movie({
+  return await trpcServer.playlist({
     title,
     seasonNumber,
     episodeNumber,

@@ -1,4 +1,5 @@
 "use client";
+import { useDocumentTitle } from "@mantine/hooks";
 import { MediaCommunitySkin, MediaOutlet, MediaPlayer } from "@vidstack/react";
 import Hls from "hls.js";
 import { useEffect, useRef, useState } from "react";
@@ -6,8 +7,25 @@ import { UAParser } from "ua-parser-js";
 import "vidstack/styles/community-skin/video.css";
 import "vidstack/styles/defaults.css";
 
-export default function VideoPlayer({ playlist }: { playlist: string }) {
-  const [isMobile, setIsMobile] = useState(false);
+export default function VideoPlayer({
+  title,
+  playlist,
+  seasonNumber,
+  episodeNumber,
+}: {
+  playlist: string;
+  title: string;
+  seasonNumber?: number;
+  episodeNumber?: number;
+}) {
+  const formattedTitle =
+    title +
+    (seasonNumber && episodeNumber
+      ? ` S${seasonNumber} E${episodeNumber}`
+      : "");
+  useDocumentTitle(`${formattedTitle} | Silly`);
+
+  const [isMobile, setIsMobile] = useState<boolean | null>(null);
   useEffect(() => {
     setIsMobile(new UAParser().getResult().device.type == "mobile");
   }, []);
@@ -25,13 +43,16 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
     }
   }, [video, isMobile, playlist]);
 
+  if (isMobile == null) return null; // To avoid hydration problems
+
   if (isMobile) {
-    return <video ref={video} controls className="w-full h-full"></video>;
+    return <video ref={video} controls className="w-screen h-screen"></video>;
   }
 
   return (
     <MediaPlayer
-      className="w-full h-full"
+      title={formattedTitle}
+      className="w-screen h-screen"
       src={{
         src: playlist,
         type: "application/vnd.apple.mpegurl",
