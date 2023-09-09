@@ -25,13 +25,22 @@ export const appRouter = router({
             id: z.number(),
           })
         )
-        .query(
-          async ({ input: { id } }) =>
-            await tmdb.v3.movies.getDetails(id, {
-              append_to_response: ["credits", "videos"],
-              language: "it",
-            })
-        ),
+        .query(async ({ input: { id } }) => {
+          const movie = await tmdb.v3.movies.getDetails(id, {
+            append_to_response: ["credits", "videos"],
+            language: "it",
+          });
+
+          let collection;
+          if (movie.belongs_to_collection) {
+            collection = await tmdb.v3.collections.getDetails(
+              movie.belongs_to_collection.id,
+              { language: "it" }
+            );
+          }
+
+          return { ...movie, collection };
+        }),
       tvShow: publicProcedure
         .input(
           z.object({

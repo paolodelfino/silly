@@ -1,4 +1,5 @@
 "use client";
+import MediaSlider from "@/app/_components/MediaSlider";
 import { calcCanBackForward } from "@/app/_lib/utils";
 import {
   MovieDetailsOutput,
@@ -287,6 +288,20 @@ export default function MediaDisplay({
               "relative group-data-[selected=true]:text-white group-data-[selected=true]:before:scale-100 text-lg before:absolute before:rounded-sm before:bg-red-500 group-data-[selected=true]:before:w-[3px] before:h-5 before:-left-3 before:transition-all before:scale-0 before:top-1/2 before:-translate-y-1/2",
           }}
         >
+          {isMovie && data.collection && (
+            <Tab key="collection" title="Collection">
+              <MediaSlider
+                data={{
+                  page: 1,
+                  results: data.collection.parts,
+                  total_pages: 1,
+                  total_results: data.collection.parts.length,
+                }}
+                title=""
+              />
+            </Tab>
+          )}
+
           {!isMovie && (
             <Tab key="episodes" title="Episodes">
               <Select
