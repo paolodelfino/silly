@@ -46,7 +46,13 @@ export default function VideoPlayer({
   if (isMobile == null) return null; // To avoid hydration problems
 
   if (isMobile) {
-    return <video ref={video} controls className="w-full aspect-video"></video>;
+    return (
+      <video
+        ref={video}
+        controls
+        className="w-full aspect-video border-divider border rounded-medium"
+      ></video>
+    );
   }
 
   return (

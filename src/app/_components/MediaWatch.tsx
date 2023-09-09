@@ -123,7 +123,7 @@ export default function MediaWatch({
 
   return (
     <div className="flex flex-col">
-      <div className="flex">
+      <div className="flex p-3">
         <Button
           onPress={() => router.push(`/display/${type}/${movieId}`)}
           variant="light"
@@ -152,8 +152,8 @@ export default function MediaWatch({
       </div>
 
       {type == "tv" && (
-        <div className="flex justify-center p-2">
-          <ButtonGroup variant="light">
+        <div className="flex justify-center p-2 mb-4">
+          <ButtonGroup variant="flat">
             <Button
               onPress={() =>
                 router.push(
