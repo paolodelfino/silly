@@ -100,7 +100,17 @@ export default function MediaWatch({
         forwardCanForward.current = canForward;
       });
     });
-  }, []);
+  }, [
+    backEpisode,
+    backSeason,
+    episodeNumber,
+    forwardEpisode,
+    forwardSeason,
+    movieId,
+    seasonNumber,
+    title,
+    type,
+  ]);
 
   if (isLoading)
     return (
