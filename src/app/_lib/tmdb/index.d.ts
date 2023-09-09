@@ -384,7 +384,7 @@ interface CollectionsGetDetailsPart {
     original_language: string;
     original_title: string;
     overview: string;
-    release_date: Date;
+    release_date: string;
     poster_path: string;
     popularity: number;
     title: string;
