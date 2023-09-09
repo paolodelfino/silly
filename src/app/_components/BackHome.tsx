@@ -1,16 +1,17 @@
 "use client";
 import { Button, cn } from "@nextui-org/react";
-import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function BackHome({ className }: { className?: string }) {
-  const router = useRouter();
   const pathname = usePathname();
 
   return (
     <Button
+      as={Link}
+      href="/"
       size="sm"
       isIconOnly
-      onPress={() => router.push(`/`)}
       radius="full"
       className={cn(
         "p-1.5 !opacity-80",

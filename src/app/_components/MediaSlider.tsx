@@ -1,7 +1,7 @@
 "use client";
 import { Card, CardHeader, Image } from "@nextui-org/react";
 import NextImage from "next/image";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import "swiper/css";
 import { FreeMode } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -23,8 +23,6 @@ export default function MediaSlider<
     total_results: number;
   }
 >({ title, data }: { title: string; data: T }) {
-  const router = useRouter();
-
   return (
     <div className="space-y-1">
       <h1 className="text-lg font-medium mb-1 ml-1">{title}</h1>
@@ -55,10 +53,11 @@ export default function MediaSlider<
               className="!w-max first:!ml-2 last:!mr-1"
             >
               <Card
+                as={Link}
+                href={`/display/${type}/${entry.id}`}
                 className="w-[120px] h-[180px] !outline-none"
                 isPressable
                 isHoverable
-                onClick={() => router.push(`/display/${type}/${entry.id}`)}
               >
                 <CardHeader className="absolute z-10 w-full h-full left-0 top-0 !items-center justify-center">
                   {!entry.poster_path && (
