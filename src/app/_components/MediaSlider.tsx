@@ -1,5 +1,5 @@
 "use client";
-import { Image } from "@nextui-org/react";
+import { Card, CardHeader, Image } from "@nextui-org/react";
 import NextImage from "next/image";
 import { useRouter } from "next/navigation";
 import "swiper/css";
@@ -54,7 +54,35 @@ export default function MediaSlider<
               key={`${title}-${i}-${entry.id}`}
               className="!w-max first:!ml-2 last:!mr-1"
             >
-              <div
+              <Card
+                className="w-[120px] h-[180px]"
+                isPressable
+                isHoverable
+                onPress={() => router.push(`/display/${type}/${entry.id}`)}
+              >
+                <CardHeader className="absolute z-10 w-full h-full left-0 top-0 !items-center justify-center">
+                  {!entry.poster_path && (
+                    <span className="line-clamp-3 text-center">
+                      {entry.title ?? entry.name}
+                    </span>
+                  )}
+                </CardHeader>
+
+                {entry.poster_path && (
+                  <Image
+                    removeWrapper
+                    as={NextImage}
+                    radius="none"
+                    loading="eager"
+                    width={120}
+                    height={180}
+                    src={`https://image.tmdb.org/t/p/original/${entry.poster_path}`}
+                    alt={entry.title ?? entry.name!}
+                    className="object-cover w-full h-full z-0"
+                  />
+                )}
+              </Card>
+              {/* <div
                 onClick={() => {
                   router.push(`/display/${type}/${entry.id}`);
                 }}
@@ -78,7 +106,7 @@ export default function MediaSlider<
                     {entry.title ?? entry.name}
                   </span>
                 )}
-              </div>
+              </div> */}
             </SwiperSlide>
           );
         })}
