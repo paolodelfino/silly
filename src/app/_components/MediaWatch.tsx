@@ -3,6 +3,7 @@ import VideoPlayer from "@/app/_components/VideoPlayer";
 import { calcCanBackForward } from "@/app/_lib/utils";
 import { PlaylistOutput, TvShowDetailsOutput } from "@/app/_trpc/types";
 import { getMovieDetails, getMoviePlaylist, getSeason } from "@/server/actions";
+import { useHotkeys } from "@mantine/hooks";
 import { Button, ButtonGroup, Spinner } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -35,6 +36,9 @@ export default function MediaWatch({
     }
 )) {
   const router = useRouter();
+  const backUrl = `/display/${type}/${movieId}`;
+
+  useHotkeys([["escape", () => router.push(backUrl)]]);
 
   const [playlist, setPlaylist] = useState<PlaylistOutput>();
   const [isLoading, setIsLoading] = useState(true);
@@ -125,7 +129,7 @@ export default function MediaWatch({
     <div className="flex flex-col mb-4">
       <div className="flex p-3">
         <Button
-          onPress={() => router.push(`/display/${type}/${movieId}`)}
+          onPress={() => router.push(backUrl)}
           variant="light"
           isIconOnly
           radius="full"

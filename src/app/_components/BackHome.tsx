@@ -1,10 +1,14 @@
 "use client";
+import { useHotkeys } from "@mantine/hooks";
 import { Button, cn } from "@nextui-org/react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function BackHome({ className }: { className?: string }) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  useHotkeys([["escape", () => router.push("/")]]);
 
   return (
     <Button
