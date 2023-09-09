@@ -62,12 +62,14 @@ export default function MediaDisplay({
 
   return (
     <div className="flex flex-col relative">
-      <div className="flex absolute top-0 left-0 z-10">
+      <div className="flex absolute top-0 left-0 z-10 p-3">
         <Button
-          variant="light"
+          size="sm"
           isIconOnly
           onPress={() => router.push(`/`)}
           radius="full"
+          className="p-1.5 !opacity-80"
+          aria-label="Back"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -76,7 +78,7 @@ export default function MediaDisplay({
             viewBox="0 0 24 24"
             fill="currentColor"
           >
-            <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path>
+            <path d="M21 11H6.414l5.293-5.293-1.414-1.414L2.586 12l7.707 7.707 1.414-1.414L6.414 13H21z"></path>
           </svg>
         </Button>
       </div>
