@@ -127,7 +127,11 @@ export default function MediaDisplay({
           <div className="flex flex-col gap-4">
             <Button
               onPress={() =>
-                router.push(`/watch/${isMovie ? data.title : data.name}`)
+                router.push(
+                  `/watch/${isMovie ? "movie" : "tv"}/${data.id}/${
+                    isMovie ? data.title : data.name
+                  }`
+                )
               }
               color="danger"
               className="w-full"
@@ -313,7 +317,7 @@ export default function MediaDisplay({
                             );
 
                             router.push(
-                              `/watch/${data.name}/${episode.season_number}/${episode.episode_number}/${canBack}/${canForward}/${data.id}`
+                              `/watch/tv/${data.id}/${data.name}/${episode.season_number}/${episode.episode_number}/${canBack}/${canForward}`
                             );
                           }}
                         >

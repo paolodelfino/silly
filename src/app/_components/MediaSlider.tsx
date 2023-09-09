@@ -55,7 +55,7 @@ export default function MediaSlider<
             >
               <div
                 onClick={() => {
-                  router.push(`/display/${entry.id}/${type}`);
+                  router.push(`/display/${type}/${entry.id}`);
                 }}
                 className="w-[120px] h-[180px] flex justify-center items-center bg-gray-800 rounded overflow-hidden"
               >

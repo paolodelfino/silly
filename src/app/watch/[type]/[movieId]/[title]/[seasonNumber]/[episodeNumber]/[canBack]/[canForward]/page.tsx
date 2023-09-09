@@ -1,17 +1,38 @@
 import MediaWatch from "@/app/_components/MediaWatch";
 
 export default function WatchPage({
-  params: { title, seasonNumber, episodeNumber, canBack, canForward, movieId },
+  params: {
+    type,
+    movieId,
+    title,
+    seasonNumber,
+    episodeNumber,
+    canBack,
+    canForward,
+  },
 }: {
   params: {
+    type: string;
+    movieId: string;
     title: string;
     seasonNumber: string;
     episodeNumber: string;
     canBack: string;
     canForward: string;
-    movieId: string;
   };
 }) {
+  const realType = type == "movie" ? type : type == "tv" ? type : undefined;
+  if (!realType) {
+    return "Illegal type (must be 'movie' | 'tv')";
+  } else if (realType == "movie") {
+    return "Type is movie but tv's parameters are provided";
+  }
+
+  const realMovieId = Number(movieId);
+  if (isNaN(realMovieId)) {
+    return "Movie id must be a number";
+  }
+
   const realSeasonNumber = Number(seasonNumber);
   if (isNaN(realSeasonNumber)) {
     return "Season number is not a number";
@@ -46,19 +67,15 @@ export default function WatchPage({
     return "Illegal canForward (must be boolean | 'bySeason')";
   }
 
-  const realMovieId = Number(movieId);
-  if (isNaN(realMovieId)) {
-    return "Movie id must be a number";
-  }
-
   return (
     <MediaWatch
+      type={realType}
+      movieId={realMovieId}
       title={decodeURIComponent(title)}
       seasonNumber={realSeasonNumber}
       episodeNumber={realEpisodeNumber}
       canBack={realCanBack}
       canForward={realCanForward}
-      movieId={realMovieId}
     />
   );
 }
