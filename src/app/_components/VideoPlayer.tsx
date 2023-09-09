@@ -46,13 +46,13 @@ export default function VideoPlayer({
   if (isMobile == null) return null; // To avoid hydration problems
 
   if (isMobile) {
-    return <video ref={video} controls className="w-screen h-screen"></video>;
+    return <video ref={video} controls className="w-full aspect-video"></video>;
   }
 
   return (
     <MediaPlayer
       title={formattedTitle}
-      className="w-screen h-screen"
+      className="w-full aspect-video"
       src={{
         src: playlist,
         type: "application/vnd.apple.mpegurl",

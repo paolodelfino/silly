@@ -128,6 +128,7 @@ export default function MediaWatch({
           onPress={() => router.push(`/display/${type}/${movieId}`)}
           variant="light"
           isIconOnly
+          radius="full"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -141,12 +142,14 @@ export default function MediaWatch({
         </Button>
       </div>
 
-      <VideoPlayer
-        playlist={playlist}
-        title={title}
-        seasonNumber={seasonNumber}
-        episodeNumber={episodeNumber}
-      />
+      <div className="px-4 py-0.5">
+        <VideoPlayer
+          playlist={playlist}
+          title={title}
+          seasonNumber={seasonNumber}
+          episodeNumber={episodeNumber}
+        />
+      </div>
 
       {type == "tv" && (
         <div className="flex justify-center p-2">
