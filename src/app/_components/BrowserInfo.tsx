@@ -15,7 +15,7 @@ export default function BrowserInfo() {
 
       setIsMobile(new UAParser().getResult().device.type == "mobile");
     }
-  }, [setIsMobile]);
+  }, [setIsMobile, setIsSmallDevice]);
 
   return null;
 }
