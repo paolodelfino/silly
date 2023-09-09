@@ -1,7 +1,8 @@
 "use client";
+import { useHotkeys } from "@mantine/hooks";
 import { Input } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Search() {
   const router = useRouter();
@@ -15,9 +16,14 @@ export default function Search() {
 
   const [isInvalid, setIsInvalid] = useState(false);
 
+  const input = useRef<HTMLInputElement>(null);
+
+  useHotkeys([["ctrl+k", () => input.current?.focus()]]);
+
   return (
     <form action={action} className="w-full">
       <Input
+        ref={input}
         fullWidth
         autoFocus
         isInvalid={isInvalid}
