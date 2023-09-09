@@ -58,7 +58,7 @@ export default function MediaSlider<
                 className="w-[120px] h-[180px]"
                 isPressable
                 isHoverable
-                onPress={() => router.push(`/display/${type}/${entry.id}`)}
+                onClick={() => router.push(`/display/${type}/${entry.id}`)}
               >
                 <CardHeader className="absolute z-10 w-full h-full left-0 top-0 !items-center justify-center">
                   {!entry.poster_path && (
