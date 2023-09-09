@@ -66,7 +66,7 @@ interface AccountGetFavoriteMoviesResult {
     original_language: string;
     original_title: string;
     overview: string;
-    release_date: Date;
+    release_date: string;
     poster_path: null;
     popularity: number;
     title: string;
@@ -89,7 +89,7 @@ interface AccountGetFavoriteTVShowsResponse {
 }
 interface AccountGetFavoriteTVShowsResult {
     backdrop_path: null;
-    first_air_date: Date;
+    first_air_date: string;
     genre_ids: number[];
     id: number;
     original_language: string;
@@ -123,7 +123,7 @@ interface AccountGetMovieWatchlistResult {
     original_language: string;
     original_title: string;
     overview: string;
-    release_date: Date;
+    release_date: string;
     poster_path: null;
     popularity: number;
     title: string;
@@ -152,7 +152,7 @@ interface AccountGetRatedMoviesResult {
     original_language: string;
     original_title: string;
     overview: string;
-    release_date: Date;
+    release_date: string;
     poster_path: null;
     popularity: number;
     title: string;
@@ -175,7 +175,7 @@ interface AccountGetRatedTVEpisodesResponse {
     total_results: number;
 }
 interface AccountGetRatedTVEpisodesResult {
-    air_date: Date;
+    air_date: string;
     episode_number: number;
     id: number;
     name: string;
@@ -203,7 +203,7 @@ interface AccountGetRatedTVShowsResponse {
 }
 interface AccountGetRatedTVShowsResult {
     backdrop_path: null;
-    first_air_date: Date;
+    first_air_date: string;
     genre_ids: number[];
     id: number;
     original_language: string;
@@ -232,7 +232,7 @@ interface AccountGetTVShowWatchlistResponse {
 }
 interface AccountGetTVShowWatchlistResult {
     backdrop_path: null;
-    first_air_date: Date;
+    first_air_date: string;
     genre_ids: number[];
     id: number;
     original_language: string;
@@ -379,15 +379,16 @@ interface CollectionsGetDetailsResponse {
 interface CollectionsGetDetailsPart {
     adult: boolean;
     backdrop_path: null;
-    genre_ids: number[];
     id: number;
+    title: string;
     original_language: string;
     original_title: string;
     overview: string;
-    release_date: string;
     poster_path: string;
+    media_type: string;
+    genre_ids: number[];
     popularity: number;
-    title: string;
+    release_date: string;
     video: boolean;
     vote_average: number;
     vote_count: number;
@@ -528,7 +529,7 @@ interface CreditsGetDetailsMedia {
     seasons: CreditsGetDetailsSeason[];
 }
 interface CreditsGetDetailsSeason {
-    air_date: Date;
+    air_date: string;
     poster_path: string;
     season_number: number;
 }
@@ -2757,36 +2758,35 @@ interface TVEpisodesGetDetailsBaseResponse {
     overview: string;
     id: number;
     production_code: string;
+    runtime: number;
     season_number: number;
     still_path: string;
     vote_average: number;
     vote_count: number;
-    show_id: number;
-    runtime: number;
 }
 interface TVEpisodesGetDetailsCrew {
-    id: number;
-    credit_id: string;
-    name: string;
     department: string;
     job: string;
-    profile_path: null | string;
+    credit_id: string;
     adult: boolean;
     gender: number;
-    known_for_department: string;
+    id: number;
+    profile_path: null | string;
+    name: string;
     original_name: string;
+    known_for_department: string;
     popularity: number;
 }
 interface TVEpisodesGetDetailsGuestStar {
+    character: string;
+    credit_id: string;
+    order: number;
+    adult: boolean;
     id: number;
     name: string;
-    credit_id: string;
-    character: string;
-    order: number;
-    profile_path: string;
-    adult: boolean;
-    gender: number;
     known_for_department: string;
+    profile_path: string;
+    gender: number;
     original_name: string;
     popularity: number;
 }
@@ -2991,6 +2991,7 @@ interface TVSeasonsGetDetailsEpisode {
     still_path: string;
     vote_average: number;
     vote_count: number;
+    show_id: number;
     runtime: number;
 }
 interface TVSeasonsGetDetailsCrew {

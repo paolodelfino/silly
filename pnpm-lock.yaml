@@ -78,8 +78,8 @@ dependencies:
     specifier: 3.3.3
     version: 3.3.3
   tmdb-js-web:
-    specifier: ^1.1.4
-    version: 1.1.4
+    specifier: ^1.1.5
+    version: 1.1.5
   typescript:
     specifier: 5.2.2
     version: 5.2.2
@@ -5060,8 +5060,8 @@ packages:
       any-promise: 1.3.0
     dev: false
 
-  /tmdb-js-web@1.1.4:
-    resolution: {integrity: sha512-ht6tqdkPyHqEEnDdBieOmx6l9VDv0zDJ2VAZwBf/r3vhsXYFZ135SrLqb2vIVIjzDA6lAu7/QuhEcQtezyWUTw==}
+  /tmdb-js-web@1.1.5:
+    resolution: {integrity: sha512-Ej1VapdEdCF/A8yYaERLAfeulk5EHpB0epHksmTXsChGA2pDJgVOdi4zMbECTIRTR0lLmu07eVN4wj2plWDMng==}
     dev: false
 
   /to-regex-range@5.0.1:
