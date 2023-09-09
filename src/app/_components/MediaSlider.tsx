@@ -1,5 +1,6 @@
 "use client";
-import Image from "next/image";
+import { Image } from "@nextui-org/react";
+import NextImage from "next/image";
 import { useRouter } from "next/navigation";
 import "swiper/css";
 import { FreeMode } from "swiper/modules";
@@ -61,6 +62,9 @@ export default function MediaSlider<
               >
                 {entry.poster_path && (
                   <Image
+                    removeWrapper
+                    as={NextImage}
+                    radius="none"
                     loading="eager"
                     width={120}
                     height={180}
