@@ -3,17 +3,7 @@ import { useHotkeys } from "@mantine/hooks";
 import Hls from "hls.js";
 import { useEffect, useRef } from "react";
 
-export default function VideoPlayer({
-  title,
-  playlist,
-  seasonNumber,
-  episodeNumber,
-}: {
-  playlist: string;
-  title: string;
-  seasonNumber?: number;
-  episodeNumber?: number;
-}) {
+export default function VideoPlayer({ playlist }: { playlist: string }) {
   const video = useRef<HTMLVideoElement>(null);
   useEffect(() => {
     if (video.current) {

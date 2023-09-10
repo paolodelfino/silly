@@ -147,12 +147,7 @@ export default function MediaWatch({
       </div>
 
       <div className="px-4 py-0.5">
-        <VideoPlayer
-          playlist={playlist}
-          title={title}
-          seasonNumber={seasonNumber}
-          episodeNumber={episodeNumber}
-        />
+        <VideoPlayer playlist={playlist} />
       </div>
 
       {type == "tv" && (
