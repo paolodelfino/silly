@@ -28,7 +28,12 @@ export default function WatchTrailer({ youtubeKey }: { youtubeKey: string }) {
         Trailer
       </Button>
 
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        size="5xl"
+        placement="center"
+      >
         <ModalContent>
           {(onClose) => (
             <iframe
