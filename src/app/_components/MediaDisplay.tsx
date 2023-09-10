@@ -17,6 +17,10 @@ import {
   Chip,
   Divider,
   Image,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  ScrollShadow,
   Select,
   SelectItem,
   Spacer,
@@ -145,9 +149,23 @@ export default function MediaDisplay({
               Play Film
             </Button>
 
-            <span className="line-clamp-3 text-sm text-slate-400">
-              {data.overview}
-            </span>
+            <Popover placement="bottom" backdrop="blur" showArrow>
+              <PopoverTrigger>
+                <Button
+                  disableRipple
+                  radius="none"
+                  variant="light"
+                  className="whitespace-normal p-0 text-start text-slate-400 text-sm h-max"
+                >
+                  <span className="line-clamp-3">{data.overview}</span>
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent>
+                <ScrollShadow className="max-h-[250px]">
+                  {data.overview}
+                </ScrollShadow>
+              </PopoverContent>
+            </Popover>
           </div>
         </div>
 
