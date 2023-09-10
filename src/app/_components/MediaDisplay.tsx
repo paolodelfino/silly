@@ -82,8 +82,6 @@ export default function MediaDisplay({
           video.official && video.site == "YouTube" && video.type == "Trailer"
       );
 
-      console.log(seasonData.videos);
-
       if (trailer) setTrailer(trailer);
       else if (defaultTrailer) setTrailer(defaultTrailer);
     }
