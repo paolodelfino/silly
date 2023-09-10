@@ -1,6 +1,7 @@
 import BrowserInfo from "@/app/_components/BrowserInfo";
 import { Providers } from "@/app/_components/Providers";
 import type { Metadata } from "next";
+import { Session } from "next-auth";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,15 +16,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  session,
 }: {
   children: React.ReactNode;
+  session: Session;
 }) {
   return (
     <html lang="en" suppressHydrationWarning className="dark">
       <body className="antialiased">
-        <Providers>
+        <Providers session={session}>
           {children}
-
           <BrowserInfo />
         </Providers>
       </body>
