@@ -5,6 +5,7 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
+  Skeleton,
   User,
 } from "@nextui-org/react";
 import { signIn, signOut, useSession } from "next-auth/react";
@@ -52,6 +53,10 @@ export default function BottomNav() {
           </svg>
         )}
       </Button>
+
+      {status == "loading" && (
+        <Skeleton className="w-20 !bg-default-200 rounded-large"></Skeleton>
+      )}
 
       {status == "unauthenticated" && (
         <Button variant="faded" onClick={() => signIn()}>
