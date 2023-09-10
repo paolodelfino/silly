@@ -44,10 +44,22 @@ export default function MediaDisplay({
   const isMovie = "title" in data;
   const isBookmarked = false;
 
-  const trailer = data.videos.results.find(
+  const defaultTrailer = data.videos.results.find(
     (video) =>
       video.official && video.site == "YouTube" && video.type == "Trailer"
   );
+  const [trailer, setTrailer] = useState<
+    MovieDetailsOutput["videos"]["results"][number] | undefined
+  >();
+
+  useEffect(() => {
+    setTrailer(
+      data.videos.results.find(
+        (video) =>
+          video.official && video.site == "YouTube" && video.type == "Trailer"
+      )
+    );
+  }, [setTrailer]);
 
   const [selectedSeason, setSelectedSeason] = useState<number | undefined>(
     isMovie ? undefined : data.seasons[0].season_number
@@ -62,6 +74,20 @@ export default function MediaDisplay({
     getSeason(data.id, selectedSeason).then((season) => setSeasonData(season));
     // @ts-expect-error
   }, [selectedSeason, data.id, isMovie, data.seasons]);
+
+  useEffect(() => {
+    if (seasonData) {
+      const trailer = seasonData.videos.results.find(
+        (video) =>
+          video.official && video.site == "YouTube" && video.type == "Trailer"
+      );
+
+      console.log(seasonData.videos);
+
+      if (trailer) setTrailer(trailer);
+      else if (defaultTrailer) setTrailer(defaultTrailer);
+    }
+  }, [seasonData]);
 
   const actionCount = 2 + (trailer ? 1 : 0);
 

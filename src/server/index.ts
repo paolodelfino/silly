@@ -63,7 +63,10 @@ export const appRouter = router({
         )
         .query(
           async ({ input: { id, season } }) =>
-            await tmdb.v3.tvSeasons.getDetails(id, season, { language: "it" })
+            await tmdb.v3.tvSeasons.getDetails(id, season, {
+              language: "it",
+              append_to_response: ["videos"],
+            })
         ),
     }),
   }),
