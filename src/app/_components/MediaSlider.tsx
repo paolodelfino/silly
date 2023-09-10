@@ -46,12 +46,6 @@ export default function MediaSlider<
             return null;
           }
 
-          console.log(
-            `${entry.title ?? entry.name}: vote_count ${
-              entry.vote_count
-            }, popularity ${entry.popularity}`
-          );
-
           if (
             (entry.vote_count && entry.vote_count < 40) ||
             entry.popularity < 10

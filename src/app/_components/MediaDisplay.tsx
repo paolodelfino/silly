@@ -245,7 +245,7 @@ export default function MediaDisplay({
             }
             onPress={() => {
               navigator.share({
-                title: isMovie ? data.title : data.name,
+                title: document.title,
                 url: window.location.href,
                 text: data.overview,
               });
