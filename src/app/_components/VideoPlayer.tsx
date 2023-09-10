@@ -1,5 +1,4 @@
 "use client";
-import DocumentTitle from "@/app/_components/DocumentTitle";
 import { useHotkeys } from "@mantine/hooks";
 import Hls from "hls.js";
 import { useEffect, useRef } from "react";
@@ -92,24 +91,11 @@ export default function VideoPlayer({
   ]);
 
   return (
-    <>
-      <DocumentTitle
-        title={
-          "Watch " +
-          title +
-          (seasonNumber && episodeNumber
-            ? ` S${seasonNumber} E${episodeNumber}`
-            : "") +
-          " | Silly"
-        }
-      />
-
-      <video
-        onKeyDown={(e) => e.preventDefault()}
-        ref={video}
-        controls
-        className="w-full outline-none aspect-video border-divider border rounded-medium"
-      ></video>
-    </>
+    <video
+      onKeyDown={(e) => e.preventDefault()}
+      ref={video}
+      controls
+      className="w-full outline-none aspect-video border-divider border rounded-medium"
+    ></video>
   );
 }

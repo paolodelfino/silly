@@ -1,15 +1,33 @@
-import DocumentTitle from "@/app/_components/DocumentTitle";
 import MediaDisplay from "@/app/_components/MediaDisplay";
 import { getMovieDetails } from "@/server/actions";
+import { Metadata } from "next";
 
-export default async function DisplayPage({
-  params: { type, id },
-}: {
+type Props = {
   params: {
     type: string;
     id: string;
   };
-}) {
+};
+
+export async function generateMetadata({
+  params: { id, type },
+}: Props): Promise<Metadata> {
+  const realType = type == "movie" ? type : type == "tv" ? type : undefined;
+  const realId = Number(id);
+
+  if (!realType || isNaN(realId)) {
+    return {};
+  }
+
+  const data = await getMovieDetails(realType, realId);
+
+  return {
+    title: `${"title" in data ? data.title : data.name} | Silly`,
+    description: data.overview,
+  };
+}
+
+export default async function DisplayPage({ params: { type, id } }: Props) {
   const realType = type == "movie" ? type : type == "tv" ? type : undefined;
   if (!realType) {
     return "Illegal type (must be 'movie' | 'tv')";
@@ -22,13 +40,5 @@ export default async function DisplayPage({
 
   const data = await getMovieDetails(realType, realId);
 
-  return (
-    <>
-      <DocumentTitle
-        title={`${"title" in data ? data.title : data.name} | Silly`}
-      />
-
-      <MediaDisplay data={data} />
-    </>
-  );
+  return <MediaDisplay data={data} />;
 }

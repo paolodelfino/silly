@@ -1,14 +1,34 @@
 import MediaWatch from "@/app/_components/MediaWatch";
+import { getMovieDetails } from "@/server/actions";
+import { Metadata } from "next";
 
-export default function WatchPage({
-  params: { type, movieId, title },
-}: {
+type Props = {
   params: {
     type: string;
     movieId: string;
     title: string;
   };
-}) {
+};
+
+export async function generateMetadata({
+  params: { type, movieId, title },
+}: Props): Promise<Metadata> {
+  const realType = type == "movie" ? type : type == "tv" ? type : undefined;
+  const realMovieId = Number(movieId);
+
+  if (!realType || realType == "tv" || isNaN(realMovieId)) {
+    return {};
+  }
+
+  const data = await getMovieDetails(realType, realMovieId);
+
+  return {
+    title: `Watch ${decodeURIComponent(title)} | Silly`,
+    description: data.overview,
+  };
+}
+
+export default function WatchPage({ params: { type, movieId, title } }: Props) {
   const realType = type == "movie" ? type : type == "tv" ? type : undefined;
   if (!realType) {
     return "Illegal type (must be 'movie' | 'tv')";
