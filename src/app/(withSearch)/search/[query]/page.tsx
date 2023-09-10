@@ -1,3 +1,4 @@
+import DocumentTitle from "@/app/_components/DocumentTitle";
 import MediaSlider from "@/app/_components/MediaSlider";
 import { trpcServer } from "@/app/_trpc/serverClient";
 
@@ -8,13 +9,18 @@ export default async function SearchPage({
     query: string;
   };
 }) {
+  const decodedQuery = decodeURIComponent(query);
   const searchResult = await trpcServer.search({
-    query: decodeURIComponent(query),
+    query: decodedQuery,
   });
 
   return (
-    <div className="flex flex-col gap-4 p-1 mb-4">
-      <MediaSlider title="Search Result" data={searchResult} />
-    </div>
+    <>
+      <DocumentTitle title={`Search for ${decodedQuery} | Silly`} />
+
+      <div className="flex flex-col gap-4 p-1 mb-4">
+        <MediaSlider title="Search Result" data={searchResult} />
+      </div>
+    </>
   );
 }

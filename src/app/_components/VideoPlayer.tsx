@@ -1,5 +1,6 @@
 "use client";
-import { useDocumentTitle, useHotkeys } from "@mantine/hooks";
+import DocumentTitle from "@/app/_components/DocumentTitle";
+import { useHotkeys } from "@mantine/hooks";
 import Hls from "hls.js";
 import { useEffect, useRef } from "react";
 
@@ -14,13 +15,6 @@ export default function VideoPlayer({
   seasonNumber?: number;
   episodeNumber?: number;
 }) {
-  const formattedTitle =
-    title +
-    (seasonNumber && episodeNumber
-      ? ` S${seasonNumber} E${episodeNumber}`
-      : "");
-  useDocumentTitle(`${formattedTitle} | Silly`);
-
   const video = useRef<HTMLVideoElement>(null);
   useEffect(() => {
     if (video.current) {
@@ -98,11 +92,24 @@ export default function VideoPlayer({
   ]);
 
   return (
-    <video
-      onKeyDown={(e) => e.preventDefault()}
-      ref={video}
-      controls
-      className="w-full outline-none aspect-video border-divider border rounded-medium"
-    ></video>
+    <>
+      <DocumentTitle
+        title={
+          "Watch " +
+          title +
+          (seasonNumber && episodeNumber
+            ? ` S${seasonNumber} E${episodeNumber}`
+            : "") +
+          " | Silly"
+        }
+      />
+
+      <video
+        onKeyDown={(e) => e.preventDefault()}
+        ref={video}
+        controls
+        className="w-full outline-none aspect-video border-divider border rounded-medium"
+      ></video>
+    </>
   );
 }

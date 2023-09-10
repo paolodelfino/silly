@@ -1,3 +1,4 @@
+import DocumentTitle from "@/app/_components/DocumentTitle";
 import MediaDisplay from "@/app/_components/MediaDisplay";
 import { getMovieDetails } from "@/server/actions";
 
@@ -21,5 +22,13 @@ export default async function DisplayPage({
 
   const data = await getMovieDetails(realType, realId);
 
-  return <MediaDisplay data={data} />;
+  return (
+    <>
+      <DocumentTitle
+        title={`${"title" in data ? data.title : data.name} | Silly`}
+      />
+
+      <MediaDisplay data={data} />
+    </>
+  );
 }
