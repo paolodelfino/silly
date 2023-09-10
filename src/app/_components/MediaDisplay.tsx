@@ -155,9 +155,11 @@ export default function MediaDisplay({
                   disableRipple
                   radius="none"
                   variant="light"
-                  className="whitespace-normal p-0 text-start text-slate-400 text-sm h-max"
+                  className="whitespace-normal p-0 h-max max-w-max"
                 >
-                  <span className="line-clamp-3">{data.overview}</span>
+                  <span className="line-clamp-3 text-slate-400 text-sm text-start w-full">
+                    {data.overview}
+                  </span>
                 </Button>
               </PopoverTrigger>
               <PopoverContent>
