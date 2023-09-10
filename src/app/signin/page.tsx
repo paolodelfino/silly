@@ -22,7 +22,7 @@ export default function SignInPage({
     if (status == "authenticated" && callbackUrl) {
       redirect(Array.isArray(callbackUrl) ? callbackUrl[0] : callbackUrl);
     }
-  }, [status]);
+  }, [status, callbackUrl]);
 
   return (
     <center className="max-w-lg mx-auto">

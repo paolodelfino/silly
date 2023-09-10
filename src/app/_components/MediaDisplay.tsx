@@ -59,7 +59,7 @@ export default function MediaDisplay({
           video.official && video.site == "YouTube" && video.type == "Trailer"
       )
     );
-  }, [setTrailer]);
+  }, [setTrailer, data.videos.results]);
 
   const [selectedSeason, setSelectedSeason] = useState<number | undefined>(
     isMovie ? undefined : data.seasons[0].season_number
@@ -85,7 +85,7 @@ export default function MediaDisplay({
       if (trailer) setTrailer(trailer);
       else if (defaultTrailer) setTrailer(defaultTrailer);
     }
-  }, [seasonData]);
+  }, [seasonData, defaultTrailer]);
 
   const actionCount = 2 + (trailer ? 1 : 0);
 
