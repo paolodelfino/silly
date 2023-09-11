@@ -1,7 +1,11 @@
 import { tmdb } from "@/app/_lib/tmdb/client";
+import { sql } from "@vercel/postgres";
+import { drizzle } from "drizzle-orm/vercel-postgres";
 import { get_playlist, search_movie } from "sc-wrapper";
 import { z } from "zod";
 import { publicProcedure, router } from "./trpc";
+
+export const db = drizzle(sql);
 
 export const appRouter = router({
   tmdb: router({
