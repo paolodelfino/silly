@@ -1,12 +1,12 @@
 "use client";
 import {
+  Avatar,
   Button,
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
   Skeleton,
-  User,
 } from "@nextui-org/react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
@@ -65,17 +65,13 @@ export default function BottomNav() {
       )}
 
       {status == "authenticated" && (
-        <Dropdown placement="bottom-start">
+        <Dropdown placement="top-end">
           <DropdownTrigger>
-            <User
-              as="button"
-              avatarProps={{
-                isBordered: true,
-                src: data.user?.image ?? undefined,
-              }}
-              className="transition-transform"
-              description={data.user?.email}
-              name={data.user?.name}
+            <Avatar
+              as={"button"}
+              isBordered
+              src={data.user?.image ?? undefined}
+              showFallback
             />
           </DropdownTrigger>
           <DropdownMenu
@@ -84,8 +80,8 @@ export default function BottomNav() {
             disabledKeys={["settings"]}
           >
             <DropdownItem key="profile" className="h-14 gap-2">
-              <p className="font-bold">Signed in as</p>
               <p className="font-bold">{data.user?.name}</p>
+              <p className="text-tiny text-slate-400">{data.user?.email}</p>
             </DropdownItem>
             <DropdownItem key="settings">My Settings</DropdownItem>
             <DropdownItem key="logout" color="danger" onPress={() => signOut()}>
