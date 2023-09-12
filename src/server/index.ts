@@ -1,6 +1,8 @@
 import { auth, currentUser } from "@/app/_lib/auth";
 import { tmdb } from "@/app/_lib/tmdb/client";
+import { users } from "@/db/schema";
 import { sql } from "@vercel/postgres";
+import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/vercel-postgres";
 import { get_playlist, search_movie } from "sc-wrapper";
 import { z } from "zod";
@@ -123,6 +125,70 @@ export const appRouter = router({
         const user = await currentUser(session?.user.id!);
         return user.mylist;
       }),
+      add: protectedProcedure
+        .input(
+          z.object({
+            id: z.number(),
+            type: z.union([z.literal("movie"), z.literal("tv")]),
+          })
+        )
+        .mutation(async ({ input: { id, type } }) => {
+          const session = await auth();
+          const user = await currentUser(session?.user.id!);
+
+          await db
+            .update(users)
+            .set({
+              mylist: [
+                ...user.mylist,
+                {
+                  id,
+                  type,
+                },
+              ],
+            })
+            .where(eq(users.id, user.id));
+        }),
+      remove: protectedProcedure
+        .input(
+          z.object({
+            id: z.number(),
+            type: z.union([z.literal("movie"), z.literal("tv")]),
+          })
+        )
+        .mutation(async ({ input: { id, type } }) => {
+          const session = await auth();
+          const user = await currentUser(session?.user.id!);
+
+          user.mylist = user.mylist.filter((entry) => {
+            if (entry.type == type && entry.id == id) {
+              return false;
+            }
+            return true;
+          });
+
+          await db
+            .update(users)
+            .set({
+              mylist: user.mylist,
+            })
+            .where(eq(users.id, user.id));
+        }),
+      exists: protectedProcedure
+        .input(
+          z.object({
+            id: z.number(),
+            type: z.union([z.literal("movie"), z.literal("tv")]),
+          })
+        )
+        .mutation(async ({ input: { id, type } }) => {
+          const session = await auth();
+          const user = await currentUser(session?.user.id!);
+
+          return Boolean(
+            user.mylist.find((entry) => entry.id == id && entry.type == type)
+          );
+        }),
     }),
   }),
 });
