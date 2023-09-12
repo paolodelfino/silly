@@ -1,8 +1,10 @@
 "use client";
+import { useHotkeys } from "@mantine/hooks";
 import { Button, Spacer, Spinner } from "@nextui-org/react";
 import { useQuery } from "@tanstack/react-query";
 import { getProviders, signIn, useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import Link from "next/link";
+import { redirect, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function SignInPage({
@@ -10,23 +12,41 @@ export default function SignInPage({
 }: {
   searchParams: Record<string, string | string[] | undefined>;
 }) {
+  const router = useRouter();
+
   const { data, isLoading, isError } = useQuery({
     queryKey: ["providers"],
     queryFn: () => getProviders(),
   });
 
-  const callbackUrl = searchParams.callbackUrl;
+  const callbackUrl = Array.isArray(searchParams.callbackUrl)
+    ? searchParams.callbackUrl[0]
+    : searchParams.callbackUrl;
   const { status } = useSession();
 
   useEffect(() => {
     if (status == "authenticated" && callbackUrl) {
-      redirect(Array.isArray(callbackUrl) ? callbackUrl[0] : callbackUrl);
+      redirect(callbackUrl);
     }
   }, [status, callbackUrl]);
 
+  useHotkeys([["escape", () => callbackUrl && router.replace(callbackUrl)]]);
+
   return (
     <center className="max-w-lg mx-auto">
-      <Spacer y={20} />
+      <div className="flex justify-start pl-4 py-4">
+        <Button
+          variant="faded"
+          size="sm"
+          as={Link}
+          href={callbackUrl}
+          isDisabled={!callbackUrl}
+        >
+          Back
+        </Button>
+      </div>
+
+      <Spacer y={16} />
 
       <h1 className="text-white text-2xl tracking-wide font-bold leading-relaxed">
         Welcome Back!
