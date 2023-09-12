@@ -1,6 +1,7 @@
 import type { AdapterAccount } from "@auth/core/adapters";
 import {
   integer,
+  jsonb,
   pgTable,
   primaryKey,
   text,
@@ -13,6 +14,15 @@ export const users = pgTable("user", {
   email: text("email").notNull(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
+  mylist: jsonb("mylist")
+    .$type<
+      {
+        id: number;
+        type: "movie" | "tv";
+      }[]
+    >()
+    .default([])
+    .notNull(),
 });
 
 export const accounts = pgTable(
