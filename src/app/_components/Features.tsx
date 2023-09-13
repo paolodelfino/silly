@@ -14,6 +14,7 @@ export default function Features() {
 
   return (
     <Drawer.Root
+      experimentalSafariThemeAnimation
       shouldScaleBackground
       snapPoints={[0.8, 1]}
       activeSnapPoint={snap}
