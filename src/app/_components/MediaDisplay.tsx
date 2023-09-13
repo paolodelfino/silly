@@ -46,10 +46,15 @@ export default function MediaDisplay({
 
   const isMovie = "title" in data;
 
-  const isBookmarked = trpc.user.mylist.exists.useQuery({
-    id: data.id,
-    type: isMovie ? "movie" : "tv",
-  });
+  const isBookmarked = trpc.user.mylist.exists.useQuery(
+    {
+      id: data.id,
+      type: isMovie ? "movie" : "tv",
+    },
+    {
+      retry: false,
+    }
+  );
   const addBookmark = trpc.user.mylist.add.useMutation({
     onSettled() {
       isBookmarked.refetch();
