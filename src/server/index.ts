@@ -181,7 +181,7 @@ export const appRouter = router({
             type: z.union([z.literal("movie"), z.literal("tv")]),
           })
         )
-        .mutation(async ({ input: { id, type } }) => {
+        .query(async ({ input: { id, type } }) => {
           const session = await auth();
           const user = await currentUser(session?.user.id!);
 
