@@ -8,9 +8,9 @@ export async function middleware(request: NextRequest) {
     req: request,
   });
   if (!token) {
-    return NextResponse.redirect(new URL("/home", request.url));
+    return NextResponse.redirect(new URL(`/signin`, request.url));
   }
-  return NextResponse.next();
+  return NextResponse.next(request);
 }
 
 export const config = { matcher: ["/mylist"] };
