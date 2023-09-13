@@ -1,7 +1,7 @@
 "use client";
 import { RainbowSvg } from "@/app/_components/RainbowSvg";
 import { Save } from "@/app/_components/illustrations/Save";
-import { Button, Spacer, cn } from "@nextui-org/react";
+import { Button, Spacer, Tooltip, cn } from "@nextui-org/react";
 import { useState } from "react";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -19,16 +19,18 @@ export default function Features() {
       activeSnapPoint={snap}
       setActiveSnapPoint={setSnap}
     >
-      <Drawer.Trigger asChild>
-        <Button variant="light" size="sm" isIconOnly radius="full">
-          <RainbowSvg>
-            <path
-              d="M21.947 9.179a1.001 1.001 0 0 0-.868-.676l-5.701-.453-2.467-5.461a.998.998 0 0 0-1.822-.001L8.622 8.05l-5.701.453a1 1 0 0 0-.619 1.713l4.213 4.107-1.49 6.452a1 1 0 0 0 1.53 1.057L12 18.202l5.445 3.63a1.001 1.001 0 0 0 1.517-1.106l-1.829-6.4 4.536-4.082c.297-.268.406-.686.278-1.065z"
-              fill="white"
-            ></path>
-          </RainbowSvg>
-        </Button>
-      </Drawer.Trigger>
+      <Tooltip showArrow defaultOpen content="See features" placement="bottom">
+        <Drawer.Trigger asChild>
+          <Button variant="light" size="sm" isIconOnly radius="full">
+            <RainbowSvg>
+              <path
+                d="M21.947 9.179a1.001 1.001 0 0 0-.868-.676l-5.701-.453-2.467-5.461a.998.998 0 0 0-1.822-.001L8.622 8.05l-5.701.453a1 1 0 0 0-.619 1.713l4.213 4.107-1.49 6.452a1 1 0 0 0 1.53 1.057L12 18.202l5.445 3.63a1.001 1.001 0 0 0 1.517-1.106l-1.829-6.4 4.536-4.082c.297-.268.406-.686.278-1.065z"
+                fill="white"
+              ></path>
+            </RainbowSvg>
+          </Button>
+        </Drawer.Trigger>
+      </Tooltip>
       <Drawer.Overlay className="fixed inset-0 bg-black/40" />
       <Drawer.Portal>
         <Drawer.Content className="fixed flex outline-none flex-col bg-content1 text-content1-foreground rounded-t-large bottom-0 left-0 right-0 h-full max-h-[97%] mx-[-1px]">
