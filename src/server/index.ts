@@ -1,6 +1,7 @@
 import { auth, currentUser } from "@/app/_lib/auth";
 import { tmdb } from "@/app/_lib/tmdb/client";
 import { users } from "@/db/schema";
+import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import { sql } from "@vercel/postgres";
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/vercel-postgres";
@@ -194,3 +195,8 @@ export const appRouter = router({
 });
 
 export type AppRouter = typeof appRouter;
+
+type RouterInput = inferRouterInputs<AppRouter>;
+type RouterOutput = inferRouterOutputs<AppRouter>;
+
+export type UserMylistGetOutput = RouterOutput["user"]["mylist"]["get"];
