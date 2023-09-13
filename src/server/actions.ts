@@ -27,7 +27,7 @@ export async function getSeason(id: number, season: number) {
 export async function fetchMylist(userId: string, page: number) {
   const user = await currentUser(userId);
 
-  const elPerPage = 1;
+  const elPerPage = 3;
   const toFetch = user.mylist.slice((page - 1) * elPerPage, page * elPerPage);
 
   const results = await Promise.all(
@@ -37,9 +37,7 @@ export async function fetchMylist(userId: string, page: number) {
   const data = {
     page,
     results,
-    total_pages:
-      Math.floor(user.mylist.length / elPerPage) +
-      (user.mylist.length % elPerPage),
+    total_pages: Math.ceil(user.mylist.length / elPerPage),
     total_results: user.mylist.length,
   };
   return data;
