@@ -23,6 +23,7 @@ export const authOptions: AuthOptions = {
   pages: {
     signIn: "/signin",
   },
+  secret: env.NEXTAUTH_SECRET,
 };
 
 export function auth() {

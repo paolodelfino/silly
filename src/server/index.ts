@@ -198,5 +198,3 @@ export type AppRouter = typeof appRouter;
 
 type RouterInput = inferRouterInputs<AppRouter>;
 type RouterOutput = inferRouterOutputs<AppRouter>;
-
-export type UserMylistGetOutput = RouterOutput["user"]["mylist"]["get"];

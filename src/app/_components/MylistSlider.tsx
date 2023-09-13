@@ -1,16 +1,15 @@
 "use client";
 import MediaSlider from "@/app/_components/MediaSlider";
-import { UserMylistGetOutput } from "@/server";
 import { fetchMylist } from "@/server/actions";
 import { Spinner } from "@nextui-org/react";
 import { useQuery } from "@tanstack/react-query";
 
-export default function MylistSlider({ data }: { data: UserMylistGetOutput }) {
+export default function MylistSlider({ userId }: { userId: string }) {
   const mylist = useQuery({
     queryKey: ["mylist"],
     queryFn: async () =>
       /* TODO: caching problem due to Next.js caching */ await fetchMylist(
-        data,
+        userId,
         1
       ),
   });
