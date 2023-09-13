@@ -3,7 +3,7 @@ import { Button, Card, CardHeader, Image } from "@nextui-org/react";
 import NextImage from "next/image";
 import Link from "next/link";
 import "swiper/css";
-import { FreeMode, Mousewheel } from "swiper/modules";
+import { FreeMode } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 export default function MediaSlider<
@@ -39,7 +39,7 @@ export default function MediaSlider<
         spaceBetween={8}
         slidesPerView={"auto"}
         grabCursor
-        modules={[FreeMode, Mousewheel]}
+        modules={[FreeMode]}
         freeMode
       >
         {data.total_results == 0 && (
