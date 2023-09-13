@@ -18,7 +18,7 @@ export default function MylistSlider({ userId }: { userId: string }) {
     return <Spinner />;
   }
 
-  if (!mylist.data) {
+  if (!mylist.data || mylist.data.total_results == 0) {
     return null;
   }
 
