@@ -52,7 +52,12 @@ export default function MediaDisplay({
       type: isMovie ? "movie" : "tv",
     },
     {
-      retry: false,
+      retry(failureCount, error) {
+        if (error.data?.code == "UNAUTHORIZED") {
+          return false;
+        }
+        return true;
+      },
     }
   );
   const addBookmark = trpc.user.mylist.add.useMutation({
