@@ -54,7 +54,7 @@ export default function MylistGrid({ userId }: { userId: string }) {
     return (
       <div className="max-w-3xl mx-auto p-6">
         <h1 className="text-large font-semibold px-2 text-cente">
-          Your list is empty, browse and see what's your interest.
+          Your list is empty, browse and see what&apos;s your interest.
         </h1>
 
         <Spacer y={10} />
