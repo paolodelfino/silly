@@ -4,6 +4,7 @@ import { useHotkeys } from "@mantine/hooks";
 import { Button, Spacer, Spinner } from "@nextui-org/react";
 import { useQuery } from "@tanstack/react-query";
 import { getProviders, signIn, useSession } from "next-auth/react";
+import { RedirectType } from "next/dist/client/components/redirect";
 import Link from "next/link";
 import { redirect, useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -27,7 +28,7 @@ export default function SignInPage({
 
   useEffect(() => {
     if (status == "authenticated" && callbackUrl) {
-      redirect(callbackUrl);
+      redirect(callbackUrl, RedirectType.replace);
     }
   }, [status, callbackUrl]);
 
@@ -39,8 +40,7 @@ export default function SignInPage({
         <Button
           variant="faded"
           size="sm"
-          as={Link}
-          href={callbackUrl}
+          onPress={() => callbackUrl && router.replace(callbackUrl)}
           isDisabled={!callbackUrl}
         >
           Back
