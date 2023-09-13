@@ -7,11 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 export default function MylistSlider({ userId }: { userId: string }) {
   const mylist = useQuery({
     queryKey: ["mylist"],
-    queryFn: async () =>
-      /* TODO: caching problem due to Next.js caching */ await fetchMylist(
-        userId,
-        1
-      ),
+    queryFn: async () => await fetchMylist(userId, 1),
   });
 
   if (mylist.isLoading) {
