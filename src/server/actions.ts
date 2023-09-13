@@ -1,5 +1,6 @@
 "use server";
 import { trpcServer } from "@/app/_trpc/serverClient";
+import { SelectUser } from "@/db";
 
 export async function getMovieDetails(type: "movie" | "tv", id: number) {
   return type == "movie"
@@ -21,4 +22,23 @@ export async function getMoviePlaylist(
 
 export async function getSeason(id: number, season: number) {
   return await trpcServer.tmdb.details.season({ id, season });
+}
+
+export async function fetchMylist(user: SelectUser, page: number) {
+  const elPerPage = 20;
+  const toFetch = user.mylist.slice((page - 1) * elPerPage, page * elPerPage);
+
+  const results = await Promise.all(
+    toFetch.map(async ({ id, type }) => await getMovieDetails(type, id))
+  );
+
+  const data = {
+    page,
+    results,
+    total_pages:
+      Math.floor(user.mylist.length / elPerPage) +
+      (user.mylist.length % elPerPage),
+    total_results: user.mylist.length,
+  };
+  return data;
 }

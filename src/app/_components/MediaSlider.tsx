@@ -1,5 +1,5 @@
 "use client";
-import { Card, CardHeader, Image } from "@nextui-org/react";
+import { Button, Card, CardHeader, Image } from "@nextui-org/react";
 import NextImage from "next/image";
 import Link from "next/link";
 import "swiper/css";
@@ -22,10 +22,18 @@ export default function MediaSlider<
     total_pages: number;
     total_results: number;
   }
->({ title, data }: { title: string; data: T }) {
+>({ title, seeAll, data }: { title: string; seeAll?: string; data: T }) {
   return (
     <div className="space-y-1">
-      <h1 className="text-lg font-medium mb-1 ml-1">{title}</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-lg font-medium mb-1 ml-1">{title}</h1>
+        {seeAll && (
+          <Button variant="light" color="danger" as={Link} href={seeAll}>
+            See all
+          </Button>
+        )}
+      </div>
+
       <Swiper
         mousewheel={true}
         spaceBetween={8}
@@ -88,31 +96,6 @@ export default function MediaSlider<
                   />
                 )}
               </Card>
-              {/* <div
-                onClick={() => {
-                  router.push(`/display/${type}/${entry.id}`);
-                }}
-                className="w-[120px] h-[180px] flex justify-center items-center bg-gray-800 rounded overflow-hidden"
-              >
-                {entry.poster_path && (
-                  <Image
-                    removeWrapper
-                    as={NextImage}
-                    radius="none"
-                    loading="eager"
-                    width={120}
-                    height={180}
-                    src={`https://image.tmdb.org/t/p/original/${entry.poster_path}`}
-                    alt={entry.title ?? entry.name!}
-                    className="object-cover"
-                  />
-                )}
-                {!entry.poster_path && (
-                  <span className="line-clamp-3 text-center">
-                    {entry.title ?? entry.name}
-                  </span>
-                )}
-              </div> */}
             </SwiperSlide>
           );
         })}
