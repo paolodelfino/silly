@@ -23,7 +23,9 @@ export default function SignInPage({
 
   const callbackUrl = Array.isArray(searchParams.callbackUrl)
     ? searchParams.callbackUrl[0]
-    : searchParams.callbackUrl;
+    : searchParams.callbackUrl
+    ? searchParams.callbackUrl
+    : "/";
   const { status } = useSession();
 
   useEffect(() => {
@@ -32,7 +34,7 @@ export default function SignInPage({
     }
   }, [status, callbackUrl]);
 
-  useHotkeys([["escape", () => callbackUrl && router.replace(callbackUrl)]]);
+  useHotkeys([["escape", () => router.replace(callbackUrl)]]);
 
   return (
     <center className="max-w-lg mx-auto">
@@ -40,8 +42,7 @@ export default function SignInPage({
         <Button
           variant="faded"
           size="sm"
-          onPress={() => callbackUrl && router.replace(callbackUrl)}
-          isDisabled={!callbackUrl}
+          onPress={() => router.replace(callbackUrl)}
         >
           Back
         </Button>
