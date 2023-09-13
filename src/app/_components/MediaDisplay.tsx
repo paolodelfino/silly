@@ -27,6 +27,7 @@ import {
   Tab,
   Tabs,
 } from "@nextui-org/react";
+import { signIn, useSession } from "next-auth/react";
 import NextImage from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -40,6 +41,7 @@ export default function MediaDisplay({
   data: MovieDetailsOutput | TvShowDetailsOutput;
 }) {
   const router = useRouter();
+  const session = useSession();
 
   const isMovie = "title" in data;
   const isBookmarked = false;
@@ -209,6 +211,11 @@ export default function MediaDisplay({
           }}
         >
           <Button
+            onPress={() => {
+              if (session.status != "authenticated") {
+                signIn();
+              }
+            }}
             startContent={
               isBookmarked ? (
                 <svg
@@ -243,7 +250,6 @@ export default function MediaDisplay({
               )
             }
             variant="light"
-            isDisabled
           >
             List
           </Button>

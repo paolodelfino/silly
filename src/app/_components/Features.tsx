@@ -93,7 +93,7 @@ export default function Features() {
                     <div>
                       <h2 className="text-medium font-semibold">Mylist</h2>
                       <p className="text-slate-400 text-small">
-                        You can save movies and tv shows in your mylist section
+                        Save movies and tv shows in a list.
                       </p>
                     </div>
                   </div>
