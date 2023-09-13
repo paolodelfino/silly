@@ -1,4 +1,5 @@
 "use client";
+import Features from "@/app/_components/Features";
 import { useHotkeys } from "@mantine/hooks";
 import { Button, Spacer, Spinner } from "@nextui-org/react";
 import { useQuery } from "@tanstack/react-query";
@@ -34,7 +35,7 @@ export default function SignInPage({
 
   return (
     <center className="max-w-lg mx-auto">
-      <div className="flex justify-start pl-4 py-4">
+      <div className="flex justify-between px-4 py-4 relative">
         <Button
           variant="faded"
           size="sm"
@@ -44,6 +45,8 @@ export default function SignInPage({
         >
           Back
         </Button>
+
+        <Features />
       </div>
 
       <Spacer y={16} />

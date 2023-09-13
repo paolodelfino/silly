@@ -45,7 +45,7 @@
     "tmdb-js-web": "^1.1.5",
     "typescript": "5.2.2",
     "ua-parser-js": "^1.0.35",
-    "vaul": "^0.4.0",
+    "vaul": "^0.6.0",
     "zod": "^3.22.2",
     "zustand": "^4.4.1"
   },

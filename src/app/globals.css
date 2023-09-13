@@ -6,4 +6,7 @@
   body {
     @apply select-none overscroll-none;
   }
+  .text-rainbow {
+    @apply bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400 text-transparent bg-clip-text animate-text;
+  }
 }
