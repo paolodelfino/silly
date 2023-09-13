@@ -381,11 +381,11 @@ export default function MediaDisplay({
                   const minutes = episode.runtime % 60;
 
                   return (
-                    <div className="flex flex-col gap-3" key={episode.id}>
-                      <div
-                        className="flex gap-4"
-                        key={`${data.name}-${episode.season_number}-${episode.id}`}
-                      >
+                    <div
+                      className="flex flex-col gap-3"
+                      key={`${data.name}-${episode.season_number}-${episode.id}`}
+                    >
+                      <div className="flex gap-4">
                         <Card
                           className="w-[185px] h-[104px] shrink-0"
                           radius="md"
