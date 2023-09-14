@@ -1,4 +1,4 @@
-import MylistDisplay from "@/app/_components/MylistDisplay";
+import MylistDisplay from "@/app/_components/pages/MylistDisplay";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
