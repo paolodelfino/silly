@@ -42,3 +42,10 @@ export async function fetchMylist(userId: string, page: number) {
   };
   return data;
 }
+
+export async function existsInMylist(input: {
+  id: number;
+  type: "movie" | "tv";
+}) {
+  return await trpcServer.user.mylist.exists(input);
+}

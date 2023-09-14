@@ -38,7 +38,5 @@ export default async function DisplayPage({ params: { type, id } }: Props) {
     return "Id is not a number";
   }
 
-  const data = await getMovieDetails(realType, realId);
-
-  return <MediaDisplay data={data} />;
+  return <MediaDisplay id={realId} type={realType} />;
 }

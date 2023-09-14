@@ -1,4 +1,7 @@
-import { SeasonDetailsOutput, TvShowDetailsOutput } from "@/app/_trpc/types";
+import {
+  TmdbDetailsSeasonOutput,
+  TmdbDetailsTvShowOutput,
+} from "@/app/_trpc/types";
 
 export const domain = () =>
   process.env.NODE_ENV == "development"
@@ -6,8 +9,8 @@ export const domain = () =>
     : "https://sillymovie.vercel.app";
 
 export function calcCanBackForward(
-  seasons: TvShowDetailsOutput["seasons"],
-  currentSeason: SeasonDetailsOutput,
+  seasons: TmdbDetailsTvShowOutput["seasons"],
+  currentSeason: TmdbDetailsSeasonOutput,
   episodeIndex: number
 ): [boolean | "bySeason", boolean | "bySeason"] {
   let seasonIndex = -1;

@@ -1,7 +1,7 @@
 "use client";
 import VideoPlayer from "@/app/_components/VideoPlayer";
 import { calcCanBackForward } from "@/app/_lib/utils";
-import { PlaylistOutput, TvShowDetailsOutput } from "@/app/_trpc/types";
+import { PlaylistOutput, TmdbDetailsTvShowOutput } from "@/app/_trpc/types";
 import { getMovieDetails, getMoviePlaylist, getSeason } from "@/server/actions";
 import { useHotkeys } from "@mantine/hooks";
 import { Button, ButtonGroup, Spinner } from "@nextui-org/react";
@@ -71,7 +71,7 @@ export default function MediaWatch({
       if (type != "tv" || backSeason == undefined || forwardSeason == undefined)
         return;
 
-      const tvShow = data as TvShowDetailsOutput;
+      const tvShow = data as TmdbDetailsTvShowOutput;
 
       getSeason(movieId, backSeason).then((season) => {
         let episodeIndex = -1;
