@@ -9,7 +9,7 @@ export default function MylistDisplay() {
 
   return (
     <div>
-      <div className="flex justify-between px-4 py-4 relative items-center border-b border-divider">
+      <div className="flex justify-between px-4 py-4 bg-background/90 z-20 backdrop-blur items-center border-b border-divider sticky top-0">
         <BackHome
           className="p-0"
           icon={
