@@ -12,7 +12,7 @@ export default function MylistSlider({ userId }: { userId: string }) {
   });
 
   if (mylist.isLoading) {
-    return <MediaSliderSkeleton seeAll/>;
+    return <MediaSliderSkeleton titleWidth={50} seeAll />;
   }
 
   if (!mylist.data || mylist.data.total_results == 0) {
