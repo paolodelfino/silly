@@ -1,5 +1,6 @@
 import MediaSlider from "@/app/_components/MediaSlider";
 import { trpcServer } from "@/app/_trpc/serverClient";
+import { Metadata } from "next";
 
 type Props = {
   params: {
@@ -7,11 +8,14 @@ type Props = {
   };
 };
 
-export async function generateMetadata({ params: { query } }: Props) {
+export async function generateMetadata({
+  params: { query },
+}: Props): Promise<Metadata> {
   const decodedQuery = decodeURIComponent(query);
 
   return {
     title: `Search for ${decodedQuery} | Silly`,
+    description: "Search for titles, people",
   };
 }
 
