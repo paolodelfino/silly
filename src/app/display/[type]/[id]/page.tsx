@@ -1,4 +1,4 @@
-import MediaDisplay from "@/app/_components/MediaDisplay";
+import MediaDisplay from "@/app/_components/pages/MediaDisplay";
 import { getMovieDetails } from "@/server/actions";
 import { Metadata } from "next";
 
