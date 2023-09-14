@@ -1,12 +1,14 @@
 "use client";
 import VideoPlayer from "@/app/_components/VideoPlayer";
 import { calcCanBackForward } from "@/app/_lib/utils";
-import { PlaylistOutput, TmdbDetailsTvShowOutput } from "@/app/_trpc/types";
-import { getMovieDetails, getMoviePlaylist, getSeason } from "@/server/actions";
+import { trpc } from "@/app/_trpc/client";
+import { TmdbDetailsTvShowOutput } from "@/app/_trpc/types";
+import { getMovieDetails, getSeason } from "@/server/actions";
 import { useHotkeys } from "@mantine/hooks";
-import { Button, ButtonGroup, Spinner } from "@nextui-org/react";
+import { Button, ButtonGroup, Skeleton } from "@nextui-org/react";
+import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
 
 export default function MediaWatch({
   type,
@@ -40,8 +42,11 @@ export default function MediaWatch({
 
   useHotkeys([["escape", () => router.push(backUrl)]]);
 
-  const [playlist, setPlaylist] = useState<PlaylistOutput>();
-  const [isLoading, setIsLoading] = useState(true);
+  const playlist = trpc.playlist.useQuery({
+    title,
+    seasonNumber,
+    episodeNumber,
+  });
 
   let backSeason: number | undefined,
     backEpisode: number | undefined,
@@ -54,86 +59,62 @@ export default function MediaWatch({
     forwardEpisode = canForward == "bySeason" ? 1 : episodeNumber + 1;
   }
 
-  let backCanBack = useRef<boolean | "bySeason">(false);
-  let backCanForward = useRef<boolean | "bySeason">(false);
-  let forwardCanBack = useRef<boolean | "bySeason">(false);
-  let forwardCanForward = useRef<boolean | "bySeason">(false);
+  const tvShowDetails = useQuery({
+    queryKey: ["tvshow-details"],
+    queryFn: async () =>
+      (await getMovieDetails(type, movieId)) as TmdbDetailsTvShowOutput,
+    enabled: type == "tv",
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
 
-  useEffect(() => {
-    getMoviePlaylist(title, seasonNumber, episodeNumber).then((playlist) => {
-      setPlaylist(playlist);
-      setIsLoading(false);
-    });
+  const backCan = useQuery({
+    queryKey: ["back-can"],
+    queryFn: async () => {
+      const season = await getSeason(movieId, backSeason!);
 
-    if (type != "tv") return;
+      let episodeIndex = -1;
+      for (const episode of season.episodes) {
+        episodeIndex++;
+        if (episode.episode_number == backEpisode) break;
+      }
 
-    getMovieDetails(type, movieId).then((data) => {
-      if (type != "tv" || backSeason == undefined || forwardSeason == undefined)
-        return;
+      return calcCanBackForward(
+        tvShowDetails.data!.seasons,
+        season,
+        episodeIndex
+      );
+    },
+    enabled: tvShowDetails.data && backSeason != undefined,
+  });
 
-      const tvShow = data as TmdbDetailsTvShowOutput;
+  const forwardCan = useQuery({
+    queryKey: ["forward-can"],
+    queryFn: async () => {
+      const season = await getSeason(movieId, forwardSeason!);
 
-      getSeason(movieId, backSeason).then((season) => {
-        let episodeIndex = -1;
-        for (const episode of season.episodes) {
-          episodeIndex++;
-          if (episode.episode_number == backEpisode) break;
-        }
+      let episodeIndex = -1;
+      for (const episode of season.episodes) {
+        episodeIndex++;
+        if (episode.episode_number == forwardEpisode) break;
+      }
 
-        const [canBack, canForward] = calcCanBackForward(
-          tvShow.seasons,
-          season,
-          episodeIndex
-        );
-        backCanBack.current = canBack;
-        backCanForward.current = canForward;
-      });
-      getSeason(movieId, forwardSeason).then((season) => {
-        let episodeIndex = -1;
-        for (const episode of season.episodes) {
-          episodeIndex++;
-          if (episode.episode_number == forwardEpisode) break;
-        }
+      return calcCanBackForward(
+        tvShowDetails.data!.seasons,
+        season,
+        episodeIndex
+      );
+    },
+    enabled: tvShowDetails.data && forwardSeason != undefined,
+  });
 
-        const [canBack, canForward] = calcCanBackForward(
-          tvShow.seasons,
-          season,
-          episodeIndex
-        );
-        forwardCanBack.current = canBack;
-        forwardCanForward.current = canForward;
-      });
-    });
-  }, [
-    backEpisode,
-    backSeason,
-    episodeNumber,
-    forwardEpisode,
-    forwardSeason,
-    movieId,
-    seasonNumber,
-    title,
-    type,
-  ]);
-
-  if (isLoading)
-    return (
-      <center className="mt-12">
-        <Spinner label="Loading..." color="warning" />
-      </center>
-    );
-
-  if (!playlist) return "Playlist not found";
+  if (!playlist.isLoading && playlist.isFetched && !playlist.data)
+    return "Playlist not found";
 
   return (
     <div className="flex flex-col mb-4">
       <div className="flex p-3">
-        <Button
-          onPress={() => router.push(backUrl)}
-          variant="light"
-          isIconOnly
-          radius="full"
-        >
+        <Button as={Link} href="/" variant="light" isIconOnly radius="full">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -147,54 +128,73 @@ export default function MediaWatch({
       </div>
 
       <div className="px-4 py-0.5">
-        <VideoPlayer playlist={playlist} />
+        {playlist.isLoading && !playlist.data ? (
+          <Skeleton className="w-full aspect-video rounded-medium" />
+        ) : (
+          <VideoPlayer playlist={playlist.data!} />
+        )}
       </div>
 
       {type == "tv" && (
         <div className="flex justify-center p-2">
           <ButtonGroup variant="flat">
-            <Button
-              onPress={() =>
-                router.push(
-                  `/watch/${type}/${movieId}/${title}/${backSeason}/${backEpisode}/${backCanBack.current}/${backCanForward.current}`
-                )
-              }
-              isDisabled={!canBack}
-              startContent={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path>
-                </svg>
-              }
-            >
-              {canBack ? `S${backSeason} E${backEpisode}` : "Back"}
-            </Button>
-            <Button
-              onPress={() =>
-                router.push(
-                  `/watch/${type}/${movieId}/${title}/${forwardSeason}/${forwardEpisode}/${forwardCanBack.current}/${forwardCanForward.current}`
-                )
-              }
-              isDisabled={!canForward}
-              endContent={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path>
-                </svg>
-              }
-            >
-              {canForward ? `S${forwardSeason} E${forwardEpisode}` : "Forward"}
-            </Button>
+            {backCan.isLoading && !backCan.data ? (
+              <Skeleton className="h-10 w-12 rounded-s-large" />
+            ) : (
+              <Button
+                onPress={() =>
+                  router.push(
+                    `/watch/${type}/${movieId}/${title}/${backSeason}/${backEpisode}/${
+                      backCan.data![0]
+                    }/${backCan.data![1]}`
+                  )
+                }
+                isDisabled={!canBack}
+                startContent={
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path>
+                  </svg>
+                }
+              >
+                {canBack ? `S${backSeason} E${backEpisode}` : "Back"}
+              </Button>
+            )}
+
+            {forwardCan.isLoading && !forwardCan.data ? (
+              <Skeleton className="h-10 w-12 rounded-e-large" />
+            ) : (
+              <Button
+                onPress={() =>
+                  router.push(
+                    `/watch/${type}/${movieId}/${title}/${forwardSeason}/${forwardEpisode}/${
+                      forwardCan.data![0]
+                    }/${forwardCan.data![1]}`
+                  )
+                }
+                isDisabled={!canForward}
+                endContent={
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path>
+                  </svg>
+                }
+              >
+                {canForward
+                  ? `S${forwardSeason} E${forwardEpisode}`
+                  : "Forward"}
+              </Button>
+            )}
           </ButtonGroup>
         </div>
       )}
