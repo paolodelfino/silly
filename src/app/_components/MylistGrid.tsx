@@ -75,7 +75,7 @@ export default function MylistGrid({ userId }: { userId: string }) {
   if (entries || mylist.isFetching) {
     return (
       <>
-        <div className="flex flex-col gap-6 w-full p-3 pb-6">
+        <div className="grid md:grid-cols-2 2xl:grid-cols-3 gap-6 w-full p-3 pb-6">
           {entries?.map((entry, i) => {
             let isLast = false;
             if (i == entries.length - 1) isLast = true;
