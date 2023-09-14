@@ -9,7 +9,12 @@ export default function MediaSliderSkeleton({
 }) {
   return (
     <div className="space-y-1 flex flex-col px-1">
-      <div className="flex justify-between h-10">
+      <div
+        className="flex justify-between"
+        style={{
+          height: (seeAll ? "40" : "32") + "px",
+        }}
+      >
         <Skeleton
           className="rounded-large"
           style={{
