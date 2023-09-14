@@ -56,7 +56,7 @@ export default function BottomNav() {
       </Button>
 
       {status == "loading" && (
-        <Skeleton className="w-20 !bg-default-200 rounded-large"></Skeleton>
+        <Skeleton className="w-10 h-10 !bg-default-200 rounded-full"></Skeleton>
       )}
 
       {status == "unauthenticated" && (
