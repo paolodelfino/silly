@@ -91,7 +91,7 @@ export default function MediaWatch({
         episodeIndex
       );
     },
-    enabled: tvShowDetails.data && backSeason != undefined,
+    enabled: Boolean(tvShowDetails.data) && backSeason != undefined,
   });
 
   const forwardCan = useQuery({
@@ -111,7 +111,7 @@ export default function MediaWatch({
         episodeIndex
       );
     },
-    enabled: tvShowDetails.data && forwardSeason != undefined,
+    enabled: Boolean(tvShowDetails.data) && forwardSeason != undefined,
   });
 
   if (!playlistLoading && !playlist) return "Playlist not found";
