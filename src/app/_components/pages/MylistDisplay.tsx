@@ -1,11 +1,18 @@
 "use client";
 import BackHome from "@/app/_components/BackHome";
 import MylistGrid from "@/app/_components/MylistGrid";
-import { Spinner, button } from "@nextui-org/react";
+import { getMylistCount } from "@/server/actions";
+import { Badge, Spinner, button } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 export default function MylistDisplay() {
   const session = useSession();
+
+  const [elementsCount, setElementsCount] = useState<number | undefined>();
+  useEffect(() => {
+    getMylistCount().then((count) => setElementsCount(count));
+  }, []);
 
   return (
     <div>
@@ -30,9 +37,11 @@ export default function MylistDisplay() {
           })}
         />
 
-        <h1 className="text-large font-semibold absolute left-1/2 -translate-x-1/2">
-          My List
-        </h1>
+        <div className="absolute left-1/2 -translate-x-1/2">
+          <Badge content={elementsCount} isDot>
+            <h1 className="text-large font-semibold">My List</h1>
+          </Badge>
+        </div>
       </div>
 
       {session.status == "loading" && (

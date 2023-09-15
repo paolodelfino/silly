@@ -49,3 +49,7 @@ export async function existsInMylist(input: {
 }) {
   return await trpcServer.user.mylist.exists(input);
 }
+
+export async function getMylistCount() {
+  return (await trpcServer.user.mylist.get()).length;
+}
