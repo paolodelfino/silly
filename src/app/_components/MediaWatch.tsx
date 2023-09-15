@@ -3,12 +3,13 @@ import VideoPlayer from "@/app/_components/VideoPlayer";
 import { calcCanBackForward } from "@/app/_lib/utils";
 import { trpc } from "@/app/_trpc/client";
 import { TmdbDetailsTvShowOutput } from "@/app/_trpc/types";
-import { getMovieDetails, getSeason } from "@/server/actions";
+import { getMovieDetails, getMoviePlaylist, getSeason } from "@/server/actions";
 import { useHotkeys } from "@mantine/hooks";
 import { Button, ButtonGroup, Skeleton } from "@nextui-org/react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function MediaWatch({
   type,
@@ -42,11 +43,16 @@ export default function MediaWatch({
 
   useHotkeys([["escape", () => router.push(backUrl)]]);
 
-  const playlist = trpc.playlist.useQuery({
-    title,
-    seasonNumber,
-    episodeNumber,
-  });
+  const [playlist, setPlaylist] = useState<string | undefined>();
+  const [playlistLoading, setPlaylistLoading] = useState(true);
+
+  useEffect(() => {
+    if (!playlist)
+      getMoviePlaylist(title, seasonNumber, episodeNumber).then((data) => {
+        setPlaylist(data);
+        setPlaylistLoading(false);
+      });
+  }, []);
 
   let backSeason: number | undefined,
     backEpisode: number | undefined,
@@ -108,8 +114,7 @@ export default function MediaWatch({
     enabled: tvShowDetails.data && forwardSeason != undefined,
   });
 
-  if (!playlist.isLoading && playlist.isFetched && !playlist.data)
-    return "Playlist not found";
+  if (!playlistLoading && !playlist) return "Playlist not found";
 
   return (
     <div className="flex flex-col mb-4">
@@ -128,25 +133,23 @@ export default function MediaWatch({
       </div>
 
       <div className="px-4 py-0.5">
-        {playlist.isLoading && !playlist.data ? (
+        {playlistLoading || !playlist ? (
           <Skeleton className="w-full aspect-video rounded-medium" />
         ) : (
-          <VideoPlayer playlist={playlist.data!} />
+          <VideoPlayer playlist={playlist} />
         )}
       </div>
 
       {type == "tv" && (
         <div className="flex justify-center p-2">
           <ButtonGroup variant="flat">
-            {backCan.isLoading && !backCan.data ? (
+            {backCan.isLoading || !backCan.data ? (
               <Skeleton className="h-10 w-12 rounded-s-large" />
             ) : (
               <Button
                 onPress={() =>
                   router.push(
-                    `/watch/${type}/${movieId}/${title}/${backSeason}/${backEpisode}/${
-                      backCan.data![0]
-                    }/${backCan.data![1]}`
+                    `/watch/${type}/${movieId}/${title}/${backSeason}/${backEpisode}/${backCan.data[0]}/${backCan.data[1]}`
                   )
                 }
                 isDisabled={!canBack}
@@ -166,15 +169,13 @@ export default function MediaWatch({
               </Button>
             )}
 
-            {forwardCan.isLoading && !forwardCan.data ? (
+            {forwardCan.isLoading || !forwardCan.data ? (
               <Skeleton className="h-10 w-12 rounded-e-large" />
             ) : (
               <Button
                 onPress={() =>
                   router.push(
-                    `/watch/${type}/${movieId}/${title}/${forwardSeason}/${forwardEpisode}/${
-                      forwardCan.data![0]
-                    }/${forwardCan.data![1]}`
+                    `/watch/${type}/${movieId}/${title}/${forwardSeason}/${forwardEpisode}/${forwardCan.data[0]}/${forwardCan.data[1]}`
                   )
                 }
                 isDisabled={!canForward}
