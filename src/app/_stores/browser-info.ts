@@ -4,15 +4,17 @@ interface BrowserInfoState {
   isSmallDevice: boolean;
   setIsSmallDevice: (isSmallDevice: boolean) => void;
 
-  isMobile: boolean;
-  setIsMobile: (isMobile: boolean) => void;
+  userAgent?: UAParser.IResult;
+  setUserAgent: (userAgent: UAParser.IResult) => void;
 }
 
 export const useBrowserInfo = create<BrowserInfoState>()((set) => ({
   isSmallDevice: false,
-  setIsSmallDevice: (isSmallDevice) =>
-    set((state) => ({ ...state, isSmallDevice })),
+  setIsSmallDevice(isSmallDevice) {
+    set((state) => ({ ...state, isSmallDevice }));
+  },
 
-  isMobile: false,
-  setIsMobile: (isMobile) => set((state) => ({ ...state, isMobile })),
+  setUserAgent(userAgent) {
+    set((state) => ({ ...state, userAgent }));
+  },
 }));

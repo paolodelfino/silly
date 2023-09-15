@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import UAParser from "ua-parser-js";
 
 export default function BrowserInfo() {
-  const { setIsMobile, setIsSmallDevice } = useBrowserInfo();
+  const { setIsSmallDevice, setUserAgent } = useBrowserInfo();
 
   useEffect(() => {
     if (typeof window != "undefined") {
@@ -13,9 +13,9 @@ export default function BrowserInfo() {
         setIsSmallDevice(matchMedia("not all and (min-width: 768px)").matches)
       );
 
-      setIsMobile(new UAParser().getResult().device.type == "mobile");
+      setUserAgent(new UAParser().getResult());
     }
-  }, [setIsMobile, setIsSmallDevice]);
+  }, [setUserAgent, setIsSmallDevice]);
 
   return null;
 }
