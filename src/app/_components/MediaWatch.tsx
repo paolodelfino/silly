@@ -52,7 +52,7 @@ export default function MediaWatch({
         setPlaylist(data);
         setPlaylistLoading(false);
       });
-  }, []);
+  }, [episodeNumber, playlist, seasonNumber, title]);
 
   let backSeason: number | undefined,
     backEpisode: number | undefined,
