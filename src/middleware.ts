@@ -3,14 +3,12 @@ import { NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
   if (
-    !request.cookies.get("next-auth.session-token") ||
-    !request.cookies.get("__Secure-next-auth.session-token")
+    !request.cookies.get("next-auth.session-token")?.value ||
+    !request.cookies.get("__Secure-next-auth.session-token")?.value
   ) {
-    console.log(request.cookies)
-    // return NextResponse.redirect(
-    //   new URL(`/signin?callbackUrl=${request.url}`, request.url)
-    // );
-    return NextResponse.next();
+    return NextResponse.redirect(
+      new URL(`/signin?callbackUrl=${request.url}`, request.url)
+    );
   }
   return NextResponse.next();
 }
