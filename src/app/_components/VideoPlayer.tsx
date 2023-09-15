@@ -131,6 +131,13 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
 
   const [shortcutsHelpOpen, setShortcutsHelpOpen] = useState(false);
 
+  const toggleShortcutsHelp = () => {
+    if (!shortcutsHelpOpen && !showControls) {
+      setShowControls(true);
+    }
+    setShortcutsHelpOpen(!shortcutsHelpOpen);
+  };
+
   useHotkeys([
     ["ArrowLeft", () => seekBack()],
     ["ArrowRight", () => seekForward()],
@@ -141,11 +148,12 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
     ["k", togglePause],
     ["m", toggleMute],
     ["i", togglePip],
+    ["h", toggleShortcutsHelp],
   ]);
 
   const settingsActions: Record<string, VoidFunction> = {
     pip: togglePip,
-    shortcuts: () => setShortcutsHelpOpen(!shortcutsHelpOpen),
+    shortcuts: toggleShortcutsHelp,
   };
 
   const [showControls, setShowControls] = useState(true);
@@ -269,6 +277,7 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
                   </DropdownItem>
                   <DropdownItem
                     key={"shortcuts"}
+                    shortcut="H"
                     startContent={
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
