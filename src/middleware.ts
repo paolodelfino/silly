@@ -6,9 +6,11 @@ export async function middleware(request: NextRequest) {
     !request.cookies.get("next-auth.session-token") ||
     !request.cookies.get("__Secure-next-auth.session-token")
   ) {
-    return NextResponse.redirect(
-      new URL(`/signin?callbackUrl=${request.url}`, request.url)
-    );
+    console.log(request.cookies)
+    // return NextResponse.redirect(
+    //   new URL(`/signin?callbackUrl=${request.url}`, request.url)
+    // );
+    return NextResponse.next();
   }
   return NextResponse.next();
 }
