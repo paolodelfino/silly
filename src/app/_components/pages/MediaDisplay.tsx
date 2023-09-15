@@ -63,11 +63,16 @@ export default function MediaDisplay({
 
   const isBookmarked = useQuery({
     queryKey: ["is-bookmarked", movieDetails],
-    queryFn: async () =>
-      await existsInMylist({
-        id: movieDetails.data!.id,
-        type: "title" in movieDetails.data! ? "movie" : "tv",
-      }),
+    queryFn: async () => {
+      try {
+        return await existsInMylist({
+          id: movieDetails.data!.id,
+          type: "title" in movieDetails.data! ? "movie" : "tv",
+        });
+      } catch (error) {
+        return false;
+      }
+    },
     retry(failureCount, error) {
       if (
         error instanceof TRPCClientError &&
