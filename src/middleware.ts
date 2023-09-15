@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
   if (
-    !request.cookies.get("next-auth.session-token")?.value ||
+    !request.cookies.get("next-auth.session-token")?.value &&
     !request.cookies.get("__Secure-next-auth.session-token")?.value
   ) {
     return NextResponse.redirect(
