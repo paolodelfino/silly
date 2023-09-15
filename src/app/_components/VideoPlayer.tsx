@@ -1,4 +1,5 @@
 "use client";
+import { useBrowserInfo } from "@/app/_stores/browser-info";
 import { useHotkeys } from "@mantine/hooks";
 import {
   Button,
@@ -16,8 +17,11 @@ import Hls from "hls.js";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { VideoSeekSlider } from "react-video-seek-slider";
 import "react-video-seek-slider/styles.css";
+import screenfull from "screenfull";
 
 export default function VideoPlayer({ playlist }: { playlist: string }) {
+  const { userAgent } = useBrowserInfo();
+
   const player = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const [isPaused, setIsPaused] = useState(true);
@@ -99,9 +103,8 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
 
   const toggleFullscreen = () => {
     if (player.current) {
-      document.fullscreenElement
-        ? document.exitFullscreen()
-        : player.current.requestFullscreen();
+      if (screenfull.isFullscreen) screenfull.exit();
+      else if (screenfull.isEnabled) screenfull.request(player.current);
     }
   };
 
@@ -181,7 +184,9 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
       onClick={() => setShowControls(!showControls)}
     >
       <video
-        playsInline
+        playsInline={
+          userAgent?.os.name != "iOS" && userAgent?.device.type != "mobile"
+        }
         onKeyDown={(e) => e.preventDefault()}
         ref={video}
         className="w-full outline-none aspect-video"
