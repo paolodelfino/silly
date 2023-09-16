@@ -30,11 +30,7 @@ export function useIntersection<T extends HTMLElement = any>(
 
       observer.current.observe(element);
     },
-    [
-      options == null ? void 0 : options.rootMargin,
-      options == null ? void 0 : options.root,
-      options == null ? void 0 : options.threshold,
-    ]
+    [options]
   );
   return { ref, entry, observer };
 }
