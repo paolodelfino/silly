@@ -1,7 +1,7 @@
 "use client";
 import Search from "@/app/_components/Search";
+import { useIntersection } from "@/app/_lib/use-intersection";
 import { fetchMylist } from "@/server/actions";
-import { useIntersection } from "@mantine/hooks";
 import {
   Button,
   Card,
@@ -13,7 +13,7 @@ import {
 import { useInfiniteQuery } from "@tanstack/react-query";
 import NextImage from "next/image";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function MylistGrid({ userId }: { userId: string }) {
   const mylist = useInfiniteQuery({
@@ -45,7 +45,12 @@ export default function MylistGrid({ userId }: { userId: string }) {
   });
 
   useEffect(() => {
-    if (observer.entry?.isIntersecting) mylist.fetchNextPage();
+    if (observer.entry?.isIntersecting) {
+      observer.observer.current?.disconnect();
+      observer.observer.current = null;
+
+      mylist.fetchNextPage();
+    }
   }, [observer, mylist]);
 
   const entries = mylist.data?.pages.flatMap((page) => page.results);
