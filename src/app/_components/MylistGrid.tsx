@@ -1,7 +1,7 @@
 "use client";
 import Search from "@/app/_components/Search";
-import { useIntersection } from "@/app/_lib/use-intersection";
 import { fetchMylist } from "@/server/actions";
+import { useIntersection } from "@mantine/hooks";
 import {
   Button,
   Card,
@@ -46,11 +46,6 @@ export default function MylistGrid({ userId }: { userId: string }) {
 
   useEffect(() => {
     if (observer.entry?.isIntersecting) {
-      console.log("fetch next page")
-
-      observer.observer.current?.disconnect();
-      observer.observer.current = null;
-
       mylist.fetchNextPage();
     }
   }, [observer, mylist]);
@@ -85,7 +80,11 @@ export default function MylistGrid({ userId }: { userId: string }) {
         <div className="grid md:grid-cols-2 2xl:grid-cols-3 gap-6 w-full p-3 pb-6">
           {entries?.map((entry, i) => {
             let isLast = false;
-            if (i == entries.length - 1) isLast = true;
+            if (
+              i == entries.length - 1 &&
+              i != mylist.data?.pages[0].total_results! - 1
+            )
+              isLast = true;
 
             const isMovie = "title" in entry;
             const title = isMovie ? entry.title : entry.name;
