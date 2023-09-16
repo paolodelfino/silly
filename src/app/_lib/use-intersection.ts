@@ -12,6 +12,10 @@ export function useIntersection<T extends HTMLElement = any>(
   const [entry, setEntry] = useState<IntersectionObserverEntry | null>(null);
   const observer = useRef<IntersectionObserver | null>(null);
 
+  const rootMarginOption = options == null ? void 0 : options.rootMargin;
+  const rootOption = options == null ? void 0 : options.root;
+  const thresholdOption = options == null ? void 0 : options.threshold;
+
   const ref = useCallback(
     (element: T | null) => {
       if (observer.current) {
@@ -30,7 +34,7 @@ export function useIntersection<T extends HTMLElement = any>(
 
       observer.current.observe(element);
     },
-    [options]
+    [rootMarginOption, rootOption, thresholdOption]
   );
   return { ref, entry, observer };
 }

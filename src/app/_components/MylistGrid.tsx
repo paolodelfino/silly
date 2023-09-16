@@ -46,6 +46,8 @@ export default function MylistGrid({ userId }: { userId: string }) {
 
   useEffect(() => {
     if (observer.entry?.isIntersecting) {
+      console.log("fetch next page")
+
       observer.observer.current?.disconnect();
       observer.observer.current = null;
 
