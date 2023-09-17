@@ -53,6 +53,14 @@ export default function MediaSlider<
     total_results: number;
   }
 >({ title, seeAll, data }: { title: string; seeAll?: string; data: T }) {
+  data.results = data.results.filter((entry) => {
+    if ((entry.vote_count && entry.vote_count < 40) || entry.popularity < 10) {
+      return false;
+    }
+    return true;
+  });
+  data.total_results = data.results.length;
+
   return (
     <div className="space-y-1">
       <div className="flex justify-between items-center">
