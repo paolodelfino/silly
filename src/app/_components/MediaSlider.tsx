@@ -1,10 +1,39 @@
 "use client";
-import { Button, Card, CardHeader, Image } from "@nextui-org/react";
+import { Button, Card, CardHeader, Image, Skeleton } from "@nextui-org/react";
 import NextImage from "next/image";
 import Link from "next/link";
 import "swiper/css";
 import { FreeMode } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+
+export function MediaSliderSkeleton({
+  titleWidth,
+  seeAll,
+}: {
+  titleWidth: number;
+  seeAll?: boolean;
+}) {
+  return (
+    <div className="space-y-1 flex flex-col px-1">
+      <div
+        className="flex justify-between"
+        style={{
+          height: (seeAll ? "40" : "32") + "px",
+        }}
+      >
+        <Skeleton
+          className="rounded-large"
+          style={{
+            width: titleWidth + "px",
+          }}
+        />
+        {seeAll && <Skeleton className="w-[80px] rounded-large" />}
+      </div>
+
+      <Skeleton className="h-[180px] ml-1 rounded-large" />
+    </div>
+  );
+}
 
 export default function MediaSlider<
   T extends {
@@ -12,6 +41,7 @@ export default function MediaSlider<
     results: {
       id: number;
       poster_path?: string | null;
+      profile_path?: string | null;
       release_date?: string;
       title?: string;
       vote_count?: number;
@@ -51,9 +81,6 @@ export default function MediaSlider<
             : entry.first_air_date
             ? "tv"
             : "person";
-          if (type == "person") {
-            return null;
-          }
 
           if (
             (entry.vote_count && entry.vote_count < 40) ||
@@ -75,14 +102,14 @@ export default function MediaSlider<
                 isHoverable
               >
                 <CardHeader className="absolute z-10 w-full h-full left-0 top-0 !items-center justify-center">
-                  {!entry.poster_path && (
+                  {!entry.poster_path && !entry.profile_path && (
                     <span className="line-clamp-3 text-center">
                       {entry.title ?? entry.name}
                     </span>
                   )}
                 </CardHeader>
 
-                {entry.poster_path && (
+                {(entry.poster_path || entry.profile_path) && (
                   <Image
                     removeWrapper
                     as={NextImage}
@@ -90,7 +117,9 @@ export default function MediaSlider<
                     loading="eager"
                     width={120}
                     height={180}
-                    src={`https://image.tmdb.org/t/p/original/${entry.poster_path}`}
+                    src={`https://image.tmdb.org/t/p/original/${
+                      entry.poster_path || entry.profile_path
+                    }`}
                     alt={entry.title ?? entry.name!}
                     className="object-cover w-full h-full z-0"
                   />
