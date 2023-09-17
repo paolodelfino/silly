@@ -1,6 +1,4 @@
-import MediaSlider from "@/app/_components/MediaSlider";
 import SearchResult from "@/app/_components/pages/SearchResult";
-import { trpcServer } from "@/app/_trpc/serverClient";
 import { Metadata } from "next";
 
 type Props = {

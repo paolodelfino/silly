@@ -106,19 +106,34 @@ export const appRouter = router({
         episode_id: episodeId,
       });
     }),
-  search: publicProcedure
-    .input(
-      z.object({
-        query: z.string(),
-      })
-    )
-    .query(async ({ input: { query } }) => {
-      return await tmdb.v3.search.searchMulti({
-        query,
-        include_adult: true,
-        language: "it",
-      });
-    }),
+  search: router({
+    movies: publicProcedure
+      .input(
+        z.object({
+          query: z.string(),
+        })
+      )
+      .query(async ({ input: { query } }) => {
+        return await tmdb.v3.search.searchMovies({
+          query,
+          include_adult: true,
+          language: "it",
+        });
+      }),
+    people: publicProcedure
+      .input(
+        z.object({
+          query: z.string(),
+        })
+      )
+      .query(async ({ input: { query } }) => {
+        return await tmdb.v3.search.searchPeople({
+          query,
+          include_adult: true,
+          language: "it",
+        });
+      }),
+  }),
   user: router({
     mylist: router({
       get: protectedProcedure.query(async () => {
