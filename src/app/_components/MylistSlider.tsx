@@ -1,8 +1,8 @@
 "use client";
-import MediaSlider from "@/app/_components/MediaSlider";
-import MediaSliderSkeleton from "@/app/_components/MediaSliderSkeleton";
+import MediaSlider, {
+  MediaSliderSkeleton,
+} from "@/app/_components/MediaSlider";
 import { fetchMylist } from "@/server/actions";
-import { Skeleton, Spinner } from "@nextui-org/react";
 import { useQuery } from "@tanstack/react-query";
 
 export default function MylistSlider({ userId }: { userId: string }) {

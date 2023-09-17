@@ -34,13 +34,32 @@ export async function fetchMylist(userId: string, page: number) {
     toFetch.map(async ({ id, type }) => await getMovieDetails(type, id))
   );
 
-  const data = {
+  return {
     page,
     results,
     total_pages: Math.ceil(user.mylist.length / elPerPage),
     total_results: user.mylist.length,
   };
-  return data;
+}
+
+export async function mylistSearch({
+  page,
+  query,
+}: {
+  page: number;
+  query: string;
+}) {
+  const data = await trpcServer.user.mylist.search({ page, query });
+  const results = await Promise.all(
+    data.results.map(async ({ id, type }) => await getMovieDetails(type, id))
+  );
+
+  return {
+    page: data.page,
+    results,
+    total_pages: data.total_pages,
+    total_results: data.total_results,
+  };
 }
 
 export async function existsInMylist(input: {
@@ -52,4 +71,14 @@ export async function existsInMylist(input: {
 
 export async function getMylistCount() {
   return (await trpcServer.user.mylist.get()).length;
+}
+
+export async function searchMovies({
+  query,
+  page,
+}: {
+  query: string;
+  page: number;
+}) {
+  return await trpcServer.search.movies({ query, page });
 }

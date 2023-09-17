@@ -320,6 +320,10 @@ export default function MediaDisplay({
                   addBookmark.mutate({
                     id: movieDetails.data.id,
                     type: "title" in movieDetails.data ? "movie" : "tv",
+                    title:
+                      "title" in movieDetails.data
+                        ? movieDetails.data.title
+                        : movieDetails.data.name,
                   });
                 }
               }}

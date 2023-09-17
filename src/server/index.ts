@@ -111,14 +111,24 @@ export const appRouter = router({
       .input(
         z.object({
           query: z.string(),
+          page: z.number(),
         })
       )
-      .query(async ({ input: { query } }) => {
-        return await tmdb.v3.search.searchMovies({
+      .query(async ({ input: { query, page } }) => {
+        const data = await tmdb.v3.search.searchMulti({
           query,
+          page,
           include_adult: true,
           language: "it",
         });
+
+        data.total_results -= data.results.length;
+        data.results = data.results.filter(
+          (entry) => entry.media_type != "person"
+        );
+        data.total_results += data.results.length;
+
+        return data;
       }),
     people: publicProcedure
       .input(
@@ -146,9 +156,10 @@ export const appRouter = router({
           z.object({
             id: z.number(),
             type: z.union([z.literal("movie"), z.literal("tv")]),
+            title: z.string(),
           })
         )
-        .mutation(async ({ input: { id, type } }) => {
+        .mutation(async ({ input: { id, type, title } }) => {
           const session = await auth();
           const user = await currentUser(session?.user.id!);
 
@@ -160,6 +171,7 @@ export const appRouter = router({
                 {
                   id,
                   type,
+                  title,
                 },
               ],
             })
@@ -204,6 +216,39 @@ export const appRouter = router({
           return Boolean(
             user.mylist.find((entry) => entry.id == id && entry.type == type)
           );
+        }),
+      search: protectedProcedure
+        .input(
+          z.object({
+            query: z.string(),
+            page: z.number(),
+          })
+        )
+        .query(async ({ input: { query, page } }) => {
+          const session = await auth();
+          const user = await currentUser(session?.user.id!);
+
+          const queryLowercase = query.toLowerCase();
+          const allResults = user.mylist.filter((entry) => {
+            const titleLowercase = entry.title.toLowerCase();
+            return (
+              titleLowercase.includes(queryLowercase) ||
+              queryLowercase.includes(titleLowercase)
+            );
+          });
+
+          const elPerPage = 20;
+          const pageResults = allResults.slice(
+            (page - 1) * elPerPage,
+            page * elPerPage
+          );
+
+          return {
+            page,
+            results: pageResults,
+            total_pages: Math.ceil(allResults.length / elPerPage),
+            total_results: allResults.length,
+          };
         }),
     }),
   }),
