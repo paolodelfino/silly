@@ -2,16 +2,24 @@
 import { useHotkeys } from "@mantine/hooks";
 import { Input } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
-export default function Search() {
+export default function Search({
+  path = "/search",
+  placeholder = "Search for titles, people",
+  callback,
+}: {
+  path?: string;
+  placeholder?: string;
+  callback?: string;
+}) {
   const router = useRouter();
 
   function action(formData: FormData) {
     if (isInvalid) return;
 
     const query = formData.get("query")!.toString().trim();
-    router.push(`/search/${query}`);
+    router.push(`${path}/${query}`);
   }
 
   const [isInvalid, setIsInvalid] = useState(false);
@@ -28,6 +36,10 @@ export default function Search() {
         autoFocus
         isInvalid={isInvalid}
         onValueChange={(value) => {
+          if (value.length == 0 && callback) {
+            router.push(callback);
+          }
+
           if (value.length > 0 && !value.trim()) {
             setIsInvalid(true);
           } else {
@@ -66,7 +78,7 @@ export default function Search() {
         name="query"
         label="Search"
         aria-label="Search"
-        placeholder="Search for titles, people"
+        placeholder={placeholder}
       ></Input>
     </form>
   );
