@@ -1,7 +1,7 @@
 "use client";
-
-import MediaSlider from "@/app/_components/MediaSlider";
-import MediaSliderSkeleton from "@/app/_components/MediaSliderSkeleton";
+import MediaSlider, {
+  MediaSliderSkeleton,
+} from "@/app/_components/MediaSlider";
 import { trpc } from "@/app/_trpc/client";
 
 export default function HomeSliders() {
