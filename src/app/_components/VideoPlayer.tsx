@@ -130,6 +130,7 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
   };
 
   const [shortcutsHelpOpen, setShortcutsHelpOpen] = useState(false);
+  const [actionsOpen, setActionsOpen] = useState(false);
 
   const toggleShortcutsHelp = () => {
     if (!shortcutsHelpOpen && !showControls) {
@@ -148,7 +149,9 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
     ["k", togglePause],
     ["m", toggleMute],
     ["i", togglePip],
-    ["h", toggleShortcutsHelp],
+    ["ctrl+h", toggleShortcutsHelp],
+    ["ctrl+i", () => setActionsOpen(!actionsOpen)],
+    ["v", () => setShowControls(!showControls)],
   ]);
 
   const settingsActions: Record<string, VoidFunction> = {
@@ -220,7 +223,7 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
           <div className="flex flex-col gap-2">
             <span className="flex w-full items-center justify-between gap-4">
               Show/Hide Controls
-              <Kbd>Click</Kbd>
+              <Kbd>V Click</Kbd>
             </span>
             <span className="flex w-full items-center justify-between gap-4">
               Volume
@@ -239,8 +242,25 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
       {showControls && (
         <div className="absolute left-0 top-0 flex h-full w-full flex-col justify-between bg-background/20">
           <div className="flex w-full justify-end px-4 py-2">
+            <Tooltip
+              showArrow
+              isOpen={shortcutsHelpOpen}
+              placement="left"
+              content={
+                <span className="flex w-full items-center justify-between gap-4">
+                  Show/Hide Actions
+                  <Kbd keys={["ctrl"]}>I</Kbd>
+                </span>
+              }
+            >
+              <div></div>
+            </Tooltip>
             {typeof document != "undefined" && !document.fullscreenElement && (
-              <Dropdown placement="left-start">
+              <Dropdown
+                placement="left-start"
+                isOpen={actionsOpen}
+                onOpenChange={setActionsOpen}
+              >
                 <DropdownTrigger>
                   <Button isIconOnly radius="full" variant="light">
                     <svg
@@ -277,7 +297,7 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
                   </DropdownItem>
                   <DropdownItem
                     key={"shortcuts"}
-                    shortcut="H"
+                    shortcut="^H"
                     startContent={
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
