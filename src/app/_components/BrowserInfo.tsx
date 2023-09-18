@@ -10,7 +10,7 @@ export default function BrowserInfo() {
     if (typeof window != "undefined") {
       setIsSmallDevice(matchMedia("not all and (min-width: 768px)").matches);
       window.addEventListener("resize", () =>
-        setIsSmallDevice(matchMedia("not all and (min-width: 768px)").matches)
+        setIsSmallDevice(matchMedia("not all and (min-width: 768px)").matches),
       );
 
       setUserAgent(new UAParser().getResult());

@@ -14,16 +14,16 @@ export const db = drizzle(sql);
 export const appRouter = router({
   tmdb: router({
     trending: publicProcedure.query(
-      async () => await tmdb.v3.trending.getTrending("all", "week", "it")
+      async () => await tmdb.v3.trending.getTrending("all", "week", "it"),
     ),
     popular: router({
       movie: publicProcedure.query(
-        async () => await tmdb.v3.movies.getPopular({ language: "it" })
+        async () => await tmdb.v3.movies.getPopular({ language: "it" }),
       ),
     }),
     topRated: router({
       tvShow: publicProcedure.query(
-        async () => await tmdb.v3.tv.getTopRated({ language: "it" })
+        async () => await tmdb.v3.tv.getTopRated({ language: "it" }),
       ),
     }),
     details: router({
@@ -31,7 +31,7 @@ export const appRouter = router({
         .input(
           z.object({
             id: z.number(),
-          })
+          }),
         )
         .query(async ({ input: { id } }) => {
           const movie = await tmdb.v3.movies.getDetails(id, {
@@ -43,7 +43,7 @@ export const appRouter = router({
           if (movie.belongs_to_collection) {
             collection = await tmdb.v3.collections.getDetails(
               movie.belongs_to_collection.id,
-              { language: "it" }
+              { language: "it" },
             );
           }
 
@@ -53,28 +53,28 @@ export const appRouter = router({
         .input(
           z.object({
             id: z.number(),
-          })
+          }),
         )
         .query(
           async ({ input: { id } }) =>
             await tmdb.v3.tv.getDetails(id, {
               append_to_response: ["credits", "videos"],
               language: "it",
-            })
+            }),
         ),
       season: publicProcedure
         .input(
           z.object({
             id: z.number(),
             season: z.number(),
-          })
+          }),
         )
         .query(
           async ({ input: { id, season } }) =>
             await tmdb.v3.tvSeasons.getDetails(id, season, {
               language: "it",
               append_to_response: ["videos"],
-            })
+            }),
         ),
     }),
   }),
@@ -84,7 +84,7 @@ export const appRouter = router({
         title: z.string(),
         seasonNumber: z.number().optional(),
         episodeNumber: z.number().optional(),
-      })
+      }),
     )
     .query(async ({ input: { title, seasonNumber, episodeNumber } }) => {
       const movie = (
@@ -112,7 +112,7 @@ export const appRouter = router({
         z.object({
           query: z.string(),
           page: z.number(),
-        })
+        }),
       )
       .query(async ({ input: { query, page } }) => {
         const data = await tmdb.v3.search.searchMulti({
@@ -124,7 +124,7 @@ export const appRouter = router({
 
         data.total_results -= data.results.length;
         data.results = data.results.filter(
-          (entry) => entry.media_type != "person"
+          (entry) => entry.media_type != "person",
         );
         data.total_results += data.results.length;
 
@@ -134,7 +134,7 @@ export const appRouter = router({
       .input(
         z.object({
           query: z.string(),
-        })
+        }),
       )
       .query(async ({ input: { query } }) => {
         return await tmdb.v3.search.searchPeople({
@@ -157,7 +157,7 @@ export const appRouter = router({
             id: z.number(),
             type: z.union([z.literal("movie"), z.literal("tv")]),
             title: z.string(),
-          })
+          }),
         )
         .mutation(async ({ input: { id, type, title } }) => {
           const session = await auth();
@@ -182,7 +182,7 @@ export const appRouter = router({
           z.object({
             id: z.number(),
             type: z.union([z.literal("movie"), z.literal("tv")]),
-          })
+          }),
         )
         .mutation(async ({ input: { id, type } }) => {
           const session = await auth();
@@ -207,14 +207,14 @@ export const appRouter = router({
           z.object({
             id: z.number(),
             type: z.union([z.literal("movie"), z.literal("tv")]),
-          })
+          }),
         )
         .query(async ({ input: { id, type } }) => {
           const session = await auth();
           const user = await currentUser(session?.user.id!);
 
           return Boolean(
-            user.mylist.find((entry) => entry.id == id && entry.type == type)
+            user.mylist.find((entry) => entry.id == id && entry.type == type),
           );
         }),
       search: protectedProcedure
@@ -222,7 +222,7 @@ export const appRouter = router({
           z.object({
             query: z.string(),
             page: z.number(),
-          })
+          }),
         )
         .query(async ({ input: { query, page } }) => {
           const session = await auth();
@@ -240,7 +240,7 @@ export const appRouter = router({
           const elPerPage = 20;
           const pageResults = allResults.slice(
             (page - 1) * elPerPage,
-            page * elPerPage
+            page * elPerPage,
           );
 
           return {

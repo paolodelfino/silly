@@ -10,7 +10,7 @@ export default async function HomePage() {
   // const topRatedTvShows = await trpcServer.tmdb.topRated.tvShow();
 
   return (
-    <div className="flex flex-col gap-4 p-1 mb-4">
+    <div className="mb-4 flex flex-col gap-4 p-1">
       {session?.user.id && <MylistSlider userId={session.user.id} />}
       <HomeSliders />
       {/* <MediaSlider title="Trending" data={trending} />

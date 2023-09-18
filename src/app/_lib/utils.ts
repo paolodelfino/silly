@@ -11,7 +11,7 @@ export const domain = () =>
 export function calcCanBackForward(
   seasons: TmdbDetailsTvShowOutput["seasons"],
   currentSeason: TmdbDetailsSeasonOutput,
-  episodeIndex: number
+  episodeIndex: number,
 ): [boolean | "bySeason", boolean | "bySeason"] {
   let seasonIndex = -1;
   for (const season of seasons) {

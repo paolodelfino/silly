@@ -23,7 +23,7 @@ export default function MediaGrid<
     }[];
     total_pages: number;
     total_results: number;
-  }
+  },
 >({
   queryKey,
   queryFn,
@@ -87,17 +87,17 @@ export default function MediaGrid<
     return (
       <div>
         {title && (
-          <h1 className="text-lg font-medium mb-1 ml-1 w-max">{title}</h1>
+          <h1 className="mb-1 ml-1 w-max text-lg font-medium">{title}</h1>
         )}
 
         {!dataFetch.isLoading &&
           entries.length == 0 &&
           (emptyDisplay || (
-            <span className="text-slate-400 ml-2">No results</span>
+            <span className="ml-2 text-slate-400">No results</span>
           ))}
 
         {!dataFetch.isLoading && entries.length > 0 && (
-          <div className="grid md:grid-cols-2 2xl:grid-cols-3 gap-6 w-full p-3 pb-6">
+          <div className="grid w-full gap-6 p-3 pb-6 md:grid-cols-2 2xl:grid-cols-3">
             {entries.map((entry, i) => {
               let isLast = false;
               if (
@@ -117,19 +117,19 @@ export default function MediaGrid<
                 >
                   <div className="flex gap-4">
                     <Card
-                      className="w-[185px] h-[104px] shrink-0"
+                      className="h-[104px] w-[185px] shrink-0"
                       radius="md"
                       isPressable
                       isHoverable
                       as={Link}
                       href={`/display/${isMovie ? "movie" : "tv"}/${entry.id}`}
                     >
-                      <CardHeader className="absolute z-10 w-full h-full left-0 top-0 !items-center justify-center">
-                        <div className="bg-background/40 rounded-full pl-0.5">
+                      <CardHeader className="absolute left-0 top-0 z-10 h-full w-full !items-center justify-center">
+                        <div className="rounded-full bg-background/40 pl-0.5">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
-                            className="fill-white h-8 w-8"
+                            className="h-8 w-8 fill-white"
                           >
                             <path d="M7 6v12l10-6z"></path>
                           </svg>
@@ -145,7 +145,7 @@ export default function MediaGrid<
                           height={104}
                           src={`https://image.tmdb.org/t/p/w185/${entry.backdrop_path}`}
                           alt={title}
-                          className="object-cover w-full h-full z-0"
+                          className="z-0 h-full w-full object-cover"
                         />
                       )}
                     </Card>
@@ -153,7 +153,7 @@ export default function MediaGrid<
                     <div className="flex flex-col justify-center">
                       <h4 className="text-medium font-semibold">{title}</h4>
 
-                      <span className="text-slate-400 line-clamp-3 text-small">
+                      <span className="line-clamp-3 text-small text-slate-400">
                         {entry.overview}
                       </span>
                     </div>
@@ -165,7 +165,7 @@ export default function MediaGrid<
         )}
 
         {dataFetch.isLoading && (
-          <center className="pt-3 pb-4">
+          <center className="pb-4 pt-3">
             <Spinner />
           </center>
         )}

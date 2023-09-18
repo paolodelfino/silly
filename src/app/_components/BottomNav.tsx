@@ -17,7 +17,7 @@ export default function BottomNav() {
   const { data, status } = useSession();
 
   return (
-    <div className="sticky mt-auto bottom-0 z-10 bg-default-100 rounded-t-3xl p-5 flex justify-between">
+    <div className="sticky bottom-0 z-10 mt-auto flex justify-between rounded-t-3xl bg-default-100 p-5">
       <Button
         as={Link}
         href="/"
@@ -56,7 +56,7 @@ export default function BottomNav() {
       </Button>
 
       {status == "loading" && (
-        <Skeleton className="w-10 h-10 !bg-default-200 rounded-full"></Skeleton>
+        <Skeleton className="h-10 w-10 rounded-full !bg-default-200"></Skeleton>
       )}
 
       {status == "unauthenticated" && (

@@ -8,8 +8,8 @@ export default function WithSearchLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="px-9 pt-3 pb-3 flex items-center gap-4">
+    <div className="flex min-h-screen flex-col">
+      <div className="flex items-center gap-4 px-9 pb-3 pt-3">
         <BackHome className="-ml-4" />
         <Search />
       </div>

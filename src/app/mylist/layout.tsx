@@ -23,7 +23,7 @@ export default function MylistLayoutPage({
   return (
     <div>
       <div
-        className="flex justify-between px-4 py-4 bg-background/90 z-20 backdrop-blur items-center sticky top-0"
+        className="sticky top-0 z-20 flex items-center justify-between bg-background/90 px-4 py-4 backdrop-blur"
         style={{
           borderBottomWidth:
             y > 0 || elementsCount.data == 0 || elementsCount.isLoading
@@ -59,7 +59,7 @@ export default function MylistLayoutPage({
           {elementsCount.isLoading ? (
             <div className="relative">
               <h1 className="text-large font-semibold">My List</h1>
-              <Skeleton className="top-[5%] right-[5%] translate-x-1/2 -translate-y-1/2 absolute w-5 h-5 rounded-full" />
+              <Skeleton className="absolute right-[5%] top-[5%] h-5 w-5 -translate-y-1/2 translate-x-1/2 rounded-full" />
             </div>
           ) : (
             <Badge content={elementsCount.data} size="lg">
@@ -80,13 +80,13 @@ export default function MylistLayoutPage({
       )}
 
       {elementsCount.data == 0 && (
-        <div className="max-w-3xl mx-auto p-4">
+        <div className="mx-auto max-w-3xl p-4">
           <Search placeholder="Search for titles" />
           <div
-            className="bg-divider w-full h-divider my-4 relative"
+            className="relative my-4 h-divider w-full bg-divider"
             role="separator"
           >
-            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 px-3 bg-background">
+            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-3">
               or
             </span>
           </div>

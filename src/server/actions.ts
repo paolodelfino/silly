@@ -11,7 +11,7 @@ export async function getMovieDetails(type: "movie" | "tv", id: number) {
 export async function getMoviePlaylist(
   title: string,
   seasonNumber?: number,
-  episodeNumber?: number
+  episodeNumber?: number,
 ) {
   return await trpcServer.playlist({
     title,
@@ -31,7 +31,7 @@ export async function fetchMylist(userId: string, page: number) {
   const toFetch = user.mylist.slice((page - 1) * elPerPage, page * elPerPage);
 
   const results = await Promise.all(
-    toFetch.map(async ({ id, type }) => await getMovieDetails(type, id))
+    toFetch.map(async ({ id, type }) => await getMovieDetails(type, id)),
   );
 
   return {
@@ -51,7 +51,7 @@ export async function mylistSearch({
 }) {
   const data = await trpcServer.user.mylist.search({ page, query });
   const results = await Promise.all(
-    data.results.map(async ({ id, type }) => await getMovieDetails(type, id))
+    data.results.map(async ({ id, type }) => await getMovieDetails(type, id)),
   );
 
   return {

@@ -37,8 +37,8 @@ export default function SignInPage({
   useHotkeys([["escape", () => router.replace(callbackUrl)]]);
 
   return (
-    <center className="max-w-lg mx-auto">
-      <div className="flex justify-between px-4 py-4 relative">
+    <center className="mx-auto max-w-lg">
+      <div className="relative flex justify-between px-4 py-4">
         <Button
           variant="faded"
           size="sm"
@@ -52,10 +52,10 @@ export default function SignInPage({
 
       <Spacer y={16} />
 
-      <h1 className="text-white text-2xl tracking-wide font-bold leading-relaxed">
+      <h1 className="text-2xl font-bold leading-relaxed tracking-wide text-white">
         Welcome Back!
       </h1>
-      <h4 className="text-slate-400 text-base tracking-wide">
+      <h4 className="text-base tracking-wide text-slate-400">
         Please sign in to your account
       </h4>
 

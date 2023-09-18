@@ -12,6 +12,6 @@
     @apply select-none overscroll-none;
   }
   .text-rainbow {
-    @apply bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400 text-transparent bg-clip-text animate-text;
+    @apply animate-text bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400 bg-clip-text text-transparent;
   }
 }

@@ -34,16 +34,16 @@ export default function Features() {
       </Tooltip>
       <Drawer.Overlay className="fixed inset-0 bg-black/40" />
       <Drawer.Portal>
-        <Drawer.Content className="fixed flex outline-none flex-col bg-content1 text-content1-foreground rounded-t-large bottom-0 left-0 right-0 h-full max-h-[97%] mx-[-1px]">
+        <Drawer.Content className="fixed bottom-0 left-0 right-0 mx-[-1px] flex h-full max-h-[97%] flex-col rounded-t-large bg-content1 text-content1-foreground outline-none">
           <div
-            className={cn("w-full max-w-md mx-auto pb-4 relative", {
+            className={cn("relative mx-auto w-full max-w-md pb-4", {
               "overflow-y-auto": snap === 1,
               "overflow-hidden": snap !== 1,
             })}
           >
             <Drawer.Close asChild>
               <Button
-                className="absolute top-1 right-1 z-10 bg-default/10"
+                className="absolute right-1 top-1 z-10 bg-default/10"
                 isIconOnly
                 radius="full"
                 size="sm"
@@ -70,18 +70,18 @@ export default function Features() {
               }}
               mousewheel={true}
               modules={[Pagination, Keyboard, Mousewheel]}
-              className="[&_.swiper-pagination]:static [&_.swiper-pagination]:mx-auto [&_.swiper-pagination]:!translate-x-0 [&_.swiper-pagination]:pt-8 [&_.swiper-pagination-bullet-active-next]:bg-slate-400 [&_.swiper-pagination-bullet-active-prev]:bg-slate-400 [&_.swiper-pagination-bullet-active-next-next]:bg-slate-400 [&_.swiper-pagination-bullet-active-prev-prev]:bg-slate-400"
+              className="[&_.swiper-pagination-bullet-active-next-next]:bg-slate-400 [&_.swiper-pagination-bullet-active-next]:bg-slate-400 [&_.swiper-pagination-bullet-active-prev-prev]:bg-slate-400 [&_.swiper-pagination-bullet-active-prev]:bg-slate-400 [&_.swiper-pagination]:static [&_.swiper-pagination]:mx-auto [&_.swiper-pagination]:!translate-x-0 [&_.swiper-pagination]:pt-8"
             >
               <SwiperSlide className="w-full">
                 <div className="flex flex-col">
                   <Save />
-                  <h1 className="text-center text-large font-semibold -mt-4">
+                  <h1 className="-mt-4 text-center text-large font-semibold">
                     Track Movies and TV Shows
                   </h1>
 
                   <Spacer y={8} />
 
-                  <div className="flex px-4 gap-2">
+                  <div className="flex gap-2 px-4">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="32"
@@ -95,7 +95,7 @@ export default function Features() {
 
                     <div>
                       <h2 className="text-medium font-semibold">Mylist</h2>
-                      <p className="text-slate-400 text-small">
+                      <p className="text-small text-slate-400">
                         Save movies and tv shows in a list.
                       </p>
                     </div>

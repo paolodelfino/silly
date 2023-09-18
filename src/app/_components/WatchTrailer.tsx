@@ -15,7 +15,7 @@ export default function WatchTrailer({ youtubeKey }: { youtubeKey: string }) {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-6 h-6"
+            className="h-6 w-6"
           >
             <path
               strokeLinecap="round"
@@ -41,7 +41,7 @@ export default function WatchTrailer({ youtubeKey }: { youtubeKey: string }) {
               title="YouTube video player"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
-              className="w-full aspect-video"
+              className="aspect-video w-full"
             ></iframe>
           )}
         </ModalContent>

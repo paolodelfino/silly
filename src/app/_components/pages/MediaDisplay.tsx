@@ -109,7 +109,7 @@ export default function MediaDisplay({
     queryFn: () =>
       dataForTrailer!.videos.results.find(
         (video) =>
-          video.official && video.site == "YouTube" && video.type == "Trailer"
+          video.official && video.site == "YouTube" && video.type == "Trailer",
       ) ?? null,
     enabled: Boolean(dataForTrailer),
   });
@@ -138,14 +138,14 @@ export default function MediaDisplay({
   const actionCount = 2 + (trailer.data || trailer.isLoading ? 1 : 0);
 
   return (
-    <div className="flex flex-col relative">
-      <div className="flex absolute top-0 left-0 z-10 p-3">
+    <div className="relative flex flex-col">
+      <div className="absolute left-0 top-0 z-10 flex p-3">
         <BackHome />
       </div>
 
-      <div className="w-full aspect-video relative">
+      <div className="relative aspect-video w-full">
         {movieDetails.isFetching || !movieDetails.data ? (
-          <Skeleton className="w-full h-full" />
+          <Skeleton className="h-full w-full" />
         ) : (
           <NextImage
             width={1280}
@@ -156,13 +156,13 @@ export default function MediaDisplay({
                 ? movieDetails.data.title
                 : movieDetails.data.name
             }
-            className="w-full h-full"
+            className="h-full w-full"
           />
         )}
 
-        <div className="z-[2] flex flex-col absolute bottom-0 left-0 p-3 gap-4 w-full">
+        <div className="absolute bottom-0 left-0 z-[2] flex w-full flex-col gap-4 p-3">
           {movieDetails.isFetching || !movieDetails.data ? (
-            <Skeleton className="w-[66.5px] h-[32px] rounded-full" />
+            <Skeleton className="h-[32px] w-[66.5px] rounded-full" />
           ) : (
             <Chip className="w-max" color="warning" size="lg" radius="full">
               {"title" in movieDetails.data
@@ -173,7 +173,7 @@ export default function MediaDisplay({
 
           <div className="flex flex-col gap-1">
             {movieDetails.isFetching || !movieDetails.data ? (
-              <Skeleton className="w-full h-8" />
+              <Skeleton className="h-8 w-full" />
             ) : (
               <h2 className="text-2xl font-bold">
                 {"title" in movieDetails.data
@@ -184,7 +184,7 @@ export default function MediaDisplay({
 
             <div className="flex flex-wrap gap-2">
               {movieDetails.isFetching || !movieDetails.data ? (
-                <Skeleton className="w-full h-6" />
+                <Skeleton className="h-6 w-full" />
               ) : (
                 <>
                   {"title" in movieDetails.data && (
@@ -195,7 +195,7 @@ export default function MediaDisplay({
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        className="w-6 h-6 text-amber-300"
+                        className="h-6 w-6 text-amber-300"
                       >
                         <path
                           strokeLinecap="round"
@@ -228,7 +228,7 @@ export default function MediaDisplay({
           </div>
         </div>
 
-        <div className="bg-gradient-to-t from-background h-1/2 w-full absolute bottom-0 left-0 z-[1]" />
+        <div className="absolute bottom-0 left-0 z-[1] h-1/2 w-full bg-gradient-to-t from-background" />
       </div>
 
       <div className="flex flex-col p-3">
@@ -246,7 +246,7 @@ export default function MediaDisplay({
                       "title" in movieDetails.data
                         ? movieDetails.data.title
                         : movieDetails.data.name
-                    }`
+                    }`,
                   )
                 }
                 color="danger"
@@ -262,12 +262,12 @@ export default function MediaDisplay({
                   disableRipple
                   radius="none"
                   variant="light"
-                  className="whitespace-normal p-0 h-max"
+                  className="h-max whitespace-normal p-0"
                 >
                   {movieDetails.isFetching || !movieDetails.data ? (
-                    <Skeleton className="w-full h-[60px]" />
+                    <Skeleton className="h-[60px] w-full" />
                   ) : (
-                    <span className="line-clamp-3 text-slate-400 text-sm text-start w-full">
+                    <span className="line-clamp-3 w-full text-start text-sm text-slate-400">
                       {movieDetails.data.overview}
                     </span>
                   )}
@@ -289,15 +289,15 @@ export default function MediaDisplay({
         </div>
 
         <div
-          className="mt-5 gap-4 grid"
+          className="mt-5 grid gap-4"
           style={{
             gridTemplateColumns: `repeat(${Math.min(
               3,
-              actionCount
+              actionCount,
             )}, minmax(0, 1fr))`,
             gridTemplateRows: `repeat(${Math.max(
               Math.floor(actionCount / 3),
-              1
+              1,
             )}, minmax(0, 1fr))`,
           }}
         >
@@ -388,7 +388,7 @@ export default function MediaDisplay({
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-6 h-6"
+                  className="h-6 w-6"
                 >
                   <path
                     strokeLinecap="round"
@@ -410,7 +410,7 @@ export default function MediaDisplay({
           )}
         </div>
 
-        <Divider className="mt-4 mb-4" />
+        <Divider className="mb-4 mt-4" />
 
         {movieDetails.isFetching || !movieDetails.data ? (
           <Skeleton className="h-12 w-full" />
@@ -444,7 +444,7 @@ export default function MediaDisplay({
                 {selectedSeason.isFetching ||
                 !selectedSeason.data ||
                 seasonToFetch == undefined ? (
-                  <Skeleton className="w-full h-16 rounded-large" />
+                  <Skeleton className="h-16 w-full rounded-large" />
                 ) : (
                   <Select
                     size="lg"
@@ -477,7 +477,7 @@ export default function MediaDisplay({
                     <Spinner />
                   </center>
                 ) : (
-                  <div className="flex flex-col gap-6 pb-3 w-full">
+                  <div className="flex w-full flex-col gap-6 pb-3">
                     {selectedSeason.data.episodes.map(
                       (episode, episodeIndex) => {
                         if ("title" in movieDetails.data) return null;
@@ -492,7 +492,7 @@ export default function MediaDisplay({
                           >
                             <div className="flex gap-4">
                               <Card
-                                className="w-[185px] h-[104px] shrink-0"
+                                className="h-[104px] w-[185px] shrink-0"
                                 radius="md"
                                 isPressable
                                 isHoverable
@@ -503,20 +503,20 @@ export default function MediaDisplay({
                                     calcCanBackForward(
                                       movieDetails.data.seasons,
                                       selectedSeason.data,
-                                      episodeIndex
+                                      episodeIndex,
                                     );
 
                                   router.push(
-                                    `/watch/tv/${movieDetails.data.id}/${movieDetails.data.name}/${episode.season_number}/${episode.episode_number}/${canBack}/${canForward}`
+                                    `/watch/tv/${movieDetails.data.id}/${movieDetails.data.name}/${episode.season_number}/${episode.episode_number}/${canBack}/${canForward}`,
                                   );
                                 }}
                               >
-                                <CardHeader className="absolute z-10 w-full h-full left-0 top-0 !items-center justify-center">
-                                  <div className="bg-background/40 rounded-full pl-0.5">
+                                <CardHeader className="absolute left-0 top-0 z-10 h-full w-full !items-center justify-center">
+                                  <div className="rounded-full bg-background/40 pl-0.5">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
                                       viewBox="0 0 24 24"
-                                      className="fill-white h-8 w-8"
+                                      className="h-8 w-8 fill-white"
                                     >
                                       <path d="M7 6v12l10-6z"></path>
                                     </svg>
@@ -532,7 +532,7 @@ export default function MediaDisplay({
                                     height={104}
                                     src={`https://image.tmdb.org/t/p/w185/${episode.still_path}`}
                                     alt={episode.name}
-                                    className="object-cover w-full h-full z-0"
+                                    className="z-0 h-full w-full object-cover"
                                   />
                                 )}
                               </Card>
@@ -549,12 +549,12 @@ export default function MediaDisplay({
                               </div>
                             </div>
 
-                            <span className="text-slate-400 max-w-3xl">
+                            <span className="max-w-3xl text-slate-400">
                               {episode.overview}
                             </span>
                           </div>
                         );
-                      }
+                      },
                     )}
                   </div>
                 )}
@@ -578,8 +578,8 @@ export default function MediaDisplay({
                     }-${i}-${person.id}`}
                     className="!w-max"
                   >
-                    <div className="justify-center gap-2 w-[130px] shrink-0 flex flex-col">
-                      <div className="w-full flex justify-center">
+                    <div className="flex w-[130px] shrink-0 flex-col justify-center gap-2">
+                      <div className="flex w-full justify-center">
                         <Avatar
                           src={`https://image.tmdb.org/t/p/w92/${person.profile_path}`}
                           showFallback={!person.profile_path}

@@ -40,7 +40,7 @@ export default function BackHome({
         "p-1.5 !opacity-80",
         className,
         buttonProps,
-        pathname == "/" && "hidden"
+        pathname == "/" && "hidden",
       )}
       aria-label="Back"
     >

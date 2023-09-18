@@ -10,7 +10,7 @@ export default function MylistDisplay() {
   return (
     <>
       {session.status == "loading" && (
-        <center className="pt-12 pb-4">
+        <center className="pb-4 pt-12">
           <Spinner label="Loading session..." color="warning" />
         </center>
       )}

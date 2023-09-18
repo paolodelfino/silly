@@ -177,7 +177,7 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
 
   return (
     <div
-      className="relative border-divider flex items-center"
+      className="relative flex items-center border-divider"
       style={{
         borderWidth:
           (typeof document != "undefined" && !document.fullscreenElement
@@ -197,7 +197,7 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
         }
         onKeyDown={(e) => e.preventDefault()}
         ref={video}
-        className="w-full outline-none aspect-video"
+        className="aspect-video w-full outline-none"
         style={{
           borderRadius:
             typeof document != "undefined" && !document.fullscreenElement
@@ -214,22 +214,22 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
         offset={20}
       >
         <PopoverTrigger>
-          <div className="absolute top-0 left-0 w-full h-full pointer-events-none"></div>
+          <div className="pointer-events-none absolute left-0 top-0 h-full w-full"></div>
         </PopoverTrigger>
         <PopoverContent>
           <div className="flex flex-col gap-2">
-            <span className="w-full flex justify-between gap-4 items-center">
+            <span className="flex w-full items-center justify-between gap-4">
               Show/Hide Controls
               <Kbd>Click</Kbd>
             </span>
-            <span className="w-full flex justify-between gap-4 items-center">
+            <span className="flex w-full items-center justify-between gap-4">
               Volume
               <Kbd keys={["up", "down"]} />
             </span>
-            <span className="w-full flex justify-between gap-4 items-center">
+            <span className="flex w-full items-center justify-between gap-4">
               Mute/Unmute <Kbd>M</Kbd>
             </span>
-            <span className="w-full flex justify-between gap-4 items-center">
+            <span className="flex w-full items-center justify-between gap-4">
               Enter/Exit PiP <Kbd>I</Kbd>
             </span>
           </div>
@@ -237,8 +237,8 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
       </Popover>
 
       {showControls && (
-        <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-between bg-background/20">
-          <div className="w-full flex justify-end px-4 py-2">
+        <div className="absolute left-0 top-0 flex h-full w-full flex-col justify-between bg-background/20">
+          <div className="flex w-full justify-end px-4 py-2">
             {typeof document != "undefined" && !document.fullscreenElement && (
               <Dropdown placement="left-start">
                 <DropdownTrigger>
@@ -297,7 +297,7 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
             )}
           </div>
 
-          <div className="grid grid-cols-3 gap-2 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <div className="absolute left-1/2 top-1/2 grid -translate-x-1/2 -translate-y-1/2 grid-cols-3 gap-2">
             <Button
               isIconOnly
               size="lg"
@@ -322,15 +322,15 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
               isOpen={shortcutsHelpOpen}
               content={
                 <div className="flex flex-col gap-2">
-                  <span className="w-full flex justify-between gap-4 items-center">
+                  <span className="flex w-full items-center justify-between gap-4">
                     Back
                     <Kbd keys={["left"]} />
                   </span>
-                  <span className="w-full flex justify-between gap-4 items-center">
+                  <span className="flex w-full items-center justify-between gap-4">
                     Play/Pause
                     <Kbd keys={["space"]}>K</Kbd>
                   </span>
-                  <span className="w-full flex justify-between gap-4 items-center">
+                  <span className="flex w-full items-center justify-between gap-4">
                     Forward
                     <Kbd keys={["right"]} />
                   </span>
@@ -381,8 +381,8 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
             </Button>
           </div>
 
-          <div className="w-full rounded-b-medium pl-7 pr-4 py-2 flex items-center gap-2">
-            <div className="w-full mb-[13.5px]">
+          <div className="flex w-full items-center gap-2 rounded-b-medium py-2 pl-7 pr-4">
+            <div className="mb-[13.5px] w-full">
               <VideoSeekSlider
                 max={maxTime}
                 currentTime={currentTime}
@@ -398,7 +398,7 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
               isOpen={shortcutsHelpOpen}
               showArrow
               content={
-                <span className="w-full flex justify-between gap-4 items-center">
+                <span className="flex w-full items-center justify-between gap-4">
                   Enter/Exit Fullscreen
                   <Kbd>F</Kbd>
                 </span>

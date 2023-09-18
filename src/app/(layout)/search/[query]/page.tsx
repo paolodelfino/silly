@@ -22,7 +22,7 @@ export default async function SearchPage({ params: { query } }: Props) {
   const decodedQuery = decodeURIComponent(query);
 
   return (
-    <div className="flex flex-col gap-4 p-1 mb-4">
+    <div className="mb-4 flex flex-col gap-4 p-1">
       <SearchResult query={decodedQuery} />
     </div>
   );

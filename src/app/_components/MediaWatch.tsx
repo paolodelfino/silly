@@ -88,7 +88,7 @@ export default function MediaWatch({
       return calcCanBackForward(
         tvShowDetails.data!.seasons,
         season,
-        episodeIndex
+        episodeIndex,
       );
     },
     enabled: Boolean(tvShowDetails.data) && backSeason != undefined,
@@ -108,7 +108,7 @@ export default function MediaWatch({
       return calcCanBackForward(
         tvShowDetails.data!.seasons,
         season,
-        episodeIndex
+        episodeIndex,
       );
     },
     enabled: Boolean(tvShowDetails.data) && forwardSeason != undefined,
@@ -117,7 +117,7 @@ export default function MediaWatch({
   if (!playlistLoading && !playlist) return "Playlist not found";
 
   return (
-    <div className="flex flex-col mb-4">
+    <div className="mb-4 flex flex-col">
       <div className="flex p-3">
         <Button
           as={Link}
@@ -140,7 +140,7 @@ export default function MediaWatch({
 
       <div className="px-4 py-0.5">
         {playlistLoading || !playlist ? (
-          <Skeleton className="w-full aspect-video rounded-medium" />
+          <Skeleton className="aspect-video w-full rounded-medium" />
         ) : (
           <VideoPlayer playlist={playlist} />
         )}
@@ -155,7 +155,7 @@ export default function MediaWatch({
               <Button
                 onPress={() =>
                   router.push(
-                    `/watch/${type}/${movieId}/${title}/${backSeason}/${backEpisode}/${backCan.data[0]}/${backCan.data[1]}`
+                    `/watch/${type}/${movieId}/${title}/${backSeason}/${backEpisode}/${backCan.data[0]}/${backCan.data[1]}`,
                   )
                 }
                 isDisabled={!canBack}
@@ -181,7 +181,7 @@ export default function MediaWatch({
               <Button
                 onPress={() =>
                   router.push(
-                    `/watch/${type}/${movieId}/${title}/${forwardSeason}/${forwardEpisode}/${forwardCan.data[0]}/${forwardCan.data[1]}`
+                    `/watch/${type}/${movieId}/${title}/${forwardSeason}/${forwardEpisode}/${forwardCan.data[0]}/${forwardCan.data[1]}`,
                   )
                 }
                 isDisabled={!canForward}

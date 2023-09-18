@@ -62,7 +62,7 @@ export async function generateMetadata({
 
   return {
     title: `Watch ${decodeURIComponent(
-      title
+      title,
     )} S${seasonNumber} E${episodeNumber} | Silly`,
     description: data.overview,
   };

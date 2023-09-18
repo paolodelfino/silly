@@ -14,7 +14,7 @@ export function MediaSliderSkeleton({
   seeAll?: boolean;
 }) {
   return (
-    <div className="space-y-1 flex flex-col px-1">
+    <div className="flex flex-col space-y-1 px-1">
       <div
         className="flex justify-between"
         style={{
@@ -30,7 +30,7 @@ export function MediaSliderSkeleton({
         {seeAll && <Skeleton className="w-[80px] rounded-large" />}
       </div>
 
-      <Skeleton className="h-[180px] ml-1 rounded-large" />
+      <Skeleton className="ml-1 h-[180px] rounded-large" />
     </div>
   );
 }
@@ -51,7 +51,7 @@ export default function MediaSlider<
     }[];
     total_pages: number;
     total_results: number;
-  }
+  },
 >({ title, seeAll, data }: { title: string; seeAll?: string; data: T }) {
   data.results = data.results.filter((entry) => {
     if ((entry.vote_count && entry.vote_count < 40) || entry.popularity < 10) {
@@ -63,8 +63,8 @@ export default function MediaSlider<
 
   return (
     <div className="space-y-1">
-      <div className="flex justify-between items-center">
-        <h1 className="text-lg font-medium mb-1 ml-1">{title}</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="mb-1 ml-1 text-lg font-medium">{title}</h1>
         {seeAll && (
           <Button variant="light" color="danger" as={Link} href={seeAll}>
             See all
@@ -81,7 +81,7 @@ export default function MediaSlider<
         freeMode
       >
         {data.total_results == 0 && (
-          <span className="text-slate-400 ml-2">No results</span>
+          <span className="ml-2 text-slate-400">No results</span>
         )}
         {data.results.map((entry, i) => {
           const type = entry.release_date
@@ -105,11 +105,11 @@ export default function MediaSlider<
               <Card
                 as={Link}
                 href={`/display/${type}/${entry.id}`}
-                className="w-[120px] h-[180px] !outline-none"
+                className="h-[180px] w-[120px] !outline-none"
                 isPressable
                 isHoverable
               >
-                <CardHeader className="absolute z-10 w-full h-full left-0 top-0 !items-center justify-center">
+                <CardHeader className="absolute left-0 top-0 z-10 h-full w-full !items-center justify-center">
                   {!entry.poster_path && !entry.profile_path && (
                     <span className="line-clamp-3 text-center">
                       {entry.title ?? entry.name}
@@ -129,7 +129,7 @@ export default function MediaSlider<
                       entry.poster_path || entry.profile_path
                     }`}
                     alt={entry.title ?? entry.name!}
-                    className="object-cover w-full h-full z-0"
+                    className="z-0 h-full w-full object-cover"
                   />
                 )}
               </Card>
