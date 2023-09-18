@@ -35,16 +35,11 @@ export default function TopNav() {
               showFallback
             />
           </DropdownTrigger>
-          <DropdownMenu
-            aria-label="User Actions"
-            variant="flat"
-            disabledKeys={["settings"]}
-          >
+          <DropdownMenu aria-label="User Actions" variant="flat">
             <DropdownItem key="profile" className="h-14 gap-2">
               <p className="font-bold">{data.user?.name}</p>
               <p className="text-tiny text-slate-400">{data.user?.email}</p>
             </DropdownItem>
-            <DropdownItem key="settings">My Settings</DropdownItem>
             <DropdownItem key="logout" color="danger" onPress={() => signOut()}>
               Log Out
             </DropdownItem>
