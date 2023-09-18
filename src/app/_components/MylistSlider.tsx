@@ -19,5 +19,5 @@ export default function MylistSlider({ userId }: { userId: string }) {
     return null;
   }
 
-  return <MediaSlider title="Mylist" seeAll="/mylist" data={mylist.data} />;
+  return <MediaSlider title="My List" seeAll="/mylist" data={mylist.data} />;
 }
