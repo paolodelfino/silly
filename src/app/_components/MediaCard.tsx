@@ -9,7 +9,7 @@ export default function MediaCard<T extends GenericMedia>({
   actions,
 }: {
   entry: MediaSliderProps<T>["data"]["results"][number];
-  type: string;
+  type: "movie" | "tv" | "person";
   actions?: MediaSliderProps<T>["actions"];
 }) {
   return (
@@ -46,7 +46,7 @@ export default function MediaCard<T extends GenericMedia>({
         )}
       </Card>
 
-      {actions?.({ entry })}
+      {actions?.({ entry, type })}
     </div>
   );
 }
