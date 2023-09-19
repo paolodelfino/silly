@@ -54,7 +54,7 @@ export type GenericMedia = {
 };
 
 export type MediaSliderProps<T extends GenericMedia> = {
-  title: string;
+  title?: string;
   seeAll?: string;
   data: T;
   actions?: (props: {
