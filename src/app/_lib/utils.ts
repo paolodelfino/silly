@@ -31,3 +31,30 @@ export function calcCanBackForward(
 
   return [canBack, canForward];
 }
+
+export function formulateSearchInPage<
+  T extends {
+    title: string;
+  },
+>(array: T[], query: string, page: number = 1, elPerPage: number = 20) {
+  const queryLowercase = query.toLowerCase();
+  const allResults = array.filter((entry) => {
+    const titleLowercase = entry.title.toLowerCase();
+    return (
+      titleLowercase.includes(queryLowercase) ||
+      queryLowercase.includes(titleLowercase)
+    );
+  });
+
+  const pageResults = allResults.slice(
+    (page - 1) * elPerPage,
+    page * elPerPage,
+  );
+
+  return {
+    page,
+    results: pageResults,
+    total_pages: Math.ceil(allResults.length / elPerPage),
+    total_results: allResults.length,
+  };
+}
