@@ -1,22 +1,9 @@
-import BackHome from "@/app/_components/BackHome";
-import TopNav from "@/app/_components/TopNav";
-import Search from "@/app/_components/Search";
+import WithLayout from "@/app/_components/pages/WithLayout";
 
-export default function WithSearchLayout({
+export default function WithLayoutPage({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div className="flex min-h-screen flex-col">
-      <TopNav />
-
-      <div className="flex items-center gap-4 px-9 pb-3 pt-3">
-        <BackHome className="-ml-4" />
-        <Search />
-      </div>
-
-      {children}
-    </div>
-  );
+  return <WithLayout>{children}</WithLayout>;
 }
