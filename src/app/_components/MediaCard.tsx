@@ -7,10 +7,12 @@ export default function MediaCard<T extends GenericMedia>({
   entry,
   type,
   actions,
+  externActions,
 }: {
   entry: MediaSliderProps<T>["data"]["results"][number];
   type: "movie" | "tv" | "person";
   actions?: MediaSliderProps<T>["actions"];
+  externActions?: boolean;
 }) {
   return (
     <div className="relative">
@@ -29,6 +31,8 @@ export default function MediaCard<T extends GenericMedia>({
           )}
         </CardHeader>
 
+        {!externActions && actions?.({ entry, type })}
+
         {(entry.poster_path || entry.profile_path) && (
           <Image
             removeWrapper
@@ -46,7 +50,7 @@ export default function MediaCard<T extends GenericMedia>({
         )}
       </Card>
 
-      {actions?.({ entry, type })}
+      {externActions && actions?.({ entry, type })}
     </div>
   );
 }

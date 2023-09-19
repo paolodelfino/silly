@@ -61,6 +61,7 @@ export type MediaSliderProps<T extends GenericMedia> = {
     entry: T["results"][number];
     type: Parameters<typeof MediaCard<T>>["0"]["type"];
   }) => ReactNode;
+  externActions?: boolean;
   Card?: typeof MediaCard<T>;
 };
 
@@ -69,6 +70,7 @@ export default function MediaSlider<T extends GenericMedia>({
   seeAll,
   data,
   actions,
+  externActions,
   Card = MediaCard,
 }: MediaSliderProps<T>) {
   data.results = data.results.filter((entry) => {
@@ -120,7 +122,12 @@ export default function MediaSlider<T extends GenericMedia>({
               key={`${title}-${i}-${entry.id}`}
               className="!w-max first:!ml-2 last:!mr-1"
             >
-              <Card entry={entry} type={type} actions={actions} />
+              <Card
+                entry={entry}
+                type={type}
+                actions={actions}
+                externActions={externActions}
+              />
             </SwiperSlide>
           );
         })}

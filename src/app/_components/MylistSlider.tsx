@@ -26,6 +26,7 @@ export default function MylistSlider({ userId }: { userId: string }) {
       title="My List"
       seeAll="/mylist"
       data={mylist.data}
+      externActions
       actions={({ entry, type }) => {
         if (type == "person") return null;
 
