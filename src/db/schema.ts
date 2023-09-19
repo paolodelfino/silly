@@ -29,6 +29,7 @@ export const users = pgTable("user", {
       ({
         id: number;
         time: number;
+        title: string;
       } & (
         | {
             type: "movie";
