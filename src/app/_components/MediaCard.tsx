@@ -17,7 +17,7 @@ export default function MediaCard<T extends GenericMedia>({
       <Card
         as={Link}
         href={`/display/${type}/${entry.id}`}
-        className="!outline-non h-[180px] w-[120px] data-[focus-visible=true]:scale-[0.95]"
+        className="h-[180px] w-[120px] !outline-none data-[focus-visible=true]:scale-[0.95]"
         isPressable
         isHoverable
       >

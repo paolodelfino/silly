@@ -34,11 +34,10 @@ import { useQuery } from "@tanstack/react-query";
 import { TRPCClientError } from "@trpc/client";
 import { signIn, useSession } from "next-auth/react";
 import NextImage from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import "swiper/css";
-import { FreeMode } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
 
 export default function MediaDisplay({
   id,
@@ -572,7 +571,13 @@ export default function MediaDisplay({
                 }}
                 Card={({ entry, type }) => {
                   return (
-                    <div className="flex w-[130px] shrink-0 flex-col justify-center gap-2">
+                    <Card
+                      isPressable
+                      isHoverable
+                      className="flex w-[130px] shrink-0 flex-col justify-center gap-2 bg-background !outline-none data-[focus-visible=true]:scale-[0.90]"
+                      as={Link}
+                      href={`/display/${type}/${entry.id}`}
+                    >
                       <div className="flex w-full justify-center">
                         <Avatar
                           src={`https://image.tmdb.org/t/p/w92/${entry.profile_path}`}
@@ -582,16 +587,14 @@ export default function MediaDisplay({
                         />
                       </div>
 
-                      <div className="flex flex-col">
-                        <span className="text-center text-xs">
-                          {entry.name}
-                        </span>
+                      <div className="flex w-full flex-col !text-center">
+                        <span className="text-xs">{entry.name}</span>
 
-                        <span className="text-center text-xs text-slate-400">
+                        <span className="text-xs text-slate-400">
                           {entry.character}
                         </span>
                       </div>
-                    </div>
+                    </Card>
                   );
                 }}
               />
