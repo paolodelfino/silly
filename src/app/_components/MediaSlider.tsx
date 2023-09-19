@@ -57,7 +57,10 @@ export type MediaSliderProps<T extends GenericMedia> = {
   title: string;
   seeAll?: string;
   data: T;
-  actions?: (props: { entry: T["results"][number] }) => ReactNode;
+  actions?: (props: {
+    entry: T["results"][number];
+    type: Parameters<typeof MediaCard<T>>["0"]["type"];
+  }) => ReactNode;
   Card?: typeof MediaCard<T>;
 };
 
