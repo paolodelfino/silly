@@ -1,7 +1,12 @@
 import { auth, currentUser } from "@/app/_lib/auth";
 import { tmdb } from "@/app/_lib/tmdb/client";
+import { formulateSearchInPage } from "@/app/_lib/utils";
 import { users } from "@/db/schema";
-import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
+import {
+  TRPCError,
+  type inferRouterInputs,
+  type inferRouterOutputs,
+} from "@trpc/server";
 import { sql } from "@vercel/postgres";
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/vercel-postgres";
@@ -232,27 +237,105 @@ export const appRouter = router({
           const session = await auth();
           const user = await currentUser(session?.user.id!);
 
-          const queryLowercase = query.toLowerCase();
-          const allResults = user.mylist.filter((entry) => {
-            const titleLowercase = entry.title.toLowerCase();
-            return (
-              titleLowercase.includes(queryLowercase) ||
-              queryLowercase.includes(titleLowercase)
-            );
-          });
+          return formulateSearchInPage(user.mylist, query, page);
+        }),
+    }),
+    continueWatching: router({
+      get: protectedProcedure.query(async () => {
+        const session = await auth();
+        const user = await currentUser(session?.user.id!);
+        return user.continueWatching;
+      }),
+      update: protectedProcedure
+        .input(
+          z.object({
+            id: z.number(),
+            type: z.union([z.literal("movie"), z.literal("tv")]),
+            time: z.number(),
+            title: z.string(),
+            season: z.number().optional(),
+            episode: z.number().optional(),
+          }),
+        )
+        .mutation(
+          async ({ input: { id, type, time, title, season, episode } }) => {
+            const session = await auth();
+            const user = await currentUser(session?.user.id!);
 
-          const elPerPage = 20;
-          const pageResults = allResults.slice(
-            (page - 1) * elPerPage,
-            page * elPerPage,
+            if (type == "tv" && (!season || !episode)) {
+              throw new TRPCError({
+                message: "Type is 'tv', but season or episode is missing",
+                code: "BAD_REQUEST",
+              });
+            }
+
+            let found = false;
+            for (let i = 0; i < user.continueWatching.length; i++) {
+              if (
+                user.continueWatching[i].id == id &&
+                user.continueWatching[i].type == type
+              ) {
+                user.continueWatching[i].time = time;
+
+                if (
+                  user.continueWatching[i].type == "tv" &&
+                  (season! > user.continueWatching[i].season! ||
+                    episode! > user.continueWatching[i].episode!)
+                ) {
+                  user.continueWatching[i].season = season;
+                  user.continueWatching[i].episode = episode;
+                }
+
+                found = true;
+              }
+            }
+            if (!found)
+              user.continueWatching.push({
+                id,
+                type,
+                season,
+                episode,
+                title,
+                time,
+              });
+
+            await db
+              .update(users)
+              .set({
+                continueWatching: user.continueWatching,
+              })
+              .where(eq(users.id, user.id));
+          },
+        ),
+      getCheckpoint: protectedProcedure
+        .input(
+          z.object({
+            id: z.number(),
+            type: z.union([z.literal("movie"), z.literal("tv")]),
+          }),
+        )
+        .query(async ({ input: { id, type } }) => {
+          const session = await auth();
+          const user = await currentUser(session?.user.id!);
+
+          return (
+            user.continueWatching.find(
+              (entry) => entry.id == id && entry.type == type,
+            )?.time ?? null
           );
+        }),
+      search: protectedProcedure
+        .input(
+          z.object({
+            query: z.string(),
+            page: z.number(),
+          }),
+        )
+        .query(async ({ input: { query, page } }) => {
+          const session = await auth();
+          const user = await currentUser(session?.user.id!);
 
-          return {
-            page,
-            results: pageResults,
-            total_pages: Math.ceil(allResults.length / elPerPage),
-            total_results: allResults.length,
-          };
+          return formulateSearchInPage(user.continueWatching, query, page);
         }),
     }),
   }),

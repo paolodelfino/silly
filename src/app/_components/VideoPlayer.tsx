@@ -1,5 +1,7 @@
 "use client";
 import { useBrowserInfo } from "@/app/_stores/browser-info";
+import { trpc } from "@/app/_trpc/client";
+import { getCheckpoint } from "@/server/actions";
 import { useHotkeys } from "@mantine/hooks";
 import {
   Button,
@@ -19,7 +21,23 @@ import { VideoSeekSlider } from "react-video-seek-slider";
 import "react-video-seek-slider/styles.css";
 import screenfull from "screenfull";
 
-export default function VideoPlayer({ playlist }: { playlist: string }) {
+type Props = {
+  playlist: string;
+  movieId: number;
+  title: string;
+  type: "movie" | "tv";
+  seasonNumber?: number;
+  episodeNumber?: number;
+};
+
+export default function VideoPlayer({
+  playlist,
+  movieId,
+  type,
+  title,
+  episodeNumber,
+  seasonNumber,
+}: Props) {
   const { userAgent } = useBrowserInfo();
 
   const player = useRef<HTMLDivElement>(null);
@@ -29,6 +47,21 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
   const [currentTime, setCurrentTime] = useState(0);
   const [progress, setProgress] = useState(0);
   const [maxTime, setMaxTime] = useState(0);
+
+  const updateCheckpoint = trpc.user.continueWatching.update.useMutation();
+
+  const handleCanPlay = () => {
+    if (video.current) {
+      getCheckpoint({
+        id: movieId,
+        type,
+      }).then(
+        (checkpoint) =>
+          checkpoint != null && (video.current!.currentTime = checkpoint),
+      );
+      console.log("fak");
+    }
+  };
 
   const handleTimeChange = useCallback<
     (time: number, offsetTime: number) => void
@@ -74,6 +107,14 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
       }
 
       setProgress(buffer.end(currentBuffer) * 1000 || 0);
+      updateCheckpoint.mutate({
+        id: movieId,
+        type,
+        season: seasonNumber,
+        episode: episodeNumber,
+        time: inSeconds,
+        title: title,
+      });
     }
   };
 
@@ -175,6 +216,7 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
       video.current.addEventListener("pause", handlePause);
       video.current.addEventListener("loadeddata", handleDataLoaded);
       video.current.addEventListener("progress", handleProgress);
+      video.current.addEventListener("canplay", handleCanPlay, { once: true });
     }
   }, [video, playlist]);
 

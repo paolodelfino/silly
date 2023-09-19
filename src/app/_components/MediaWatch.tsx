@@ -143,7 +143,14 @@ export default function MediaWatch({
         {playlistLoading || !playlist ? (
           <Skeleton className="aspect-video w-full rounded-medium" />
         ) : (
-          <VideoPlayer playlist={playlist} />
+          <VideoPlayer
+            playlist={playlist}
+            movieId={movieId}
+            title={title}
+            type={type}
+            episodeNumber={episodeNumber}
+            seasonNumber={seasonNumber}
+          />
         )}
       </div>
 
