@@ -38,7 +38,7 @@ import { signIn, useSession } from "next-auth/react";
 import NextImage from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { experimental_useOptimistic, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "swiper/css";
 
 export default function MediaDisplay({
