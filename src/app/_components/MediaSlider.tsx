@@ -2,6 +2,7 @@
 import { Button, Card, CardHeader, Image, Skeleton } from "@nextui-org/react";
 import NextImage from "next/image";
 import Link from "next/link";
+import { ReactNode } from "react";
 import "swiper/css";
 import { FreeMode } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -52,7 +53,29 @@ export default function MediaSlider<
     total_pages: number;
     total_results: number;
   },
->({ title, seeAll, data }: { title: string; seeAll?: string; data: T }) {
+>({
+  title,
+  seeAll,
+  data,
+  actions,
+}: {
+  title: string;
+  seeAll?: string;
+  data: T;
+  actions?: (props: {
+    entry: {
+      id: number;
+      poster_path?: string | null;
+      profile_path?: string | null;
+      release_date?: string;
+      title?: string;
+      vote_count?: number;
+      popularity: number;
+      first_air_date?: string;
+      name?: string;
+    };
+  }) => ReactNode;
+}) {
   data.results = data.results.filter((entry) => {
     if ((entry.vote_count && entry.vote_count < 40) || entry.popularity < 10) {
       return false;
@@ -105,7 +128,7 @@ export default function MediaSlider<
               <Card
                 as={Link}
                 href={`/display/${type}/${entry.id}`}
-                className="h-[180px] w-[120px] !outline-none"
+                className="h-[180px] w-[120px] !outline-none data-[focus-visible=true]:scale-[0.97]"
                 isPressable
                 isHoverable
               >
@@ -116,6 +139,8 @@ export default function MediaSlider<
                     </span>
                   )}
                 </CardHeader>
+
+                {actions?.({ entry })}
 
                 {(entry.poster_path || entry.profile_path) && (
                   <Image
