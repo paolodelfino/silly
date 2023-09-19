@@ -323,7 +323,7 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
               size="lg"
               radius="full"
               variant="light"
-              onClick={() => seekBack()}
+              onPress={() => seekBack()}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -357,7 +357,7 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
                 </div>
               }
             >
-              <Button isIconOnly size="lg" radius="full" onClick={togglePause}>
+              <Button isIconOnly size="lg" radius="full" onPress={togglePause}>
                 {isPaused ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -387,7 +387,7 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
               size="lg"
               radius="full"
               variant="light"
-              onClick={() => seekForward()}
+              onPress={() => seekForward()}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -424,7 +424,7 @@ export default function VideoPlayer({ playlist }: { playlist: string }) {
                 </span>
               }
             >
-              <Button isIconOnly variant="light" onClick={toggleFullscreen}>
+              <Button isIconOnly variant="light" onPress={toggleFullscreen}>
                 {typeof document != "undefined" &&
                 Boolean(document.fullscreenElement) ? (
                   <svg

@@ -27,7 +27,7 @@ export default function TopNav() {
       )}
 
       {status == "unauthenticated" && (
-        <Button variant="faded" onClick={() => signIn()}>
+        <Button variant="faded" onPress={() => signIn()}>
           Log in
         </Button>
       )}
