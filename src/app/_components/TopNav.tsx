@@ -21,7 +21,7 @@ export default function TopNav() {
   useHotkeys([["ctrl+i", () => setActionsOpen(!actionsOpen)]]);
 
   return (
-    <div className="sticky top-0 z-10 flex justify-between border-b border-divider bg-background/90 px-4 py-3 backdrop-blur">
+    <div className="sticky top-0 z-20 flex justify-between border-b border-divider bg-background/90 px-4 py-3 backdrop-blur">
       {status == "loading" && (
         <Skeleton className="h-10 w-10 rounded-full !bg-default-200"></Skeleton>
       )}

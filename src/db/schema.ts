@@ -24,6 +24,24 @@ export const users = pgTable("user", {
     >()
     .default([])
     .notNull(),
+  continueWatching: jsonb("continueWatching")
+    .$type<
+      ({
+        id: number;
+        time: number;
+      } & (
+        | {
+            type: "movie";
+          }
+        | {
+            type: "tv";
+            season: number;
+            episode: number;
+          }
+      ))[]
+    >()
+    .default([])
+    .notNull(),
 });
 
 export const accounts = pgTable(
