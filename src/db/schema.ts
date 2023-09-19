@@ -26,20 +26,13 @@ export const users = pgTable("user", {
     .notNull(),
   continueWatching: jsonb("continueWatching")
     .$type<
-      ({
+      {
         id: number;
         time: number;
         title: string;
-      } & (
-        | {
-            type: "movie";
-          }
-        | {
-            type: "tv";
-            season: number;
-            episode: number;
-          }
-      ))[]
+        season?: number;
+        episode?: number;
+      }[]
     >()
     .default([])
     .notNull(),
