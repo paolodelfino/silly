@@ -38,7 +38,7 @@ import { signIn, useSession } from "next-auth/react";
 import NextImage from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { experimental_useOptimistic, useEffect, useState } from "react";
 import "swiper/css";
 
 export default function MediaDisplay({
@@ -62,6 +62,7 @@ export default function MediaDisplay({
     refetchOnWindowFocus: false,
   });
 
+  const [isBookmarkedOptimistic, setIsBookmarkedOptimistic] = useState(false);
   const isBookmarked = useQuery({
     queryKey: ["is-bookmarked", movieDetails],
     queryFn: async () => {
@@ -84,6 +85,9 @@ export default function MediaDisplay({
       return true;
     },
     enabled: Boolean(movieDetails.data),
+    onSettled(data, error) {
+      if (data != undefined) setIsBookmarkedOptimistic(data);
+    },
   });
 
   const addBookmark = trpc.user.mylist.add.useMutation({
@@ -312,55 +316,47 @@ export default function MediaDisplay({
                   return;
                 }
 
-                if (isBookmarked.data) {
-                  removeBookmark.mutate({
-                    id: movieDetails.data.id,
-                    type: "title" in movieDetails.data ? "movie" : "tv",
-                  });
-                } else {
-                  addBookmark.mutate({
-                    id: movieDetails.data.id,
-                    type: "title" in movieDetails.data ? "movie" : "tv",
-                    title:
-                      "title" in movieDetails.data
-                        ? movieDetails.data.title
-                        : movieDetails.data.name,
-                  });
-                }
+                setIsBookmarkedOptimistic(!isBookmarked.data);
+
+                isBookmarked.data
+                  ? removeBookmark.mutate({
+                      id: movieDetails.data.id,
+                      type: "title" in movieDetails.data ? "movie" : "tv",
+                    })
+                  : addBookmark.mutate({
+                      id: movieDetails.data.id,
+                      type: "title" in movieDetails.data ? "movie" : "tv",
+                      title:
+                        "title" in movieDetails.data
+                          ? movieDetails.data.title
+                          : movieDetails.data.name,
+                    });
               }}
               startContent={
-                !isBookmarked.isLoading &&
-                !removeBookmark.isLoading &&
-                !addBookmark.isLoading ? (
-                  isBookmarked.data ? (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                    >
-                      <path d="m10 15.586-3.293-3.293-1.414 1.414L10 18.414l9.707-9.707-1.414-1.414z"></path>
-                    </svg>
-                  ) : (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                    >
-                      <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
-                    </svg>
-                  )
-                ) : null
+                isBookmarked.isInitialLoading ? null : isBookmarkedOptimistic ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="m10 15.586-3.293-3.293-1.414 1.414L10 18.414l9.707-9.707-1.414-1.414z"></path>
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path>
+                  </svg>
+                )
               }
               variant="light"
-              isLoading={
-                isBookmarked.isLoading ||
-                removeBookmark.isLoading ||
-                addBookmark.isLoading
-              }
+              isLoading={isBookmarked.isInitialLoading}
             >
               List
             </Button>
