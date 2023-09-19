@@ -562,45 +562,39 @@ export default function MediaDisplay({
             )}
 
             <Tab key="cast" title="Cast">
-              <Swiper
-                spaceBetween={8}
-                slidesPerView={"auto"}
-                grabCursor
-                modules={[FreeMode]}
-                freeMode
-              >
-                {movieDetails.data.credits.cast.map((person, i) => (
-                  <SwiperSlide
-                    key={`${
-                      "title" in movieDetails.data
-                        ? movieDetails.data.title
-                        : movieDetails.data.name
-                    }-${i}-${person.id}`}
-                    className="!w-max"
-                  >
+              <MediaSlider
+                title={""}
+                data={{
+                  page: 1,
+                  results: movieDetails.data.credits.cast,
+                  total_pages: 1,
+                  total_results: movieDetails.data.credits.cast.length,
+                }}
+                Card={({ entry, type }) => {
+                  return (
                     <div className="flex w-[130px] shrink-0 flex-col justify-center gap-2">
                       <div className="flex w-full justify-center">
                         <Avatar
-                          src={`https://image.tmdb.org/t/p/w92/${person.profile_path}`}
-                          showFallback={!person.profile_path}
-                          fallback={person.name[0]}
+                          src={`https://image.tmdb.org/t/p/w92/${entry.profile_path}`}
+                          showFallback={!entry.profile_path}
+                          fallback={entry.name[0]}
                           size={"lg"}
                         />
                       </div>
 
                       <div className="flex flex-col">
                         <span className="text-center text-xs">
-                          {person.name}
+                          {entry.name}
                         </span>
 
                         <span className="text-center text-xs text-slate-400">
-                          {person.character}
+                          {entry.character}
                         </span>
                       </div>
                     </div>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
+                  );
+                }}
+              />
             </Tab>
           </Tabs>
         )}
