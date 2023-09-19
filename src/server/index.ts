@@ -1,7 +1,7 @@
 import { auth, currentUser } from "@/app/_lib/auth";
 import { tmdb } from "@/app/_lib/tmdb/client";
 import { users } from "@/db/schema";
-import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
+import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import { sql } from "@vercel/postgres";
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/vercel-postgres";
@@ -101,10 +101,14 @@ export const appRouter = router({
           movie.seasons[seasonNumber - 1].episodes[episodeNumber - 1].id;
       }
 
-      return await get_playlist({
-        movie_id: movie.id,
-        episode_id: episodeId,
-      });
+      try {
+        return await get_playlist({
+          movie_id: movie.id,
+          episode_id: episodeId,
+        });
+      } catch (error) {
+        return undefined;
+      }
     }),
   search: router({
     movies: publicProcedure

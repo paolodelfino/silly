@@ -1,7 +1,6 @@
 "use client";
 import VideoPlayer from "@/app/_components/VideoPlayer";
 import { calcCanBackForward } from "@/app/_lib/utils";
-import { trpc } from "@/app/_trpc/client";
 import { TmdbDetailsTvShowOutput } from "@/app/_trpc/types";
 import { getMovieDetails, getMoviePlaylist, getSeason } from "@/server/actions";
 import { useHotkeys } from "@mantine/hooks";
@@ -48,10 +47,12 @@ export default function MediaWatch({
 
   useEffect(() => {
     if (!playlist)
-      getMoviePlaylist(title, seasonNumber, episodeNumber).then((data) => {
-        setPlaylist(data);
-        setPlaylistLoading(false);
-      });
+      try {
+        getMoviePlaylist(title, seasonNumber, episodeNumber).then((data) => {
+          setPlaylist(data);
+          setPlaylistLoading(false);
+        });
+      } catch (error) {}
   }, [episodeNumber, playlist, seasonNumber, title]);
 
   let backSeason: number | undefined,
