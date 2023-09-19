@@ -40,7 +40,7 @@ export default function MediaWatch({
   const router = useRouter();
   const backUrl = `/display/${type}/${movieId}`;
 
-  useHotkeys([["escape", () => router.push(backUrl)]]);
+  useHotkeys([["shift+escape", () => router.push(backUrl)]]);
 
   const [playlist, setPlaylist] = useState<string | undefined>();
   const [playlistLoading, setPlaylistLoading] = useState(true);

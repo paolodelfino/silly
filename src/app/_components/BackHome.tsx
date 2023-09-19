@@ -27,7 +27,7 @@ export default function BackHome({
   const pathname = usePathname();
   const router = useRouter();
 
-  useHotkeys([["escape", () => router.push("/")]]);
+  useHotkeys([["shift+escape", () => router.push("/")]]);
 
   return (
     <Button

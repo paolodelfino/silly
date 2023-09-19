@@ -34,7 +34,7 @@ export default function SignInPage({
     }
   }, [status, callbackUrl]);
 
-  useHotkeys([["escape", () => router.replace(callbackUrl)]]);
+  useHotkeys([["shift+escape", () => router.replace(callbackUrl)]]);
 
   return (
     <center className="mx-auto max-w-lg">
