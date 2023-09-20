@@ -112,13 +112,6 @@ export default function MediaSlider<T extends GenericMedia>({
             ? "tv"
             : "person";
 
-          if (
-            (entry.vote_count && entry.vote_count < 40) ||
-            entry.popularity < 10
-          ) {
-            return null;
-          }
-
           return (
             <SwiperSlide
               key={`${title}-${i}-${entry.id}`}
