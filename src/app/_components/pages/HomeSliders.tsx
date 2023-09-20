@@ -14,19 +14,27 @@ export default function HomeSliders() {
       {trending.isLoading || !trending.data ? (
         <MediaSliderSkeleton titleWidth={72} />
       ) : (
-        <MediaSlider title="Trending" data={trending.data} />
+        <MediaSlider filterTrash title="Trending" data={trending.data} />
       )}
 
       {trending.isLoading || !popularMovies.data ? (
         <MediaSliderSkeleton titleWidth={126} />
       ) : (
-        <MediaSlider title="Popular Movies" data={popularMovies.data} />
+        <MediaSlider
+          filterTrash
+          title="Popular Movies"
+          data={popularMovies.data}
+        />
       )}
 
       {trending.isLoading || !topRatedTvShows.data ? (
         <MediaSliderSkeleton titleWidth={166} />
       ) : (
-        <MediaSlider title="Top Rated TV Shows" data={topRatedTvShows.data} />
+        <MediaSlider
+          filterTrash
+          title="Top Rated TV Shows"
+          data={topRatedTvShows.data}
+        />
       )}
     </>
   );
