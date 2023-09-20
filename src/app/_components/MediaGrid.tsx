@@ -74,13 +74,7 @@ export default function MediaGrid<
   let entries = dataFetch.data?.pages.flatMap((page) => page.results) ?? [];
   if (filterTrash)
     entries = entries?.filter((entry) => {
-      if (
-        (entry.vote_count && entry.vote_count < 40) ||
-        entry.popularity < 10
-      ) {
-        return false;
-      }
-      return true;
+      return (entry.vote_count && entry.vote_count > 5) || entry.popularity > 5;
     });
 
   if (entries || dataFetch.isFetching) {
