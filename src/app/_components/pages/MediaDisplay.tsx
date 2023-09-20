@@ -51,6 +51,22 @@ export default function MediaDisplay({
   const router = useRouter();
   const session = useSession();
 
+  const checkpoint = trpc.user.continueWatching.checkpoint.get.useQuery(
+    {
+      id,
+      type,
+    },
+    {
+      enabled: session.status == "authenticated" && type != "movie",
+      onSettled(data, error) {
+        if (data != null) setSeasonToFetch(data.season);
+        else if (movieDetails.data && !("title" in movieDetails.data))
+          setSeasonToFetch(movieDetails.data.seasons[0].season_number);
+      },
+      refetchOnWindowFocus: false,
+    },
+  );
+
   const movieDetails = useQuery({
     queryKey: ["movie-details"],
     queryFn: async () => await getMovieDetails(type, id),
@@ -84,7 +100,7 @@ export default function MediaDisplay({
       }
       return true;
     },
-    enabled: Boolean(movieDetails.data),
+    enabled: Boolean(movieDetails.data) && session.status == "authenticated",
     onSettled(data, error) {
       if (data != undefined) setIsBookmarkedOptimistic(data);
     },
@@ -133,12 +149,6 @@ export default function MediaDisplay({
     },
     refetchOnWindowFocus: false,
   });
-
-  useEffect(() => {
-    if (movieDetails.data && !("title" in movieDetails.data)) {
-      setSeasonToFetch(movieDetails.data.seasons[0].season_number);
-    }
-  }, [setSeasonToFetch, movieDetails.data]);
 
   const actionCount = 2 + (trailer.data || trailer.isLoading ? 1 : 0);
 
@@ -239,25 +249,59 @@ export default function MediaDisplay({
       <div className="flex flex-col p-3">
         <div className="flex flex-col">
           <div className="flex flex-col gap-4">
-            {movieDetails.isFetching || !movieDetails.data ? (
+            {movieDetails.isFetching ||
+            !movieDetails.data ||
+            (type == "tv" &&
+              (checkpoint.isLoading || selectedSeason.isLoading)) ? (
               <Skeleton className="h-10 w-full rounded-large" />
             ) : (
               <Button
-                onPress={() =>
-                  router.push(
-                    `/watch/${"title" in movieDetails.data ? "movie" : "tv"}/${
-                      movieDetails.data.id
-                    }/${
-                      "title" in movieDetails.data
-                        ? movieDetails.data.title
-                        : movieDetails.data.name
-                    }`,
-                  )
-                }
+                onPress={() => {
+                  if ("title" in movieDetails.data)
+                    router.push(
+                      `/watch/${type}/${movieDetails.data.id}/${movieDetails.data.title}`,
+                    );
+                  else {
+                    let episodeIndex = 0;
+                    if (checkpoint.data != null)
+                      for (const episode of selectedSeason.data!.episodes) {
+                        if (episode.episode_number == checkpoint.data.episode)
+                          break;
+                        episodeIndex++;
+                      }
+
+                    const [canBack, canForward] = calcCanBackForward(
+                      movieDetails.data.seasons,
+                      selectedSeason.data!,
+                      episodeIndex,
+                    );
+
+                    router.push(
+                      `/watch/tv/${movieDetails.data.id}/${
+                        movieDetails.data.name
+                      }/${
+                        checkpoint.data?.season ??
+                        selectedSeason.data!.season_number
+                      }/${
+                        checkpoint.data?.episode ??
+                        selectedSeason.data!.episodes[0].episode_number
+                      }/${canBack}/${canForward}`,
+                    );
+                  }
+                }}
                 color="danger"
                 className="w-full"
               >
-                Play Film
+                {type == "movie" && "Play Film"}
+
+                {type == "tv" &&
+                  `Play (S${
+                    checkpoint.data?.season ??
+                    selectedSeason.data?.season_number
+                  } E${
+                    checkpoint.data?.episode ??
+                    selectedSeason.data?.episodes[0].episode_number
+                  })`}
               </Button>
             )}
 
