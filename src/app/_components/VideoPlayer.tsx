@@ -1,6 +1,7 @@
 "use client";
 import { useBrowserInfo } from "@/app/_stores/browser-info";
 import { trpc } from "@/app/_trpc/client";
+import { UserContinueWatchingCheckpointGetOutput } from "@/app/_trpc/types";
 import { getCheckpoint } from "@/server/actions";
 import { useHotkeys } from "@mantine/hooks";
 import {
@@ -50,15 +51,25 @@ export default function VideoPlayer({
 
   const updateCheckpoint = trpc.user.continueWatching.update.useMutation();
 
+  const [checkpoint, setCheckpoint] =
+    useState<UserContinueWatchingCheckpointGetOutput>();
+
   const handleCanPlay = () => {
     if (video.current) {
       getCheckpoint({
         id: movieId,
         type,
-      }).then(
-        (checkpoint) =>
-          checkpoint != null && (video.current!.currentTime = checkpoint),
-      );
+      }).then((checkpoint) => {
+        if (
+          checkpoint != null &&
+          (type == "movie" ||
+            (episodeNumber == checkpoint.episode &&
+              seasonNumber == checkpoint.season))
+        ) {
+          video.current!.currentTime = checkpoint.time;
+          setCheckpoint(checkpoint);
+        }
+      });
     }
   };
 
