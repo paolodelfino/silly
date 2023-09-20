@@ -1,7 +1,6 @@
 "use client";
 import { useBrowserInfo } from "@/app/_stores/browser-info";
 import { trpc } from "@/app/_trpc/client";
-import { UserContinueWatchingCheckpointGetOutput } from "@/app/_trpc/types";
 import { getCheckpoint } from "@/server/actions";
 import { useHotkeys } from "@mantine/hooks";
 import {
@@ -17,6 +16,7 @@ import {
   Tooltip,
 } from "@nextui-org/react";
 import Hls from "hls.js";
+import { useSession } from "next-auth/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { VideoSeekSlider } from "react-video-seek-slider";
 import "react-video-seek-slider/styles.css";
@@ -40,6 +40,7 @@ export default function VideoPlayer({
   seasonNumber,
 }: Props) {
   const { userAgent } = useBrowserInfo();
+  const session = useSession();
 
   const player = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
@@ -51,11 +52,16 @@ export default function VideoPlayer({
 
   const updateCheckpoint = trpc.user.continueWatching.update.useMutation();
 
-  const [checkpoint, setCheckpoint] =
-    useState<UserContinueWatchingCheckpointGetOutput>();
+  const [checkpointOnce, setCheckpointOnce] = useState(false);
+  const [canPlay, setCanPlay] = useState(false);
 
   const handleCanPlay = () => {
-    if (video.current) {
+    setCanPlay(true);
+  };
+
+  useEffect(() => {
+    if (!checkpointOnce && video.current && session.status == "authenticated") {
+      setCheckpointOnce(true);
       getCheckpoint({
         id: movieId,
         type,
@@ -67,11 +73,10 @@ export default function VideoPlayer({
               seasonNumber == checkpoint.season))
         ) {
           video.current!.currentTime = checkpoint.time;
-          setCheckpoint(checkpoint);
         }
       });
     }
-  };
+  }, [canPlay, session]);
 
   const handleTimeChange = useCallback<
     (time: number, offsetTime: number) => void
@@ -117,14 +122,15 @@ export default function VideoPlayer({
       }
 
       setProgress(buffer.end(currentBuffer) * 1000 || 0);
-      updateCheckpoint.mutate({
-        id: movieId,
-        type,
-        season: seasonNumber,
-        episode: episodeNumber,
-        time: inSeconds,
-        title: title,
-      });
+      if (session.status == "authenticated")
+        updateCheckpoint.mutate({
+          id: movieId,
+          type,
+          season: seasonNumber,
+          episode: episodeNumber,
+          time: inSeconds,
+          title: title,
+        });
     }
   };
 
