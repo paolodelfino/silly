@@ -277,11 +277,7 @@ export const appRouter = router({
               ) {
                 user.continueWatching[i].time = time;
 
-                if (
-                  user.continueWatching[i].type == "tv" &&
-                  (season! > user.continueWatching[i].season! ||
-                    episode! > user.continueWatching[i].episode!)
-                ) {
+                if (user.continueWatching[i].type == "tv") {
                   user.continueWatching[i].season = season;
                   user.continueWatching[i].episode = episode;
                 }
