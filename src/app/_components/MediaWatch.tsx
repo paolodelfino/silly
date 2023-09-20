@@ -157,7 +157,7 @@ export default function MediaWatch({
       {type == "tv" && (
         <div className="flex justify-center p-2">
           <ButtonGroup variant="flat">
-            {backCan.isLoading || !backCan.data ? (
+            {backCan.isFetching || !backCan.data ? (
               <Skeleton className="h-10 w-12 rounded-s-large" />
             ) : (
               <Button
@@ -183,7 +183,7 @@ export default function MediaWatch({
               </Button>
             )}
 
-            {forwardCan.isLoading || !forwardCan.data ? (
+            {forwardCan.isFetching || !forwardCan.data ? (
               <Skeleton className="h-10 w-12 rounded-e-large" />
             ) : (
               <Button
