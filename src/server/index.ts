@@ -322,28 +322,9 @@ export const appRouter = router({
             return (
               user.continueWatching.find(
                 (entry) => entry.id == id && entry.type == type,
-              )?.time ?? null
+              ) ?? null
             );
           }),
-        details: router({
-          get: protectedProcedure
-            .input(
-              z.object({
-                id: z.number(),
-                type: z.union([z.literal("movie"), z.literal("tv")]),
-              }),
-            )
-            .query(async ({ input: { id, type } }) => {
-              const session = await auth();
-              const user = await currentUser(session?.user.id!);
-
-              return (
-                user.continueWatching.find(
-                  (entry) => entry.id == id && entry.type == type,
-                ) ?? null
-              );
-            }),
-        }),
       }),
       search: protectedProcedure
         .input(
