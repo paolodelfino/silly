@@ -1,5 +1,6 @@
 "use client";
 import MediaCard from "@/app/_components/MediaCard";
+import { isTrash } from "@/app/_lib/utils";
 import { Button, Skeleton } from "@nextui-org/react";
 import Link from "next/link";
 import { ReactNode } from "react";
@@ -62,6 +63,7 @@ export type MediaSliderProps<T extends GenericMedia> = {
     type: Parameters<typeof MediaCard<T>>["0"]["type"];
   }) => ReactNode;
   externActions?: boolean;
+  filterTrash?: boolean;
   Card?: typeof MediaCard<T>;
 };
 
@@ -71,15 +73,15 @@ export default function MediaSlider<T extends GenericMedia>({
   data,
   actions,
   externActions,
+  filterTrash,
   Card = MediaCard,
 }: MediaSliderProps<T>) {
-  data.results = data.results.filter((entry) => {
-    if ((entry.vote_count && entry.vote_count < 40) || entry.popularity < 10) {
-      return false;
-    }
-    return true;
-  });
-  data.total_results = data.results.length;
+  if (filterTrash) {
+    data.results = data.results.filter(
+      (entry) => !isTrash(entry.popularity, entry.vote_count),
+    );
+    data.total_results = data.results.length;
+  }
 
   return (
     <div className="space-y-1">
