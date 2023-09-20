@@ -1,7 +1,7 @@
 "use server";
 import { currentUser } from "@/app/_lib/auth";
 import { trpcServer } from "@/app/_trpc/serverClient";
-import { UserContinueWatchingGetCheckpointInput } from "@/app/_trpc/types";
+import { UserContinueWatchingCheckpointGetInput } from "@/app/_trpc/types";
 
 export async function getMovieDetails(type: "movie" | "tv", id: number) {
   return type == "movie"
@@ -85,7 +85,7 @@ export async function searchMovies({
 }
 
 export async function getCheckpoint(
-  params: UserContinueWatchingGetCheckpointInput,
+  params: UserContinueWatchingCheckpointGetInput,
 ) {
-  return await trpcServer.user.continueWatching.getCheckpoint(params);
+  return await trpcServer.user.continueWatching.checkpoint.get(params);
 }
