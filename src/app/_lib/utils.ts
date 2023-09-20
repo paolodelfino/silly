@@ -58,3 +58,7 @@ export function formulateSearchInPage<
     total_results: allResults.length,
   };
 }
+
+export async function isTrash(popularity: number, voteCount?: number) {
+  return (voteCount && voteCount < 5) || popularity < 5;
+}
