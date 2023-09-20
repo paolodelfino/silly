@@ -59,6 +59,6 @@ export function formulateSearchInPage<
   };
 }
 
-export async function isTrash(popularity: number, voteCount?: number) {
+export function isTrash(popularity: number, voteCount?: number) {
   return (voteCount && voteCount < 5) || popularity < 5;
 }
