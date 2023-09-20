@@ -1,4 +1,5 @@
 "use client";
+import { isTrash } from "@/app/_lib/utils";
 import { useIntersection } from "@mantine/hooks";
 import { Card, CardHeader, Image, Spinner } from "@nextui-org/react";
 import {
@@ -73,9 +74,9 @@ export default function MediaGrid<
 
   let entries = dataFetch.data?.pages.flatMap((page) => page.results) ?? [];
   if (filterTrash)
-    entries = entries?.filter((entry) => {
-      return (entry.vote_count && entry.vote_count > 5) || entry.popularity > 5;
-    });
+    entries = entries?.filter(
+      (entry) => !isTrash(entry.popularity, entry.vote_count),
+    );
 
   if (entries || dataFetch.isFetching) {
     return (
