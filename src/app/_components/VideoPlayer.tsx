@@ -59,7 +59,6 @@ export default function VideoPlayer({
         (checkpoint) =>
           checkpoint != null && (video.current!.currentTime = checkpoint),
       );
-      console.log("fak");
     }
   };
 
