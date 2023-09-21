@@ -52,31 +52,21 @@ export default function VideoPlayer({
 
   const updateCheckpoint = trpc.user.continueWatching.update.useMutation();
 
-  const [checkpointOnce, setCheckpointOnce] = useState(false);
-  const [canPlay, setCanPlay] = useState(false);
-
-  const handleCanPlay = () => {
-    setCanPlay(true);
-  };
-
-  useEffect(() => {
-    if (!checkpointOnce && video.current && session.status == "authenticated") {
-      setCheckpointOnce(true);
-      getCheckpoint({
-        id: movieId,
-        type,
-      }).then((checkpoint) => {
-        if (
-          checkpoint != null &&
-          (type == "movie" ||
-            (episodeNumber == checkpoint.episode &&
-              seasonNumber == checkpoint.season))
-        ) {
-          video.current!.currentTime = checkpoint.time;
-        }
-      });
-    }
-  }, [canPlay, session]);
+  const handleCanPlay = () =>
+    video.current &&
+    getCheckpoint({
+      id: movieId,
+      type,
+    }).then((checkpoint) => {
+      if (
+        checkpoint != null &&
+        (type == "movie" ||
+          (episodeNumber == checkpoint.episode &&
+            seasonNumber == checkpoint.season))
+      ) {
+        video.current!.currentTime = checkpoint.time;
+      }
+    });
 
   const handleTimeChange = useCallback<
     (time: number, offsetTime: number) => void
