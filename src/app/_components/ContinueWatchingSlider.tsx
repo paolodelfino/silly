@@ -11,7 +11,6 @@ import {
   Image,
   Progress,
   Skeleton,
-  Tooltip,
 } from "@nextui-org/react";
 import { useQuery } from "@tanstack/react-query";
 import NextImage from "next/image";
@@ -37,6 +36,7 @@ export default function ContinueWatchingSlider({ userId }: { userId: string }) {
       seeAll="/continue-watching"
       data={continueWatching.data}
       Card={({ entry, type, actions, externActions }) => {
+        "use client";
         const tvData = trpc.tmdb.details.season.useQuery(
           {
             id: entry.id,
