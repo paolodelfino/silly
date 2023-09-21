@@ -5,7 +5,7 @@ import { mylistSearch } from "@/server/actions";
 export default function MylistSearchResult({ query }: { query: string }) {
   return (
     <MediaGrid
-      queryKey={["search-result", query]}
+      queryKey={["mylist-search-result", query]}
       queryFn={async ({ pageParam = 1 }) =>
         await mylistSearch({ query, page: pageParam })
       }

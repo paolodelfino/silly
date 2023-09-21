@@ -43,6 +43,36 @@ export async function fetchMylist(userId: string, page: number) {
   };
 }
 
+export async function fetchContinueWatching(userId: string, page: number) {
+  const user = await currentUser(userId);
+
+  const elPerPage = 20;
+  const toFetch = user.continueWatching.slice(
+    (page - 1) * elPerPage,
+    page * elPerPage,
+  );
+
+  const results = await Promise.all(
+    toFetch.map(async ({ id, type, time, title, episode, season }) => {
+      return {
+        ...(await getMovieDetails(type, id)),
+        checkpoint: {
+          time,
+          episode,
+          season,
+        },
+      };
+    }),
+  );
+
+  return {
+    page,
+    results,
+    total_pages: Math.ceil(user.continueWatching.length / elPerPage),
+    total_results: user.continueWatching.length,
+  };
+}
+
 export async function mylistSearch({
   page,
   query,
@@ -51,6 +81,26 @@ export async function mylistSearch({
   query: string;
 }) {
   const data = await trpcServer.user.mylist.search({ page, query });
+  const results = await Promise.all(
+    data.results.map(async ({ id, type }) => await getMovieDetails(type, id)),
+  );
+
+  return {
+    page: data.page,
+    results,
+    total_pages: data.total_pages,
+    total_results: data.total_results,
+  };
+}
+
+export async function continueWatchingSearch({
+  page,
+  query,
+}: {
+  page: number;
+  query: string;
+}) {
+  const data = await trpcServer.user.continueWatching.search({ page, query });
   const results = await Promise.all(
     data.results.map(async ({ id, type }) => await getMovieDetails(type, id)),
   );
@@ -72,6 +122,10 @@ export async function existsInMylist(input: {
 
 export async function getMylistCount() {
   return (await trpcServer.user.mylist.get()).length;
+}
+
+export async function getContinueWatchingCount() {
+  return (await trpcServer.user.continueWatching.get()).length;
 }
 
 export async function searchMovies({
