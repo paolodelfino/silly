@@ -19,16 +19,16 @@ export const db = drizzle(sql);
 export const appRouter = router({
   tmdb: router({
     trending: publicProcedure.query(
-      async () => await tmdb.v3.trending.getTrending("all", "week", "it"),
+      async () => await tmdb.v3.trending.getTrending("all", "week", "it-IT"),
     ),
     popular: router({
       movie: publicProcedure.query(
-        async () => await tmdb.v3.movies.getPopular({ language: "it" }),
+        async () => await tmdb.v3.movies.getPopular({ language: "it-IT" }),
       ),
     }),
     topRated: router({
       tvShow: publicProcedure.query(
-        async () => await tmdb.v3.tv.getTopRated({ language: "it" }),
+        async () => await tmdb.v3.tv.getTopRated({ language: "it-IT" }),
       ),
     }),
     details: router({
@@ -41,14 +41,14 @@ export const appRouter = router({
         .query(async ({ input: { id } }) => {
           const movie = await tmdb.v3.movies.getDetails(id, {
             append_to_response: ["credits", "videos"],
-            language: "it",
+            language: "it-IT",
           });
 
           let collection;
           if (movie.belongs_to_collection) {
             collection = await tmdb.v3.collections.getDetails(
               movie.belongs_to_collection.id,
-              { language: "it" },
+              { language: "it-IT" },
             );
           }
 
@@ -64,7 +64,7 @@ export const appRouter = router({
           async ({ input: { id } }) =>
             await tmdb.v3.tv.getDetails(id, {
               append_to_response: ["credits", "videos"],
-              language: "it",
+              language: "it-IT",
             }),
         ),
       season: publicProcedure
@@ -77,7 +77,7 @@ export const appRouter = router({
         .query(
           async ({ input: { id, season } }) =>
             await tmdb.v3.tvSeasons.getDetails(id, season, {
-              language: "it",
+              language: "it-IT",
               append_to_response: ["videos"],
             }),
         ),
@@ -128,7 +128,7 @@ export const appRouter = router({
           query,
           page,
           include_adult: true,
-          language: "it",
+          language: "it-IT",
         });
 
         data.total_results -= data.results.length;
@@ -149,7 +149,7 @@ export const appRouter = router({
         return await tmdb.v3.search.searchPeople({
           query,
           include_adult: true,
-          language: "it",
+          language: "it-IT",
         });
       }),
   }),
