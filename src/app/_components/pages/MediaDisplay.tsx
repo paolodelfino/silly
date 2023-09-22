@@ -69,6 +69,7 @@ export default function MediaDisplay({
     },
     {
       enabled:
+        !movieDetails.isFetching &&
         movieDetails.data != undefined &&
         session.status != "loading" &&
         type != "movie",
@@ -78,6 +79,7 @@ export default function MediaDisplay({
           setSeasonToFetch(movieDetails.data!.seasons[0].season_number);
       },
       retry(failureCount, error) {
+        console.log(failureCount, error, !("title" in movieDetails.data!));
         if (
           error.data?.code == "UNAUTHORIZED" &&
           !("title" in movieDetails.data!)
