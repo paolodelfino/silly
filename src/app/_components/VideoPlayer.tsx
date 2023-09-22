@@ -57,16 +57,18 @@ export default function VideoPlayer({
     getCheckpoint({
       id: movieId,
       type,
-    }).then((checkpoint) => {
-      if (
-        checkpoint != null &&
-        (type == "movie" ||
-          (episodeNumber == checkpoint.episode &&
-            seasonNumber == checkpoint.season))
-      ) {
-        video.current!.currentTime = checkpoint.time;
-      }
-    });
+    })
+      .then((checkpoint) => {
+        if (
+          checkpoint != null &&
+          (type == "movie" ||
+            (episodeNumber == checkpoint.episode &&
+              seasonNumber == checkpoint.season))
+        ) {
+          video.current!.currentTime = checkpoint.time;
+        }
+      })
+      .catch((err) => console.log(err));
 
   const handleTimeChange = useCallback<
     (time: number, offsetTime: number) => void
