@@ -51,22 +51,6 @@ export default function MediaDisplay({
   const router = useRouter();
   const session = useSession();
 
-  const checkpoint = trpc.user.continueWatching.checkpoint.get.useQuery(
-    {
-      id,
-      type,
-    },
-    {
-      enabled: session.status == "authenticated" && type != "movie",
-      onSettled(data, error) {
-        if (data != null) setSeasonToFetch(data.season);
-        else if (movieDetails.data && !("title" in movieDetails.data))
-          setSeasonToFetch(movieDetails.data.seasons[0].season_number);
-      },
-      refetchOnWindowFocus: false,
-    },
-  );
-
   const movieDetails = useQuery({
     queryKey: ["movie-details"],
     queryFn: async () => await getMovieDetails(type, id),
@@ -77,6 +61,35 @@ export default function MediaDisplay({
     },
     refetchOnWindowFocus: false,
   });
+
+  const checkpoint = trpc.user.continueWatching.checkpoint.get.useQuery(
+    {
+      id,
+      type,
+    },
+    {
+      enabled:
+        movieDetails.data != undefined &&
+        session.status != "loading" &&
+        type != "movie",
+      onSettled(data, error) {
+        if (data != null) setSeasonToFetch(data.season);
+        else if (!("title" in movieDetails.data!))
+          setSeasonToFetch(movieDetails.data!.seasons[0].season_number);
+      },
+      retry(failureCount, error) {
+        if (
+          error.data?.code == "UNAUTHORIZED" &&
+          !("title" in movieDetails.data!)
+        ) {
+          setSeasonToFetch(movieDetails.data!.seasons[0].season_number);
+          return false;
+        }
+        return true;
+      },
+      refetchOnWindowFocus: false,
+    },
+  );
 
   const [isBookmarkedOptimistic, setIsBookmarkedOptimistic] = useState(false);
   const isBookmarked = useQuery({
