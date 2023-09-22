@@ -222,8 +222,9 @@ export const appRouter = router({
           const session = await auth();
           const user = await currentUser(session?.user.id!);
 
-          return Boolean(
-            user.mylist.find((entry) => entry.id == id && entry.type == type),
+          return (
+            user.mylist.find((entry) => entry.id == id && entry.type == type) !=
+            undefined
           );
         }),
       search: protectedProcedure

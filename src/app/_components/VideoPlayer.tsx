@@ -476,7 +476,7 @@ export default function VideoPlayer({
             >
               <Button isIconOnly variant="light" onPress={toggleFullscreen}>
                 {typeof document != "undefined" &&
-                Boolean(document.fullscreenElement) ? (
+                document.fullscreenElement != null ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     height="24"

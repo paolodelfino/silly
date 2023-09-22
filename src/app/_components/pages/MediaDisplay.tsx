@@ -38,7 +38,7 @@ import { signIn, useSession } from "next-auth/react";
 import NextImage from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "swiper/css";
 
 export default function MediaDisplay({
@@ -114,7 +114,8 @@ export default function MediaDisplay({
       }
       return true;
     },
-    enabled: Boolean(movieDetails.data) && session.status == "authenticated",
+    enabled:
+      movieDetails.data != undefined && session.status == "authenticated",
     onSettled(data, error) {
       if (data != undefined) setIsBookmarkedOptimistic(data);
     },
@@ -146,7 +147,7 @@ export default function MediaDisplay({
         (video) =>
           video.official && video.site == "YouTube" && video.type == "Trailer",
       ) ?? null,
-    enabled: Boolean(dataForTrailer),
+    enabled: dataForTrailer != undefined,
   });
 
   const [seasonToFetch, setSeasonToFetch] = useState<number | undefined>();
