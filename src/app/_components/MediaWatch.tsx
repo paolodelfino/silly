@@ -67,7 +67,7 @@ export default function MediaWatch({
   }
 
   const tvShowDetails = useQuery({
-    queryKey: ["tvshow-details"],
+    queryKey: ["tvshow-details", type, movieId],
     queryFn: async () =>
       (await getMovieDetails(type, movieId)) as TmdbDetailsTvShowOutput,
     enabled: type == "tv",
@@ -76,7 +76,7 @@ export default function MediaWatch({
   });
 
   const backCan = useQuery({
-    queryKey: ["back-can"],
+    queryKey: ["back-can", movieId, backSeason],
     queryFn: async () => {
       const season = await getSeason(movieId, backSeason!);
 
@@ -96,7 +96,7 @@ export default function MediaWatch({
   });
 
   const forwardCan = useQuery({
-    queryKey: ["forward-can"],
+    queryKey: ["forward-can", movieId, forwardSeason],
     queryFn: async () => {
       const season = await getSeason(movieId, forwardSeason!);
 

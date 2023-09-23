@@ -52,7 +52,7 @@ export default function MediaDisplay({
   const session = useSession();
 
   const movieDetails = useQuery({
-    queryKey: ["movie-details"],
+    queryKey: ["movie-details", type, id],
     queryFn: async () => await getMovieDetails(type, id),
     onSettled: (data) => {
       if (data) {
@@ -94,7 +94,7 @@ export default function MediaDisplay({
 
   const [isBookmarkedOptimistic, setIsBookmarkedOptimistic] = useState(false);
   const isBookmarked = useQuery({
-    queryKey: ["is-bookmarked", movieDetails],
+    queryKey: ["is-bookmarked", movieDetails, id, type],
     queryFn: async () => {
       try {
         return await existsInMylist({
@@ -152,7 +152,7 @@ export default function MediaDisplay({
 
   const [seasonToFetch, setSeasonToFetch] = useState<number | undefined>();
   const selectedSeason = useQuery({
-    queryKey: ["selected-season", seasonToFetch],
+    queryKey: ["selected-season", seasonToFetch, movieDetails],
     queryFn: async () => await getSeason(movieDetails.data!.id, seasonToFetch!),
     enabled:
       seasonToFetch != undefined &&

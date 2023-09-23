@@ -18,7 +18,7 @@ import Link from "next/link";
 
 export default function ContinueWatchingSlider({ userId }: { userId: string }) {
   const continueWatching = useQuery({
-    queryKey: ["continue-watching"],
+    queryKey: ["continue-watching", userId],
     queryFn: async () => await fetchContinueWatching(userId, 1),
   });
 

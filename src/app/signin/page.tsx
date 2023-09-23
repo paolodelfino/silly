@@ -5,7 +5,6 @@ import { Button, Spacer, Spinner } from "@nextui-org/react";
 import { useQuery } from "@tanstack/react-query";
 import { getProviders, signIn, useSession } from "next-auth/react";
 import { RedirectType } from "next/dist/client/components/redirect";
-import Link from "next/link";
 import { redirect, useRouter } from "next/navigation";
 import { useEffect } from "react";
 

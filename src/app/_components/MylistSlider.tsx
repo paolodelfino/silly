@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export default function MylistSlider({ userId }: { userId: string }) {
   const mylist = useQuery({
-    queryKey: ["mylist"],
+    queryKey: ["mylist", userId],
     queryFn: async () => await fetchMylist(userId, 1),
   });
 
