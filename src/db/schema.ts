@@ -24,7 +24,7 @@ export const users = pgTable("user", {
     >()
     .default([])
     .notNull(),
-  continueWatching: jsonb("continueWatching")
+  continueWatching: jsonb("continue-watching")
     .$type<
       {
         id: number;
