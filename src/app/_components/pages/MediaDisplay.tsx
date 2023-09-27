@@ -59,7 +59,6 @@ export default function MediaDisplay({
         setDataForTrailer(data);
       }
     },
-    refetchOnWindowFocus: false,
   });
 
   const checkpoint = trpc.user.continueWatching.checkpoint.get.useQuery(
