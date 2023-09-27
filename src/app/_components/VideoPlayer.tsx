@@ -211,28 +211,30 @@ export default function VideoPlayer({
   const [showControls, setShowControls] = useState(true);
 
   useEffect(() => {
-    if (video.current) {
+    const videoRef = video.current
+
+    if (videoRef) {
       if (Hls.isSupported()) {
         const hls = new Hls();
         hls.loadSource(playlist);
-        hls.attachMedia(video.current);
+        hls.attachMedia(videoRef);
       } else {
-        video.current.src = playlist;
+        videoRef.src = playlist;
       }
 
-      video.current.addEventListener("play", handlePlay);
-      video.current.addEventListener("pause", handlePause);
-      video.current.addEventListener("loadeddata", handleDataLoaded);
-      video.current.addEventListener("progress", handleProgress);
-      video.current.addEventListener("canplay", handleCanPlay, { once: true });
+      videoRef.addEventListener("play", handlePlay);
+      videoRef.addEventListener("pause", handlePause);
+      videoRef.addEventListener("loadeddata", handleDataLoaded);
+      videoRef.addEventListener("progress", handleProgress);
+      videoRef.addEventListener("canplay", handleCanPlay, { once: true });
     }
 
     return () => {
-      video.current?.removeEventListener("play", handlePlay);
-      video.current?.removeEventListener("pause", handlePause);
-      video.current?.removeEventListener("loadeddata", handleDataLoaded);
-      video.current?.removeEventListener("progress", handleProgress);
-      video.current?.removeEventListener("canplay", handleCanPlay);
+      videoRef?.removeEventListener("play", handlePlay);
+      videoRef?.removeEventListener("pause", handlePause);
+      videoRef?.removeEventListener("loadeddata", handleDataLoaded);
+      videoRef?.removeEventListener("progress", handleProgress);
+      videoRef?.removeEventListener("canplay", handleCanPlay);
     };
   }, [video, playlist]);
 
