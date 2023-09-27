@@ -211,7 +211,7 @@ export default function VideoPlayer({
   const [showControls, setShowControls] = useState(true);
 
   useEffect(() => {
-    const videoRef = video.current
+    const videoRef = video.current;
 
     if (videoRef) {
       if (Hls.isSupported()) {
@@ -336,7 +336,7 @@ export default function VideoPlayer({
                 </DropdownTrigger>
                 <DropdownMenu
                   aria-label="Settings"
-                  onAction={(key) => settingsActions[key]()}
+                  onAction={(key) => settingsActions[key.toString()]()}
                 >
                   <DropdownItem
                     key={"pip"}
