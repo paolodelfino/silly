@@ -28,7 +28,7 @@ export default function MediaGrid<
 >({
   queryKey,
   queryFn,
-  emptyDisplay,
+  emptyDisplay = <span className="ml-2 text-slate-400">No results</span>,
   title,
   filterTrash,
 }: {
@@ -41,6 +41,9 @@ export default function MediaGrid<
   const dataFetch = useInfiniteQuery({
     queryKey,
     queryFn,
+    onSettled(data, error) {
+      console.log(data, error);
+    },
     getNextPageParam: (lastPage, allPages) => {
       if (!lastPage) return undefined;
 
@@ -85,11 +88,7 @@ export default function MediaGrid<
           <h1 className="mb-1 ml-1 w-max text-lg font-medium">{title}</h1>
         )}
 
-        {!dataFetch.isLoading &&
-          entries.length == 0 &&
-          (emptyDisplay || (
-            <span className="ml-2 text-slate-400">No results</span>
-          ))}
+        {!dataFetch.isLoading && entries.length == 0 && emptyDisplay}
 
         {!dataFetch.isLoading && entries.length > 0 && (
           <div className="grid w-full gap-6 p-3 pb-6 md:grid-cols-2 2xl:grid-cols-3">

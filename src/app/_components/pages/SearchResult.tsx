@@ -25,7 +25,7 @@ export default function SearchResult({ query }: { query: string }) {
         queryFn={async ({ pageParam = 1 }) =>
           pageParam == 1
             ? await searchMovies({ query, page: pageParam })
-            : { page: 1, results: [], total_pages: 1, total_results: 20 }
+            : { page: 1, results: [], total_pages: 1, total_results: 0 }
         }
         filterTrash
       />
