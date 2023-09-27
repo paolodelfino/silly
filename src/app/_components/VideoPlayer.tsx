@@ -226,6 +226,14 @@ export default function VideoPlayer({
       video.current.addEventListener("progress", handleProgress);
       video.current.addEventListener("canplay", handleCanPlay, { once: true });
     }
+
+    return () => {
+      video.current?.removeEventListener("play", handlePlay);
+      video.current?.removeEventListener("pause", handlePause);
+      video.current?.removeEventListener("loadeddata", handleDataLoaded);
+      video.current?.removeEventListener("progress", handleProgress);
+      video.current?.removeEventListener("canplay", handleCanPlay);
+    };
   }, [video, playlist]);
 
   return (
