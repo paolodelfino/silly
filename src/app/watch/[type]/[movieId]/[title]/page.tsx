@@ -1,4 +1,4 @@
-import MediaWatch from "@/app/_components/MediaWatch";
+import MediaWatch from "@/app/_components/pages/MediaWatch";
 import { getMovieDetails } from "@/server/actions";
 import { Metadata } from "next";
 
