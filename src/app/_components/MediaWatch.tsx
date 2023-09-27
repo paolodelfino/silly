@@ -46,18 +46,12 @@ export default function MediaWatch({
   const [playlistLoading, setPlaylistLoading] = useState(true);
 
   useEffect(() => {
-    if (!playlist)
-      try {
-        getMoviePlaylist(title, seasonNumber, episodeNumber).then((data) => {
-          setPlaylist(data);
-          setPlaylistLoading(false);
-        });
-      } catch (error) {}
-
-    return () => {
-      setPlaylist(undefined);
-      setPlaylistLoading(true);
-    };
+    try {
+      getMoviePlaylist(title, seasonNumber, episodeNumber).then((data) => {
+        setPlaylist(data);
+        setPlaylistLoading(false);
+      });
+    } catch (error) {}
   }, [episodeNumber, playlist, seasonNumber, title]);
 
   let backSeason: number | undefined,
