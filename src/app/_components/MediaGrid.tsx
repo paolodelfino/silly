@@ -41,9 +41,6 @@ export default function MediaGrid<
   const dataFetch = useInfiniteQuery({
     queryKey,
     queryFn,
-    onSettled(data, error) {
-      console.log(data, error);
-    },
     getNextPageParam: (lastPage, allPages) => {
       if (!lastPage) return undefined;
 
