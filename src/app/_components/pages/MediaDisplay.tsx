@@ -143,8 +143,7 @@ export default function MediaDisplay({
     queryKey: ["trailer", dataForTrailer],
     queryFn: () =>
       dataForTrailer!.videos.results.find(
-        (video) =>
-          video.official && video.site == "YouTube" && video.type == "Trailer",
+        (video) => video.site == "YouTube" && video.type == "Trailer",
       ) ?? null,
     enabled: dataForTrailer != undefined,
   });
