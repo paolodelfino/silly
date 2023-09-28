@@ -33,6 +33,7 @@ export const users = pgTable("user", {
         title: string;
         season?: number;
         episode?: number;
+        lastUpdated: number;
       }[]
     >()
     .default([])

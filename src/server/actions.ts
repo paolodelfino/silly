@@ -26,10 +26,10 @@ export async function getSeason(id: number, season: number) {
 }
 
 export async function fetchMylist(userId: string, page: number) {
-  const user = await currentUser(userId);
+  const mylist = await trpcServer.user.mylist.get();
 
   const elPerPage = 20;
-  const toFetch = user.mylist.slice((page - 1) * elPerPage, page * elPerPage);
+  const toFetch = mylist.slice((page - 1) * elPerPage, page * elPerPage);
 
   const results = await Promise.all(
     toFetch.map(async ({ id, type }) => await getMovieDetails(type, id)),
@@ -38,16 +38,16 @@ export async function fetchMylist(userId: string, page: number) {
   return {
     page,
     results,
-    total_pages: Math.ceil(user.mylist.length / elPerPage),
-    total_results: user.mylist.length,
+    total_pages: Math.ceil(mylist.length / elPerPage),
+    total_results: mylist.length,
   };
 }
 
 export async function fetchContinueWatching(userId: string, page: number) {
-  const user = await currentUser(userId);
+  const continueWatching = await trpcServer.user.continueWatching.get();
 
   const elPerPage = 20;
-  const toFetch = user.continueWatching.slice(
+  const toFetch = continueWatching.slice(
     (page - 1) * elPerPage,
     page * elPerPage,
   );
@@ -68,8 +68,8 @@ export async function fetchContinueWatching(userId: string, page: number) {
   return {
     page,
     results,
-    total_pages: Math.ceil(user.continueWatching.length / elPerPage),
-    total_results: user.continueWatching.length,
+    total_pages: Math.ceil(continueWatching.length / elPerPage),
+    total_results: continueWatching.length,
   };
 }
 

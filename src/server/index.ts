@@ -245,7 +245,10 @@ export const appRouter = router({
       get: protectedProcedure.query(async () => {
         const session = await auth();
         const user = await currentUser(session?.user.id!);
-        return user.continueWatching;
+
+        return user.continueWatching.sort(
+          (a, b) => b.lastUpdated - a.lastUpdated,
+        );
       }),
       update: protectedProcedure
         .input(
@@ -283,6 +286,8 @@ export const appRouter = router({
                   user.continueWatching[i].episode = episode;
                 }
 
+                user.continueWatching[i].lastUpdated = new Date().getTime();
+
                 found = true;
               }
             }
@@ -294,6 +299,7 @@ export const appRouter = router({
                 episode,
                 title,
                 time,
+                lastUpdated: new Date().getTime(),
               });
 
             await db
