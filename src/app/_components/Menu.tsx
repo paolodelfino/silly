@@ -11,7 +11,7 @@ export default function Menu({
   return (
     <Drawer
       Trigger={Trigger}
-      vaulContentClassName="h-max p-4 !bg-background/90 after:backdrop-blur backdrop-blur border-t border-divider"
+      vaulContentClassName="h-max p-4 min-h-[250px] !bg-background/90 after:backdrop-blur backdrop-blur border-t border-divider"
       Content={Content}
     />
   );
