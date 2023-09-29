@@ -117,7 +117,7 @@ export default function TopNav() {
                     Settings
                   </ListboxItem>
                 </ListboxSection>
-                <DropdownSection title={"Miscellaneous"}>
+                <ListboxSection title={"Miscellaneous"}>
                   <ListboxItem
                     key="scroll-to-top"
                     startContent={
@@ -134,7 +134,7 @@ export default function TopNav() {
                   >
                     Scroll To Top
                   </ListboxItem>
-                </DropdownSection>
+                </ListboxSection>
               </Listbox>
             }
           />
