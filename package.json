@@ -39,7 +39,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-video-seek-slider": "^6.0.6",
-    "sc-wrapper": "^1.1.1",
+    "sc-wrapper": "^1.1.3",
     "screenfull": "^6.0.2",
     "swiper": "^10.3.0",
     "tailwind-merge": "^1.14.0",
