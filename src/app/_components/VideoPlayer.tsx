@@ -1,4 +1,5 @@
 "use client";
+import { formatTime } from "@/app/_lib/utils";
 import { useBrowserInfo } from "@/app/_stores/browser-info";
 import { trpc } from "@/app/_trpc/client";
 import { getCheckpoint } from "@/server/actions";
@@ -49,6 +50,8 @@ export default function VideoPlayer({
   const [currentTime, setCurrentTime] = useState(0);
   const [progress, setProgress] = useState(0);
   const [maxTime, setMaxTime] = useState(0);
+  const [beautyCurrentTime, setBeautyCurrentTime] = useState<string>("");
+  const [beautyLeftTime, setBeautyLeftTime] = useState<string>("");
 
   const updateCheckpoint = trpc.user.continueWatching.update.useMutation();
 
@@ -69,6 +72,19 @@ export default function VideoPlayer({
         }
       })
       .catch((err) => console.log(err));
+
+  const handleTimeUpdate = () => {
+    if (!video.current) return;
+
+    const currentTime = video.current.currentTime || 0;
+    const duration = video.current.duration || 0;
+    const showHours = Math.floor(duration / 60 / 60) > 0;
+
+    setBeautyCurrentTime(formatTime(currentTime, showHours));
+
+    const leftTime = duration - currentTime;
+    setBeautyLeftTime(formatTime(leftTime, showHours));
+  };
 
   const handleTimeChange = useCallback<
     (time: number, offsetTime: number) => void
@@ -227,6 +243,7 @@ export default function VideoPlayer({
       videoRef.addEventListener("loadeddata", handleDataLoaded);
       videoRef.addEventListener("progress", handleProgress);
       videoRef.addEventListener("canplay", handleCanPlay, { once: true });
+      videoRef.addEventListener("timeupdate", handleTimeUpdate);
     }
 
     return () => {
@@ -235,6 +252,7 @@ export default function VideoPlayer({
       videoRef?.removeEventListener("loadeddata", handleDataLoaded);
       videoRef?.removeEventListener("progress", handleProgress);
       videoRef?.removeEventListener("canplay", handleCanPlay);
+      videoRef?.removeEventListener("timeupdate", handleTimeUpdate);
     };
   }, [video, playlist]);
 
@@ -462,16 +480,22 @@ export default function VideoPlayer({
           </div>
 
           <div className="flex w-full items-center gap-2 rounded-b-medium py-2 pl-7 pr-4">
-            <div className="mb-[13.5px] w-full">
-              <VideoSeekSlider
-                max={maxTime}
-                currentTime={currentTime}
-                bufferTime={progress}
-                onChange={handleTimeChange}
-                limitTimeTooltipBySides={true}
-                secondsPrefix="00:"
-                minutesPrefix="0:"
-              />
+            <div className="relative w-full">
+              <div className="absolute bottom-4 flex w-full justify-between">
+                <span>{beautyCurrentTime}</span>
+                <span>-{beautyLeftTime}</span>
+              </div>
+              <div className="mb-[13.5px] w-full">
+                <VideoSeekSlider
+                  max={maxTime}
+                  currentTime={currentTime}
+                  bufferTime={progress}
+                  onChange={handleTimeChange}
+                  limitTimeTooltipBySides={true}
+                  secondsPrefix="00:"
+                  minutesPrefix="0:"
+                />
+              </div>
             </div>
 
             <Tooltip

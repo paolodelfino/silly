@@ -62,3 +62,16 @@ export function formulateSearchInPage<
 export function isTrash(popularity: number, voteCount?: number) {
   return (voteCount && voteCount < 5) || popularity < 5;
 }
+
+export function formatTime(secs: number, showHours: boolean) {
+  const hours = Math.floor(secs / 60 / 60);
+  const minutes = Math.floor((secs / 60) % 60);
+  const seconds = Math.floor(secs % 60);
+
+  return (
+    (showHours ? `${hours}:` : "") +
+    `${minutes.toString().padStart(2, "0")}:${seconds
+      .toString()
+      .padStart(2, "0")}`
+  );
+}
