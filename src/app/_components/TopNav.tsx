@@ -21,7 +21,7 @@ import { Drawer as VaulDrawer } from "vaul";
 
 export default function TopNav() {
   const { data, status } = useSession();
-  const { isSmallDevice } = useBrowserInfo();
+  const { userAgent } = useBrowserInfo();
 
   const [{ y }] = useWindowScroll();
   const { scrollIntoView } = useScrollIntoView({
@@ -71,7 +71,7 @@ export default function TopNav() {
       )}
 
       <div className="flex">
-        {isSmallDevice ? (
+        {userAgent?.device.type == "mobile" ? (
           <Menu
             Trigger={
               <VaulDrawer.Trigger asChild>
