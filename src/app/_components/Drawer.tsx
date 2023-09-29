@@ -14,7 +14,7 @@ export default function Drawer({
   return (
     <VaulDrawer.Root shouldScaleBackground>
       {Trigger}
-      <VaulDrawer.Overlay className="fixed inset-0 bg-black/40" />
+      <VaulDrawer.Overlay className="fixed inset-0 bg-background/40" />
       <VaulDrawer.Portal>
         <VaulDrawer.Content
           className={cn(
