@@ -4,10 +4,6 @@ import { NextUIProvider } from "@nextui-org/react";
 import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 
-function VaulProvider({ children }: { children: React.ReactNode }) {
-  return <div vaul-drawer-wrapper="">{children}</div>;
-}
-
 export function Providers({
   children,
   session,
@@ -18,9 +14,7 @@ export function Providers({
   return (
     <SessionProvider session={session}>
       <TRPCProvider>
-        <NextUIProvider>
-          <VaulProvider>{children}</VaulProvider>
-        </NextUIProvider>
+        <NextUIProvider>{children}</NextUIProvider>
       </TRPCProvider>
     </SessionProvider>
   );
