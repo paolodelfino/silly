@@ -7,19 +7,19 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Keyboard, Mousewheel, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Drawer as VaulDrawer } from "vaul";
 
 export default function Features() {
   return (
     <Drawer
-      Trigger={
+      vaulContentClassName="h-full"
+      Trigger={(Vaul) => (
         <Tooltip
           showArrow
           defaultOpen
           content="See features"
           placement="bottom"
         >
-          <VaulDrawer.Trigger asChild>
+          <Vaul.Trigger asChild>
             <Button variant="light" size="sm" isIconOnly radius="full">
               <RainbowSvg>
                 <path
@@ -28,12 +28,12 @@ export default function Features() {
                 ></path>
               </RainbowSvg>
             </Button>
-          </VaulDrawer.Trigger>
+          </Vaul.Trigger>
         </Tooltip>
-      }
-      Content={
+      )}
+      Content={(Vaul) => (
         <div className="relative mx-auto w-full max-w-md overflow-y-auto pb-4">
-          <VaulDrawer.Close asChild>
+          <Vaul.Close asChild>
             <Button
               className="absolute right-1 top-1 z-10 bg-default/10"
               isIconOnly
@@ -50,7 +50,7 @@ export default function Features() {
                 <path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path>
               </svg>
             </Button>
-          </VaulDrawer.Close>
+          </Vaul.Close>
 
           <Swiper
             grabCursor
@@ -96,7 +96,7 @@ export default function Features() {
             </SwiperSlide>
           </Swiper>
         </div>
-      }
+      )}
     ></Drawer>
   );
 }
