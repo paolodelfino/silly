@@ -323,7 +323,7 @@ export default function MediaDisplay({
             ) : (
               <ShowMoreText
                 className="text-sm text-slate-400"
-                truncatedEndingComponent={null}
+                truncatedEndingComponent={"... "}
               >
                 {movieDetails.data.overview}
               </ShowMoreText>
