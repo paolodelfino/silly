@@ -12,7 +12,7 @@ export default function Features() {
   return (
     <Drawer
       vaulContentClassName="h-full"
-      Trigger={(Vaul) => (
+      Trigger={({ Vaul }) => (
         <Tooltip
           showArrow
           defaultOpen
@@ -31,7 +31,7 @@ export default function Features() {
           </Vaul.Trigger>
         </Tooltip>
       )}
-      Content={(Vaul) => (
+      Content={({ Vaul }) => (
         <div className="relative mx-auto w-full max-w-md overflow-y-auto pb-4">
           <Vaul.Close asChild>
             <Button

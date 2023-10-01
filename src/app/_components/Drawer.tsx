@@ -7,13 +7,13 @@ export default function Drawer({
   Content,
   vaulContentClassName,
 }: {
-  Trigger: (Vaul: typeof VaulDrawer) => ReactNode;
-  Content: (Vaul: typeof VaulDrawer) => ReactNode;
+  Trigger: (params: { Vaul: typeof VaulDrawer }) => ReactNode;
+  Content: (params: { Vaul: typeof VaulDrawer }) => ReactNode;
   vaulContentClassName?: string;
 }) {
   return (
     <VaulDrawer.Root>
-      {Trigger(VaulDrawer)}
+      {Trigger({ Vaul: VaulDrawer })}
       <VaulDrawer.Overlay className="fixed inset-0 bg-background/40" />
       <VaulDrawer.Portal>
         <VaulDrawer.Content
@@ -22,7 +22,7 @@ export default function Drawer({
             vaulContentClassName,
           )}
         >
-          {Content(VaulDrawer)}
+          {Content({ Vaul: VaulDrawer })}
         </VaulDrawer.Content>
       </VaulDrawer.Portal>
     </VaulDrawer.Root>
