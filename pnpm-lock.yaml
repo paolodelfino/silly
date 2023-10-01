@@ -41,6 +41,9 @@ dependencies:
   '@types/react-dom':
     specifier: 18.2.8
     version: 18.2.8
+  '@types/react-show-more-text':
+    specifier: ^1.4.3
+    version: 1.4.3
   '@types/ua-parser-js':
     specifier: ^0.7.37
     version: 0.7.37
@@ -83,6 +86,9 @@ dependencies:
   react-dom:
     specifier: 18.2.0
     version: 18.2.0(react@18.2.0)
+  react-show-more-text:
+    specifier: ^1.6.2
+    version: 1.6.2(react@18.2.0)
   react-video-seek-slider:
     specifier: ^6.0.6
     version: 6.0.6(react-dom@18.2.0)(react@18.2.0)
@@ -190,6 +196,14 @@ packages:
       '@auth/core': 0.12.0
     transitivePeerDependencies:
       - nodemailer
+    dev: false
+
+  /@babel/polyfill@7.12.1:
+    resolution: {integrity: sha512-X0pi0V6gxLi6lFZpGmeNa4zxtwEmCs42isWLNjZZDE0Y8yVfgu0T2OAHlzBbdYlqbW/YXVvoBHpATEM+goCj8g==}
+    deprecated: 🚨 This package has been deprecated in favor of separate inclusion of a polyfill and regenerator-runtime (when needed). See the @babel/polyfill docs (https://babeljs.io/docs/en/babel-polyfill) for more information.
+    dependencies:
+      core-js: 2.6.12
+      regenerator-runtime: 0.13.11
     dev: false
 
   /@babel/runtime@7.23.1:
@@ -3009,6 +3023,12 @@ packages:
       '@types/react': 18.2.23
     dev: false
 
+  /@types/react-show-more-text@1.4.3:
+    resolution: {integrity: sha512-5d4/UYAHvuWkS/k02Zg0MSDTnqfMis/VrZqdqi8JWZZAHHgqOOUmlS+ksq9T6egNIt7SskN7Dr1wyrpqqeIccg==}
+    dependencies:
+      '@types/react': 18.2.23
+    dev: false
+
   /@types/react@18.2.23:
     resolution: {integrity: sha512-qHLW6n1q2+7KyBEYnrZpcsAmU/iiCh9WGCKgXvMxx89+TYdJWRjZohVIo9XTcoLhfX3+/hP0Pbulu3bCZQ9PSA==}
     dependencies:
@@ -3477,6 +3497,12 @@ packages:
   /cookie@0.5.0:
     resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==}
     engines: {node: '>= 0.6'}
+    dev: false
+
+  /core-js@2.6.12:
+    resolution: {integrity: sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==}
+    deprecated: core-js@<3.23.3 is no longer maintained and not recommended for usage due to the number of issues. Because of the V8 engine whims, feature detection in old core-js versions could cause a slowdown up to 100x even if nothing is polyfilled. Some versions have web compatibility issues. Please, upgrade your dependencies to the actual version of core-js.
+    requiresBuild: true
     dev: false
 
   /cross-spawn@7.0.3:
@@ -5554,6 +5580,16 @@ packages:
       use-sidecar: 1.1.2(@types/react@18.2.23)(react@18.2.0)
     dev: false
 
+  /react-show-more-text@1.6.2(react@18.2.0):
+    resolution: {integrity: sha512-Z6tRcnEosHvo07vZw36LxCjqYq4ghgaDI273b5XcayJ1PYbT56OKbaQlPqH7W9LGF5rhUVIhEDBPURuG5eO/Uw==}
+    peerDependencies:
+      react: 16 - 18.x
+    dependencies:
+      '@babel/polyfill': 7.12.1
+      prop-types: 15.8.1
+      react: 18.2.0
+    dev: false
+
   /react-style-singleton@2.2.1(@types/react@18.2.23)(react@18.2.0):
     resolution: {integrity: sha512-ZWj0fHEMyWkHzKYUr2Bs/4zU6XLmq9HsgBURm7g5pAVfyn49DgUiNgY2d4lXRlYSiCif9YBGpQleewkcqddc7g==}
     engines: {node: '>=10'}
@@ -5625,6 +5661,10 @@ packages:
       get-intrinsic: 1.2.1
       globalthis: 1.0.3
       which-builtin-type: 1.1.3
+    dev: false
+
+  /regenerator-runtime@0.13.11:
+    resolution: {integrity: sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==}
     dev: false
 
   /regenerator-runtime@0.14.0:

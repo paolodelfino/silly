@@ -39,7 +39,7 @@ import NextImage from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import "swiper/css";
+import ShowMoreText from "react-show-more-text";
 
 export default function MediaDisplay({
   id,
@@ -318,37 +318,16 @@ export default function MediaDisplay({
               </Button>
             )}
 
-            <Popover placement="bottom" backdrop="blur">
-              <PopoverTrigger>
-                <Button
-                  disableRipple
-                  radius="none"
-                  variant="light"
-                  className="h-max whitespace-normal p-0"
-                >
-                  {movieDetails.isFetching || !movieDetails.data ? (
-                    <Skeleton className="h-[60px] w-full" />
-                  ) : (
-                    <span className="line-clamp-3 w-full text-start text-sm text-slate-400">
-                      {movieDetails.data.overview}
-                    </span>
-                  )}
-                </Button>
-              </PopoverTrigger>
-              <div className="[&>div]:-mt-[60px]">
-                <PopoverContent className="mr-3">
-                  <ScrollShadow className="max-h-[250px]">
-                    {movieDetails.isFetching || !movieDetails.data ? (
-                      <center>
-                        <Spinner />
-                      </center>
-                    ) : (
-                      movieDetails.data.overview
-                    )}
-                  </ScrollShadow>
-                </PopoverContent>
-              </div>
-            </Popover>
+            {movieDetails.isFetching || !movieDetails.data ? (
+              <Skeleton className="h-[60px] w-full" />
+            ) : (
+              <ShowMoreText
+                className="text-sm text-slate-400"
+                truncatedEndingComponent={null}
+              >
+                {movieDetails.data.overview}
+              </ShowMoreText>
+            )}
           </div>
         </div>
 
