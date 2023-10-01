@@ -318,7 +318,7 @@ export default function MediaDisplay({
               </Button>
             )}
 
-            <Popover placement="bottom" backdrop="blur" showArrow>
+            <Popover placement="bottom" backdrop="blur">
               <PopoverTrigger>
                 <Button
                   disableRipple
@@ -335,17 +335,19 @@ export default function MediaDisplay({
                   )}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="mr-3">
-                <ScrollShadow className="max-h-[250px]">
-                  {movieDetails.isFetching || !movieDetails.data ? (
-                    <center>
-                      <Spinner />
-                    </center>
-                  ) : (
-                    movieDetails.data.overview
-                  )}
-                </ScrollShadow>
-              </PopoverContent>
+              <div className="[&>div]:-mt-[60px]">
+                <PopoverContent className="mr-3">
+                  <ScrollShadow className="max-h-[250px]">
+                    {movieDetails.isFetching || !movieDetails.data ? (
+                      <center>
+                        <Spinner />
+                      </center>
+                    ) : (
+                      movieDetails.data.overview
+                    )}
+                  </ScrollShadow>
+                </PopoverContent>
+              </div>
             </Popover>
           </div>
         </div>
