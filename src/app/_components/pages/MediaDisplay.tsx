@@ -335,7 +335,7 @@ export default function MediaDisplay({
                   )}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent>
+              <PopoverContent className="mr-3">
                 <ScrollShadow className="max-h-[250px]">
                   {movieDetails.isFetching || !movieDetails.data ? (
                     <center>
