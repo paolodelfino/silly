@@ -1,7 +1,13 @@
 import { auth, currentUser } from "@/app/_lib/auth";
+import {
+  MoviesGetPopularResponse,
+  TVGetTopRatedResponse,
+  TrendingGetTrendingResponse,
+} from "@/app/_lib/tmdb";
 import { tmdb } from "@/app/_lib/tmdb/client";
 import { formulateSearchInPage } from "@/app/_lib/utils";
 import { users } from "@/db/schema";
+import { env } from "@/env.mjs";
 import {
   TRPCError,
   type inferRouterInputs,
@@ -19,16 +25,49 @@ export const db = drizzle(sql);
 export const appRouter = router({
   tmdb: router({
     trending: publicProcedure.query(
-      async () => await tmdb.v3.trending.getTrending("all", "week", "it-IT"),
+      async () =>
+        (await (
+          await fetch(
+            `https://api.themoviedb.org/3/trending/all/week?api_key=${env.TMDB_API_KEY}&language=it-IT`,
+            {
+              next: { revalidate: 60 * 60 * 24, tags: ["tmdb-trending"] },
+            },
+          )
+        ).json()) as TrendingGetTrendingResponse,
+      // async () => await tmdb.v3.trending.getTrending("all", "week", "it-IT"),
     ),
     popular: router({
       movie: publicProcedure.query(
-        async () => await tmdb.v3.movies.getPopular({ language: "it-IT" }),
+        async () =>
+          (await (
+            await fetch(
+              `https://api.themoviedb.org/3/movie/popular?api_key=${env.TMDB_API_KEY}&language=it-IT`,
+              {
+                next: {
+                  revalidate: 60 * 60 * 24,
+                  tags: ["tmdb-popular-movie"],
+                },
+              },
+            )
+          ).json()) as MoviesGetPopularResponse,
+        // async () => await tmdb.v3.movies.getPopular({ language: "it-IT" }),
       ),
     }),
     topRated: router({
       tvShow: publicProcedure.query(
-        async () => await tmdb.v3.tv.getTopRated({ language: "it-IT" }),
+        async () =>
+          (await (
+            await fetch(
+              `https://api.themoviedb.org/3/tv/top_rated?api_key=${env.TMDB_API_KEY}&language=it-IT`,
+              {
+                next: {
+                  revalidate: 60 * 60 * 24 * 7,
+                  tags: ["tmdb-topRated-tvShow"],
+                },
+              },
+            )
+          ).json()) as TVGetTopRatedResponse,
+        // async () => await tmdb.v3.tv.getTopRated({ language: "it-IT" }),
       ),
     }),
     details: router({
