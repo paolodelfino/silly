@@ -306,7 +306,7 @@ export default function VideoPlayer({
         offset={20}
       >
         <PopoverTrigger>
-          <div className="pointer-events-none absolute left-0 top-0 h-full w-full"></div>
+          <div className="pointer-events-none absolute bottom-0 left-0 h-px w-full"></div>
         </PopoverTrigger>
         <PopoverContent>
           <div className="flex flex-col gap-2">
