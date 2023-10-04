@@ -218,7 +218,15 @@ export default function VideoPlayer({
     ["m", toggleMute],
     ["i", togglePip],
     ["ctrl+h", toggleShortcutsHelp],
-    ["ctrl+i", () => setActionsOpen(!actionsOpen)],
+    [
+      "ctrl+i",
+      () => {
+        if (!actionsOpen) {
+          setShowControls(true);
+        }
+        setActionsOpen(!actionsOpen);
+      },
+    ],
     ["v", () => setShowControls(!showControls)],
   ]);
 
