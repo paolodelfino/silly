@@ -1,5 +1,6 @@
 import BrowserInfo from "@/app/_components/BrowserInfo";
 import { Providers } from "@/app/_components/Providers";
+import ScrollToTop from "@/app/_components/ScrollToTop";
 import type { Metadata } from "next";
 import { Session } from "next-auth";
 import "./globals.css";
@@ -25,6 +26,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className="dark">
       <body className="antialiased">
         <Providers session={session}>
+          <ScrollToTop />
           {children}
           <BrowserInfo />
         </Providers>
