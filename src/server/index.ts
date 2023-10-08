@@ -1,10 +1,15 @@
 import { auth, currentUser } from "@/app/_lib/auth";
 import {
+  CollectionsGetDetailsResponse,
+  MoviesGetDetailsResponse,
   MoviesGetPopularResponse,
+  SearchMultiSearchResponse,
+  SearchPeopleResponse,
+  TVGetDetailsResponse,
   TVGetTopRatedResponse,
+  TVSeasonsGetDetailsResponse,
   TrendingGetTrendingResponse,
 } from "@/app/_lib/tmdb";
-import { tmdb } from "@/app/_lib/tmdb/client";
 import { formulateSearchInPage } from "@/app/_lib/utils";
 import { users } from "@/db/schema";
 import { env } from "@/env.mjs";
@@ -75,17 +80,31 @@ export const appRouter = router({
           }),
         )
         .query(async ({ input: { id } }) => {
-          const movie = await tmdb.v3.movies.getDetails(id, {
-            append_to_response: ["credits", "videos"],
-            language: "it-IT",
-          });
+          const movie = (await (
+            await fetch(
+              `https://api.themoviedb.org/3/movie/${id}?api_key=${env.TMDB_API_KEY}&language=it-IT`,
+              {
+                next: {
+                  revalidate: 60 * 60 * 24 * 2,
+                  tags: ["tmdb-details-movie"],
+                },
+              },
+            )
+          ).json()) as MoviesGetDetailsResponse<["videos", "credits"]>;
 
           let collection;
           if (movie.belongs_to_collection) {
-            collection = await tmdb.v3.collections.getDetails(
-              movie.belongs_to_collection.id,
-              { language: "it-IT" },
-            );
+            collection = (await (
+              await fetch(
+                `https://api.themoviedb.org/3/collection/${movie.belongs_to_collection.id}?api_key=${env.TMDB_API_KEY}&language=it-IT`,
+                {
+                  next: {
+                    revalidate: 60 * 60 * 24 * 4,
+                    tags: ["tmdb-details-movie-collection"],
+                  },
+                },
+              )
+            ).json()) as CollectionsGetDetailsResponse;
           }
 
           return { ...movie, collection };
@@ -98,10 +117,17 @@ export const appRouter = router({
         )
         .query(
           async ({ input: { id } }) =>
-            await tmdb.v3.tv.getDetails(id, {
-              append_to_response: ["credits", "videos"],
-              language: "it-IT",
-            }),
+            (await (
+              await fetch(
+                `https://api.themoviedb.org/3/tv/${id}?api_key=${env.TMDB_API_KEY}&language=it-IT`,
+                {
+                  next: {
+                    revalidate: 60 * 60 * 24 * 1,
+                    tags: ["tmdb-details-tvShow"],
+                  },
+                },
+              )
+            ).json()) as TVGetDetailsResponse<["videos", "credits"]>,
         ),
       season: publicProcedure
         .input(
@@ -112,10 +138,17 @@ export const appRouter = router({
         )
         .query(
           async ({ input: { id, season } }) =>
-            await tmdb.v3.tvSeasons.getDetails(id, season, {
-              language: "it-IT",
-              append_to_response: ["videos"],
-            }),
+            (await (
+              await fetch(
+                `https://api.themoviedb.org/3/tv/${id}/season/${season}?api_key=${env.TMDB_API_KEY}&language=it-IT`,
+                {
+                  next: {
+                    revalidate: 60 * 60 * 24 * 1,
+                    tags: ["tmdb-details-season"],
+                  },
+                },
+              )
+            ).json()) as TVSeasonsGetDetailsResponse<["videos"]>,
         ),
     }),
   }),
@@ -160,12 +193,17 @@ export const appRouter = router({
         }),
       )
       .query(async ({ input: { query, page } }) => {
-        const data = await tmdb.v3.search.searchMulti({
-          query,
-          page,
-          include_adult: true,
-          language: "it-IT",
-        });
+        const data = (await (
+          await fetch(
+            `https://api.themoviedb.org/3/search/multi?api_key=${env.TMDB_API_KEY}&language=it-IT&query=${query}&page=${page}&include_adult=true`,
+            {
+              next: {
+                revalidate: 60 * 60 * 24 * 1,
+                tags: ["tmdb-search-movies"],
+              },
+            },
+          )
+        ).json()) as SearchMultiSearchResponse;
 
         data.total_results -= data.results.length;
         data.results = data.results.filter(
@@ -181,13 +219,20 @@ export const appRouter = router({
           query: z.string(),
         }),
       )
-      .query(async ({ input: { query } }) => {
-        return await tmdb.v3.search.searchPeople({
-          query,
-          include_adult: true,
-          language: "it-IT",
-        });
-      }),
+      .query(
+        async ({ input: { query } }) =>
+          (await (
+            await fetch(
+              `https://api.themoviedb.org/3/search/person?api_key=${env.TMDB_API_KEY}&language=it-IT&query=${query}&include_adult=true`,
+              {
+                next: {
+                  revalidate: 60 * 60 * 24 * 1,
+                  tags: ["tmdb-search-people"],
+                },
+              },
+            )
+          ).json()) as SearchPeopleResponse,
+      ),
   }),
   user: router({
     mylist: router({
