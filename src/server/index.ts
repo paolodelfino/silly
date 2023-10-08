@@ -34,7 +34,6 @@ export const appRouter = router({
             },
           )
         ).json()) as TrendingGetTrendingResponse,
-      // async () => await tmdb.v3.trending.getTrending("all", "week", "it-IT"),
     ),
     popular: router({
       movie: publicProcedure.query(
@@ -50,7 +49,6 @@ export const appRouter = router({
               },
             )
           ).json()) as MoviesGetPopularResponse,
-        // async () => await tmdb.v3.movies.getPopular({ language: "it-IT" }),
       ),
     }),
     topRated: router({
@@ -67,7 +65,6 @@ export const appRouter = router({
               },
             )
           ).json()) as TVGetTopRatedResponse,
-        // async () => await tmdb.v3.tv.getTopRated({ language: "it-IT" }),
       ),
     }),
     details: router({
