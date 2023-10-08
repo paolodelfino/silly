@@ -82,7 +82,7 @@ export const appRouter = router({
         .query(async ({ input: { id } }) => {
           const movie = (await (
             await fetch(
-              `https://api.themoviedb.org/3/movie/${id}?api_key=${env.TMDB_API_KEY}&language=it-IT`,
+              `https://api.themoviedb.org/3/movie/${id}?api_key=${env.TMDB_API_KEY}&language=it-IT&append_to_response=videos,credits`,
               {
                 next: {
                   revalidate: 60 * 60 * 24 * 2,
@@ -119,7 +119,7 @@ export const appRouter = router({
           async ({ input: { id } }) =>
             (await (
               await fetch(
-                `https://api.themoviedb.org/3/tv/${id}?api_key=${env.TMDB_API_KEY}&language=it-IT`,
+                `https://api.themoviedb.org/3/tv/${id}?api_key=${env.TMDB_API_KEY}&language=it-IT&append_to_response=videos,credits`,
                 {
                   next: {
                     revalidate: 60 * 60 * 24 * 1,
@@ -140,7 +140,7 @@ export const appRouter = router({
           async ({ input: { id, season } }) =>
             (await (
               await fetch(
-                `https://api.themoviedb.org/3/tv/${id}/season/${season}?api_key=${env.TMDB_API_KEY}&language=it-IT`,
+                `https://api.themoviedb.org/3/tv/${id}/season/${season}?api_key=${env.TMDB_API_KEY}&language=it-IT&append_to_response=videos`,
                 {
                   next: {
                     revalidate: 60 * 60 * 24 * 1,
