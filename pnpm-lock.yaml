@@ -99,8 +99,8 @@ dependencies:
     specifier: ^6.0.6
     version: 6.0.6(react-dom@18.2.0)(react@18.2.0)
   sc-wrapper:
-    specifier: ^1.1.5
-    version: 1.1.5
+    specifier: ^1.2.5
+    version: 1.2.5
   screenfull:
     specifier: ^6.0.2
     version: 6.0.2
@@ -5778,8 +5778,8 @@ packages:
       is-regex: 1.1.4
     dev: false
 
-  /sc-wrapper@1.1.5:
-    resolution: {integrity: sha512-0ftlEUfD10e1LL3DHCcV3C3W8IPkzbEVW/2X4vpgH8mX2DaVvpC8K7dty9bNWNPyxmLwRO9U19R+GOOgE7+t3Q==}
+  /sc-wrapper@1.2.5:
+    resolution: {integrity: sha512-CEwXjDCpmLiVtpBmjuJ6y4M/w5AUP5OZq1m++OOzCJaXZaRH+1X4kMlh8CmrwLOfuNG6Jwxpfoftqc9cG03sFg==}
     dev: false
 
   /scheduler@0.23.0:
