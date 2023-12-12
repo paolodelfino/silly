@@ -1,6 +1,7 @@
 import BrowserInfo from "@/app/_components/BrowserInfo";
 import { Providers } from "@/app/_components/Providers";
 import ScrollToTop from "@/app/_components/ScrollToTop";
+import Update from "@/app/_components/Update";
 import type { Metadata } from "next";
 import { Session } from "next-auth";
 import "./globals.css";
@@ -29,6 +30,7 @@ export default function RootLayout({
           <ScrollToTop />
           {children}
           <BrowserInfo />
+          <Update />
         </Providers>
       </body>
     </html>
