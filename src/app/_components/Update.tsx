@@ -19,7 +19,7 @@ export default function Update() {
           Update is coming
         </ModalHeader>
         <ModalBody>
-          Silly is getting updated, please stay tuned. Press 'X' to use the older version.
+          {"Silly is getting updated, please stay tuned. Press 'X' to use the older version."}
           <Spacer />
         </ModalBody>
       </ModalContent>
