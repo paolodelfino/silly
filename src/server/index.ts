@@ -21,7 +21,7 @@ import {
 import { sql } from "@vercel/postgres";
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/vercel-postgres";
-import { get_playlist, search_movie } from "sc-wrapper";
+import { Episode, get_playlist, search_movie } from "sc-wrapper";
 import { z } from "zod";
 import { protectedProcedure, publicProcedure, router } from "./trpc";
 
@@ -169,17 +169,14 @@ export const appRouter = router({
       )[0];
       if (!movie) return undefined;
 
-      let episodeId;
+      let episode: Episode | undefined;
       if (movie.is_series && seasonNumber && episodeNumber) {
-        episodeId =
-          movie.seasons[seasonNumber - 1].episodes[episodeNumber - 1].id;
+        episode =
+          movie.seasons[seasonNumber - 1].episodes[episodeNumber - 1];
       }
 
       try {
-        return await get_playlist({
-          movie_id: movie.id,
-          episode_id: episodeId,
-        });
+        return await get_playlist(movie.id as any, (movie.scws_id ?? episode?.scws_id) as any, episode?.id);
       } catch (error) {
         return undefined;
       }
